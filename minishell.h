@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:19:29 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/29 17:36:56 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:17:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ typedef struct s_lexer
 
 
 //	define functions
-
+void	start_job(void);
 void	init_var(t_var **var);
 void	get_token(t_lexer *lex, char *line);
 

@@ -6,13 +6,13 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:19:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/29 12:43:53 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/03/30 14:17:41 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	start_job(void)
+void	start_job(void)
 {
 	char	*line;
 	char	**token;

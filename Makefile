@@ -6,14 +6,13 @@
 #    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 16:32:50 by oaboulgh          #+#    #+#              #
-#    Updated: 2023/03/30 13:33:25 by oaboulgh         ###   ########.fr        #
+#    Updated: 2023/03/30 14:28:45 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =    minishell
 
-SRCS = minishell.c \
-	minishell_utils.c \
+SRCS = minishell_utils.c \
 	tokenizer/tokenizer.c \
 	tokenizer/handle_dquotes.c \
 	tokenizer/handle_squotes.c \
@@ -23,7 +22,7 @@ SRCS = minishell.c \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -lreadline
+CFLAGS = #-Wall -Wextra -Werror
 
 HEADER = minishell.h \
 	tokenizer/tokenizer.h
@@ -35,11 +34,11 @@ all: $(NAME) $(OBJS) $(HEADER)
 
 %.o: %.c $(HEADER) libft/libft.h
 	@cc -c $(CFLAGS) $<  -o $@ 
-	@printf "\033[0;32m{compiling : %-30s .....} \r" ${notdir $@}
+	@printf "\033[0;32m[compiling : %-30s .....\] \r" ${notdir $@}
 
 $(NAME): $(OBJS) $(HEADER)
 	make bonus -C libft
-	cc main.c -o $(NAME) $(OBJS) libft/libft.a
+	cc minishell.c -lreadline -o $(NAME) $(OBJS) libft/libft.a
 
 clean:
 	$(RM) $(OBJS) $(OBJS)

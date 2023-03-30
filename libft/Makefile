@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+         #
+#    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/10/11 23:42:34 by nakebli           #+#    #+#              #
-#    Updated: 2022/11/02 14:30:24 by nakebli          ###   ########.fr        #
+#    Updated: 2023/03/30 14:28:40 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -75,7 +75,8 @@ $(NAME):$(OBJS)
 	$(AR) $(NAME) $(OBJS)
 
 %.o: %.c $(HEADER)
-	gcc $(CFLAGS) -c $< -o $@
+	@gcc $(CFLAGS) -c $< -o $@
+	@printf "\033[0;32m[compiling : %-30s .....\] \r" ${notdir $@}
 
 bonus : $(B_OBJS) $(OBJS)
 	$(AR) $(NAME) $(B_OBJS) $(OBJS)
@@ -87,3 +88,7 @@ fclean:clean
 	$(RM) $(NAME)
 
 re: fclean all
+
+.SILENT : $(NAME) clean fclean re
+
+.PHONY : all clean fclean re
