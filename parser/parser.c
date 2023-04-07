@@ -1,31 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   parser.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 09:57:56 by nakebli           #+#    #+#             */
-/*   Updated: 2023/04/01 11:04:29 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/04/06 10:54:14 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/04/06 10:54:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "../minishell.h"
 
-char	*ft_strdup(const char *s1)
+char	*check_path(char **paths, char *path)
 {
-	char	*s2;
 	int		i;
 
-	s2 = malloc(sizeof(char) * (ft_strlen((char *)s1) + 1));
-	if (!s2)
-		return (NULL);
-	i = -1;
-	while (s1[++i])
+	i = 0;
+	if (access(path, X_OK) == 0)
+		return (path);
+	path = ft_strjoin("/", path);
+	while (paths[i])
 	{
-		s2[i] = s1[i];
+		paths[i] = ft_strjoin(paths[i], path);
+		if (access(paths[i], X_OK) == 0)
+			return (paths[i]);
+		i++;
 	}
-	s2[i] = '\0';
-	// free ((char *)s1);
-	return (s2);
+	return (NULL);
 }

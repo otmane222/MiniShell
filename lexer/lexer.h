@@ -1,31 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   lexer.h                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 09:57:56 by nakebli           #+#    #+#             */
-/*   Updated: 2023/04/01 11:04:29 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/04/02 15:17:03 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/04/03 17:17:02 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#ifndef LEXER_H
+# define LEXER_H
 
-char	*ft_strdup(const char *s1)
-{
-	char	*s2;
-	int		i;
+# include "../minishell.h"
 
-	s2 = malloc(sizeof(char) * (ft_strlen((char *)s1) + 1));
-	if (!s2)
-		return (NULL);
-	i = -1;
-	while (s1[++i])
-	{
-		s2[i] = s1[i];
-	}
-	s2[i] = '\0';
-	// free ((char *)s1);
-	return (s2);
-}
+// void	lex_tokens(t_lexer *lex);
+
+#endif

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 16:34:45 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/30 12:18:21 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/07 14:50:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 
 int	is_operator(char c)
 {
-	if (c == '|' || c == '>' || c == '<')
+	if (c == '|' || c == '>' || c == '<' || c == '&' || c == '(' || c == ')')
 		return (1);
 	return (0);
 }

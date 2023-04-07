@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:28:07 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/30 12:18:04 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/07 11:53:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,9 @@ t_token	*init_token(size_t x)
 	if (!token)
 		exit (1);
 	token->data = malloc(x + 1);
+	token->cmd = NULL;
 	token->next = NULL;
+	token->type = -10;
 	token->prev = NULL;
 	return (token);
 }
@@ -46,9 +48,11 @@ int	char_type(char c)
 void	next_node(t_token **t, char *line, int *i)
 {
 	t_token	*temp;
+	t_token	*tmp1;
 
 	temp = init_token(ft_strlen(line) + 1);
 	(*t)->next = temp;
+	temp->prev = (*t);
 	*t = temp;
 	*i = 0;
 }
@@ -83,9 +87,9 @@ void	get_token(t_lexer *lex, char *line)
 		if (!line[var->i])
 			break ;
 	}
-	while (lex->tokens)
-	{
-		printf("token[%s]---\n", lex->tokens->data);
-		lex->tokens = lex->tokens->next;
-	}
+	// while (lex->tokens)
+	// {
+	// 	printf("token[%s]\n", lex->tokens->data);
+	// 	lex->tokens = lex->tokens->next;
+	// }
 }

@@ -6,26 +6,29 @@
 #    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 16:32:50 by oaboulgh          #+#    #+#              #
-#    Updated: 2023/03/30 14:28:45 by oaboulgh         ###   ########.fr        #
+#    Updated: 2023/04/03 16:26:59 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 NAME =    minishell
 
 SRCS = minishell_utils.c \
+	get_env.c \
 	tokenizer/tokenizer.c \
 	tokenizer/handle_dquotes.c \
 	tokenizer/handle_squotes.c \
 	tokenizer/handle_spaces.c \
 	tokenizer/handle_chars.c \
 	tokenizer/handle_separators.c \
+	lexer/lexer.c \
 
 OBJS = $(SRCS:.c=.o)
 
 CFLAGS = #-Wall -Wextra -Werror
 
 HEADER = minishell.h \
-	tokenizer/tokenizer.h
+	tokenizer/tokenizer.h \
+	lexer/lexer.h
 
 RM = rm -rf
 

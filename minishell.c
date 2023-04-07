@@ -6,13 +6,13 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:19:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/30 14:17:41 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/06 17:14:06 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	start_job(void)
+static void	start_job(char **env)
 {
 	char	*line;
 	char	**token;
@@ -26,14 +26,20 @@ void	start_job(void)
 		return ;
 	}
 	get_token(lex, ft_strtrim(line, " "));
+	lex_tokens(lex, env); // put the type of each token in  int type
 	free(line);
 }
 
-int	main(int ac, char **av)
+void	lk(void)
+{
+	system("leaks minishell");
+}
+
+int	main(int ac, char **av, char **env)
 {
 	while (1)
 	{
-		start_job();
+		start_job(env);
 	}
 	return (0);
 }

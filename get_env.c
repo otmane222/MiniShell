@@ -1,31 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_strdup.c                                        :+:      :+:    :+:   */
+/*   get_env.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/10/11 09:57:56 by nakebli           #+#    #+#             */
-/*   Updated: 2023/04/01 11:04:29 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/04/03 16:14:18 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/04/03 18:16:19 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "libft.h"
+#include "minishell.h"
 
-char	*ft_strdup(const char *s1)
+char	**get_env(char **env) // get the PATH in env , it has every path to any command in bash
 {
-	char	*s2;
 	int		i;
+	char	*str;
+	char	**rtn;
 
-	s2 = malloc(sizeof(char) * (ft_strlen((char *)s1) + 1));
-	if (!s2)
-		return (NULL);
-	i = -1;
-	while (s1[++i])
+	i = 0;
+	while (env[i])
 	{
-		s2[i] = s1[i];
+		if (ft_strnstr(env[i], "PATH", 5))
+			break ;
+		i++;
 	}
-	s2[i] = '\0';
-	// free ((char *)s1);
-	return (s2);
+	if (env[i])
+	{
+		str = env[i] + 5;
+		rtn = ft_split(str, ':');
+		return (rtn);
+	}
+	return (NULL);
 }
