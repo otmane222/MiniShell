@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/30 06:50:27 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/30 11:46:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/08 16:08:34 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,4 +27,6 @@ void	handle_spaces(char *line, t_var *var, t_token **token, int *i)
 		handle_chars(line, var, token, i);
 	else if (is_operator(line[var->i]))
 		handle_seperators(line, var, token, i);
+	else if (is_parenthese(line[var->i]))
+		handle_parenthese(line, var, token, i);
 }

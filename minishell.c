@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:19:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/06 17:14:06 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:19:00 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ static void	start_job(char **env)
 	char	*line;
 	char	**token;
 	t_lexer	*lex;
+	t_tree	*root;
 
 	lex = malloc(sizeof(t_lexer));
 	line = readline("Minishell > ");
@@ -27,6 +28,7 @@ static void	start_job(char **env)
 	}
 	get_token(lex, ft_strtrim(line, " "));
 	lex_tokens(lex, env); // put the type of each token in  int type
+	root = ast_tokenes(lex);
 	free(line);
 }
 

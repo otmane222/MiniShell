@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 16:34:45 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/07 14:50:46 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/12 15:03:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,14 @@ int	is_white_space(char c)
 	return (0);
 }
 
-void	stor_data(t_token **t, char *line, t_var *var, char *stop)
+int	is_operator(char c)
+{
+	if (c == '|' || c == '>' || c == '<' || c == '&')
+		return (1);
+	return (0);
+}
+
+static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 {
 	while (line[var->i] && !ft_strchr(stop, line[var->i]))
 	{
@@ -33,17 +40,10 @@ void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 		printf("Error!\n");
 }
 
-int	is_operator(char c)
-{
-	if (c == '|' || c == '>' || c == '<' || c == '&' || c == '(' || c == ')')
-		return (1);
-	return (0);
-}
-
 void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 {
 	var->i++;
-	stor_data(token, line, var, "\"");
+	stoor_data(token, line, var, "\"");
 	if (!line[var->i])
 		return ;
 	else
@@ -65,5 +65,10 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 			handle_dquotes(line, var, token, i);
 		else if (char_type(line[var->i]) == D_SQOUTE)
 			handle_squotes(line, var, token, i);
+		else if (is_parenthese(line[var->i]))
+		{
+			next_node(token, line, i);
+			handle_parenthese(line, var, token, i);
+		}
 	}
 }

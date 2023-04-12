@@ -6,13 +6,15 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/03 16:14:18 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/03 18:16:19 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/12 14:32:05 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**get_env(char **env) // get the PATH in env , it has every path to any command in bash
+// get the PATH in env , it has every path to any command in bash
+
+char	**get_env(char **env)
 {
 	int		i;
 	char	*str;

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:35:23 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/03/29 12:35:51 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/11 12:30:56 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,4 +21,6 @@ void	init_var(t_var **var)
 	(*var)->status = 0;
 	(*var)->counter = 0;
 	(*var)->qoutes_flag = 0;
+	(*var)->start = 0;
+	(*var)->end = 0;
 }

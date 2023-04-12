@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/03/29 12:19:29 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/07 17:19:27 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/04/12 13:34:29 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,6 +60,8 @@ enum	e_token
 	D_DQOUTE = '\"',
 	D_SQOUTE = '\'',
 	D_SPACE = ' ',
+	D_OPAR = '(',
+	D_CPAR = ')',
 	D_GEN = -1,
 	FLAG = -1,
 };
@@ -73,12 +75,16 @@ typedef struct s_var
 	int		is_stored;
 	int		counter;
 	int		qoutes_flag;
+
+	int		start;
+	int		end;
 }	t_var;
 
 typedef struct s_token
 {
 	char			*data;
 	char			**cmd;
+	int				flag;
 	int				type;
 	struct s_token	*next;
 	struct s_token	*prev;
@@ -103,5 +109,6 @@ t_token	*init_token(size_t x);
 void	get_token(t_lexer *lex, char *line);
 char	**get_env(char **env);
 void	lex_tokens(t_lexer *lex, char **env);
+t_tree	*ast_tokenes(t_lexer *lex);
 
 #endif

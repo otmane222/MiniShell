@@ -6,7 +6,7 @@
 #    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/03/29 16:32:50 by oaboulgh          #+#    #+#              #
-#    Updated: 2023/04/03 16:26:59 by oaboulgh         ###   ########.fr        #
+#    Updated: 2023/04/12 14:27:18 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,10 @@ SRCS = minishell_utils.c \
 	tokenizer/handle_spaces.c \
 	tokenizer/handle_chars.c \
 	tokenizer/handle_separators.c \
+	tokenizer/handle_parenthese.c \
 	lexer/lexer.c \
+	lexer/lexer_utils.c \
+	tree/tree.c \
 
 OBJS = $(SRCS:.c=.o)
 
