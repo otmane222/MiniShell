@@ -14,7 +14,10 @@
 
 static void	store_data(char *line, t_var *var, t_token **token, int *i)
 {
-	while (line[var->i] && is_operator(line[var->i]))
+	int	k;
+
+	k = var->i;
+	while (line[var->i] && char_type(line[var->i]) == char_type(line[k]))
 	{
 		(*token)->data[*i] = line[var->i];
 		*i = *i + 1;
@@ -32,7 +35,9 @@ void	handle_seperators(char *line, t_var *var, t_token **token, int *i)
 		return ;
 	}
 	next_node(token, line, i);
-	if (is_white_space(line[var->i]))
+	if (is_operator(line[var->i]))
+		handle_seperators(line, var, token, i);
+	else if (is_white_space(line[var->i]))
 		handle_spaces(line, var, token, i);
 	else if (is_char(line[var->i]))
 		handle_chars(line, var, token, i);

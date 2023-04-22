@@ -27,7 +27,7 @@ SRCS = minishell_utils.c \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = #-Wall -Wextra -Werror
+CFLAGS =   #-Wall -Wextra -Werror
 
 HEADER = minishell.h \
 	tokenizer/tokenizer.h \
@@ -39,12 +39,12 @@ all: $(NAME) $(OBJS) $(HEADER)
 	@printf "\033[0;32mDONE ✅"
 
 %.o: %.c $(HEADER) libft/libft.h
-	@cc -c $(CFLAGS) $<  -o $@ 
+	@gcc -c $(CFLAGS) $<  -o $@ 
 	@printf "\033[0;32m[compiling : %-30s .....\] \r" ${notdir $@}
 
 $(NAME): $(OBJS) $(HEADER)
 	make bonus -C libft
-	cc minishell.c -lreadline -o $(NAME) $(OBJS) libft/libft.a
+	gcc minishell.c -I/path/to/readline/include -lreadline -o $(NAME) $(OBJS) libft/libft.a
 
 clean:
 	$(RM) $(OBJS) $(OBJS)

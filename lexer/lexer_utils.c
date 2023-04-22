@@ -35,7 +35,7 @@ void	get_type(t_token *t)
 	else if (t->prev)
 	{
 		if (t->prev->type == RED_OUT || t->prev->type == RED_IN || \
-			t->prev->type == D_RED_OUT)
+			t->prev->type == D_RED_OUT || t->prev->type == D_RED_IN)
 			t->type = FILE;
 	}
 }
