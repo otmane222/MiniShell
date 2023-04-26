@@ -12,20 +12,12 @@
 
 #include "../minishell.h"
 
-char	*check_path(char **paths, char *path)
+int	check_syntax(t_token *token)
 {
-	int		i;
-
-	i = 0;
-	if (access(path, X_OK) == 0)
-		return (path);
-	path = ft_strjoin("/", path);
-	while (paths[i])
+	while (token)
 	{
-		paths[i] = ft_strjoin(paths[i], path);
-		if (access(paths[i], X_OK) == 0)
-			return (paths[i]);
-		i++;
+		/* code */
 	}
-	return (NULL);
+	
+	return (1);
 }

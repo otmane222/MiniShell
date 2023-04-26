@@ -20,7 +20,7 @@ static void	start_job(char **env)
 	t_tree	*root;
 
 	lex = malloc(sizeof(t_lexer));
-	line = readline("Minishell > ");
+	line = readline("Minishell >");
 	if (line == NULL)
 	{
 		printf("Error: unable to read line\n");
@@ -28,15 +28,8 @@ static void	start_job(char **env)
 	}
 	get_token(lex, ft_strtrim(line, " "));
 	lex_tokens(lex, env); // put the type of each token in  int type
-	// root = ast_tokenes(lex);
-	// printf("%s\n", root->left->token->cmd[0]);
-	// printf("%s\n", root->token->cmd[0]);
-	// printf("%s\n", root->right->token->cmd[0]);
-	// printf("%s\n", root->left->left->token->cmd[0]);
-	// printf("%s\n", root->left->right->token->cmd[0]);
-	// printf("%s\n", root->right->left->token->cmd[0]);
-	// printf("%s\n", root->right->left->left->token->cmd[0]);
-	// printf("%s\n", root->left->right->right->token->cmd[0]);
+	root = ast_tokenes(lex);
+	execute(root, env);
 	free(line);
 }
 

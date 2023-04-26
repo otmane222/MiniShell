@@ -13,7 +13,6 @@
 NAME =    minishell
 
 SRCS = minishell_utils.c \
-	get_env.c \
 	tokenizer/tokenizer.c \
 	tokenizer/handle_dquotes.c \
 	tokenizer/handle_squotes.c \
@@ -24,6 +23,7 @@ SRCS = minishell_utils.c \
 	lexer/lexer.c \
 	lexer/lexer_utils.c \
 	tree/tree.c \
+	execution/execute.c \
 
 OBJS = $(SRCS:.c=.o)
 

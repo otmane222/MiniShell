@@ -111,4 +111,6 @@ char	**get_env(char **env);
 void	lex_tokens(t_lexer *lex, char **env);
 t_tree	*ast_tokenes(t_lexer *lex);
 
+void    execute(t_tree *root, char **env);
+
 #endif

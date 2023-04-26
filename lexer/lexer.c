@@ -159,15 +159,15 @@ void	lex_tokens(t_lexer *lex, char **env)
 	put_operators_in_cmd(lex->tokens);
 	case_of_arg_after_file(lex->tokens);
 	case_cmd_after_file(lex->tokens);
-	while (tmp)
-	{
-		int i = 0;
-		printf("-----%d--\n", tmp->type);
-		while (tmp->cmd[i])
-		{
-			printf("token[%s]\n", tmp->cmd[i]);
-			i++;
-		}
-		tmp = tmp->next;
-	}
+	// while (tmp)
+	// {
+	// 	int i = 0;
+	// 	printf("-----%d--\n", tmp->type);
+	// 	while (tmp->cmd[i])
+	// 	{
+	// 		printf("token[%s]\n", tmp->cmd[i]);
+	// 		i++;
+	// 	}
+	// 	tmp = tmp->next;
+	// }
 }
