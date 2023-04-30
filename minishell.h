@@ -19,6 +19,7 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 # include <string.h>
+# include <fcntl.h>
 # include "libft/libft.h"
 
 # define CMD 1
@@ -31,7 +32,7 @@
 # define D_AND 9
 # define QOUTES 10
 # define RED_OUT 11
-# define D_RED_OUT 12
+# define D_RED_OUT 12 // Append
 # define FILE 13
 # define EXPAND 14
 
@@ -75,7 +76,6 @@ typedef struct s_var
 	int		is_stored;
 	int		counter;
 	int		qoutes_flag;
-
 	int		start;
 	int		end;
 }	t_var;
@@ -110,7 +110,10 @@ void	get_token(t_lexer *lex, char *line);
 char	**get_env(char **env);
 void	lex_tokens(t_lexer *lex, char **env);
 t_tree	*ast_tokenes(t_lexer *lex);
+int		is_red(int a);
+void	execute(t_tree *root, char **env);
+void	get_head(t_token **token);
 
-void    execute(t_tree *root, char **env);
+void	del_token(t_token *tok);
 
 #endif

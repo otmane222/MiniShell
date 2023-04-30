@@ -186,6 +186,8 @@ int	is_red(int a)
 
 t_tree	*case_file(t_token *tmp, t_tree *tree)
 {
+	if (!tmp)
+		return (NULL);
 	if (tmp->next)
 	{
 		if (tmp->next->flag && tmp->type == FILE)
@@ -220,8 +222,8 @@ t_tree	*ast_and_or(t_token *tok)
 		tok = tok->next;
 	}
 	if (var.i == 0)
-		return (case_file(tmp, tree));
-	else if (var.i = 1)
+		return (ast_pipe(tmp));
+	else if (var.i == 1)
 	{
 		tok->flag = 0;
 		tree->token = tok;
@@ -229,6 +231,7 @@ t_tree	*ast_and_or(t_token *tok)
 		tree->right = ast_and_or(tok->next);
 		return (tree);
 	}
+	return (NULL);
 }
 
 t_tree	*ast_pipe(t_token *tok)
@@ -253,7 +256,7 @@ t_tree	*ast_pipe(t_token *tok)
 	if (var.i == 0)
 	{
 		tok = tmp;
-		return (ast_and_or(tok));
+		return (ast_redirections(tok));
 	}
 	else if (var.i)
 	{
@@ -263,6 +266,7 @@ t_tree	*ast_pipe(t_token *tok)
 		tree->right = ast_pipe(tok->next);
 		return (tree);
 	}
+	return (NULL);
 }
 
 t_tree	*ast_redirections(t_token *tok)
@@ -289,7 +293,7 @@ t_tree	*ast_redirections(t_token *tok)
 	if (var.i == 0)
 	{
 		tok = tmp;
-		return (ast_pipe(tok));
+		return (case_file(tmp, tree));
 	}
 	else if (var.i)
 	{
@@ -299,6 +303,7 @@ t_tree	*ast_redirections(t_token *tok)
 		tree->right = ast_redirections(tok->next);
 		return (tree);
 	}
+	return (NULL);
 }
 
 static void	free_2d(char **str)
@@ -394,6 +399,7 @@ int	ck_pr(int a, int b)
 		return (4);
 	else if (b == D_AND || b == DPIPE)
 		return (5);
+	return (-1);
 }
 
 t_tree	*case_both_exit(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
@@ -408,11 +414,10 @@ t_tree	*case_both_exit(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 	else if (tok->next->flag == 0)
 		return (case_no_next(begin, tok, b, tree));
 	else if (ck_pr(a, g) == 0 || ck_pr(a, g) == 2 || ck_pr(a , g) == 4)
-		return (case_no_next(begin, tok, b, tree));
-	else if (ck_pr(a, g) == 1 || ck_pr(a, g) == 3 || ck_pr(a , g) == 5)
 		return (case_no_perv(begin, tok, b, tree));
-
-
+	else if (ck_pr(a, g) == 1 || ck_pr(a, g) == 3 || ck_pr(a , g) == 5)
+		return (case_no_next(begin, tok, b, tree));
+	return (NULL);
 }
 
 t_tree	*cases(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
@@ -425,6 +430,7 @@ t_tree	*cases(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 		return (case_no_perv(begin, tok, b, tree));
 	else if (begin->prev && tok->next)
 		return (case_both_exit(begin, tok, b, tree));
+	return (NULL);
 }
 
 t_tree	*ast_parenthese(t_token *tok)
@@ -460,10 +466,11 @@ t_tree	*ast_parenthese(t_token *tok)
 	if (var.i == -1)
 	{
 		tok = b;
-		return (ast_redirections(tok));
+		return (ast_and_or(tok));
 	}
 	else if (var.i == 0)
 		return (cases(begin, tok, b, tree));
+	return (NULL);
 }
 
 t_tree	*ast_tokenes(t_lexer *lex)

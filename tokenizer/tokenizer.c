@@ -46,6 +46,8 @@ int	char_type(char c)
 		return (D_OPAR);
 	else if (c == ')')
 		return (D_CPAR);
+	else if (c == '&')
+		return (D_AND);
 	else
 		return (D_GEN);
 }

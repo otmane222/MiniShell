@@ -46,3 +46,10 @@ int	main(int ac, char **av, char **env)
 	}
 	return (0);
 }
+/*
+	printf("root->left %s\n", root->left->token->cmd[0]);
+	printf("root %s\n", root->token->cmd[0]);
+	printf("root->right->left %s\n", root->right->left->token->cmd[0]);
+	printf("root->right %s\n", root->right->token->cmd[0]);
+	printf("root->right->right %s\n", root->right->right->token->cmd[0]);
+*/

@@ -59,7 +59,8 @@ void	get_cmd(t_token **token)
 	while ((*token) && (*token)->type != CMD)
 	{
 		*token = (*token)->prev;
-		if ((*token)->type == PIPE || (*token)->type == DPIPE || (*token)->type == D_AND)
+		if ((*token) && ((*token)->type == PIPE || (*token)->type \
+			== DPIPE || (*token)->type == D_AND))
 		{
 			(*token) = tmp;
 			return ;
@@ -93,7 +94,6 @@ void	case_of_arg_after_file(t_token *token)
 		}
 		token = token->next;
 	}
-	
 }
 
 void	fix(t_token **token)
@@ -101,37 +101,40 @@ void	fix(t_token **token)
 	t_token	*tmp;
 	t_token	*tmp2;
 	t_token	*tmp3;
+	t_token	*tmp4;
 
-	if ((*token)->next)
+	tmp = (*token);
+	if (tmp->next)
 	{
-		if ((*token)->next->type == CMD)
+		if (tmp->next->type == CMD)
 		{
-			tmp2 = (*token)->next;
-			tmp = (*token);
-			while ((*token) && !((*token)->type == PIPE || (*token)->type == DPIPE || (*token)->type == D_AND))
+			tmp2 = tmp->next;
+			while (tmp && !(tmp->type == PIPE || \
+				tmp->type == DPIPE || tmp->type == D_AND))
 			{
-				(*token) = (*token)->prev;
-				if ((*token)->type == CMD || !(*token))
+				tmp3 = tmp;
+				tmp = tmp->prev;
+				if (!tmp || tmp->type == CMD)
 				{
-					(*token) = tmp2;
+					if (!tmp)
+					{
+						tmp3->prev = tmp2;
+						(*token)->next = tmp2->next;
+						if (tmp2->next)
+							tmp2->next->prev = (*token);
+						tmp2->next = tmp3;
+						tmp2->prev = tmp;
+					}
 					return ;
 				}
 			}
-			printf("got here\n");
-			tmp3 = (*token)->next;
-			tmp3->prev = tmp2;
-			(*token)->next = tmp2;
-			tmp->next = tmp2->next;
-			tmp2->prev = (*token);
-			if (tmp2->next)
-				tmp2->next->prev = tmp;
-			tmp2->next = tmp3;
 		}
 	}
 }
 
 void	case_cmd_after_file(t_token *token)
 {
+	get_head(&token);
 	while (token)
 	{
 		if (token->type == FILE)
@@ -144,30 +147,92 @@ void	case_cmd_after_file(t_token *token)
 	}
 }
 
+void	get_tail(t_token **head)
+{
+	if (!(*head))
+		return ;
+	if (!(*head)->next)
+		return ;
+	while ((*head)->next)
+	{
+		if ((*head)->next->flag == 0)
+			break ;
+		(*head) = (*head)->next;
+	}
+}
+
+void	swap_token_char(t_token **a, t_token **b)
+{
+	char	*tmp;
+
+	if (!(*b) || !(*a))
+		return ;
+	if ((*a)->next)
+	{
+		if ((*a)->next->type == C_PARENTHIS)
+			return ;
+	}
+	tmp = (*a)->cmd[0];
+	(*a)->cmd[0] = (*b)->cmd[0];
+	(*b)->cmd[0] = tmp;
+}
+
+void	handle_followed_red(t_token *token)
+{
+	t_token	*tmp;
+	t_token	*tmp2;
+
+	get_head(&token);
+	while (token)
+	{
+		if (token->type == FILE)
+		{
+			tmp = token;
+			token = token->next;
+			if (!token)
+				return ;
+			while (token->next && (token->next->type == FILE || is_red(token->next->type)))
+				token = token->next;
+			if (token && token->type == FILE)
+				swap_token_char(&tmp, &token);
+		}
+		if (!token)
+			return ;
+		token = token->next;
+	}
+}
+
 void	lex_tokens(t_lexer *lex, char **env)
 {
 	t_token	*tmp;
 
 	tmp = lex->tokens;
-	while (lex->tokens)
+	while (tmp)
 	{
-		get_type(lex->tokens);
-		lex->tokens = lex->tokens->next;
+		get_type(tmp);
+		tmp = tmp->next;
 	}
-	lex->tokens = tmp;
 	join_cmd_and_arg(lex);
 	put_operators_in_cmd(lex->tokens);
 	case_of_arg_after_file(lex->tokens);
 	case_cmd_after_file(lex->tokens);
-	// while (tmp)
+	handle_followed_red(lex->tokens); // handle ls >out>out2>ou3 || wc <<EOF <<EOF2 <<EOF3
+	// get_head(&lex->tokens);
+	// while (lex->tokens)
 	// {
-	// 	int i = 0;
-	// 	printf("-----%d--\n", tmp->type);
-	// 	while (tmp->cmd[i])
-	// 	{
-	// 		printf("token[%s]\n", tmp->cmd[i]);
-	// 		i++;
-	// 	}
-	// 	tmp = tmp->next;
+	// 	printf("%s\n", lex->tokens->cmd[0]);
+	// 	lex->tokens = lex->tokens->next;
+	// }
+	
+	// if (lex->tokens->prev)
+	// {
+	// 	printf("%s\n", lex->tokens->prev->cmd[0]);
+	// }
+	// while (lex->tokens->next)
+	// 	lex->tokens = lex->tokens->next;
+	// while (lex->tokens)
+	// {
+	// 	printf("%s\n", lex->tokens->cmd[0]);
+	// 	lex->tokens = lex->tokens->prev;
 	// }
 }
