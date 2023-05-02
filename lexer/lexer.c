@@ -86,7 +86,7 @@ void	case_of_arg_after_file(t_token *token)
 {
 	while (token)
 	{
-		if (token->type == FILE)
+		if (token->type == FILE || token->type == LIMITER)
 		{
 			get_cmd(&token);
 			if (!token)
@@ -137,7 +137,7 @@ void	case_cmd_after_file(t_token *token)
 	get_head(&token);
 	while (token)
 	{
-		if (token->type == FILE)
+		if (token->type == FILE || token->type == LIMITER)
 		{
 			fix(&token);
 			if (!token)
@@ -177,6 +177,14 @@ void	swap_token_char(t_token **a, t_token **b)
 	(*b)->cmd[0] = tmp;
 }
 
+int	is_red2(int a)
+{
+	if (a == D_RED_OUT || a == RED_IN || a == RED_OUT)
+		return (1);
+	return (0);
+}
+
+
 void	handle_followed_red(t_token *token)
 {
 	t_token	*tmp;
@@ -191,7 +199,7 @@ void	handle_followed_red(t_token *token)
 			token = token->next;
 			if (!token)
 				return ;
-			while (token->next && (token->next->type == FILE || is_red(token->next->type)))
+			while (token->next && (token->next->type == FILE || is_red2(token->next->type)))
 				token = token->next;
 			if (token && token->type == FILE)
 				swap_token_char(&tmp, &token);
@@ -214,8 +222,8 @@ void	lex_tokens(t_lexer *lex, char **env)
 	}
 	join_cmd_and_arg(lex);
 	put_operators_in_cmd(lex->tokens);
-	case_of_arg_after_file(lex->tokens);
 	case_cmd_after_file(lex->tokens);
+	case_of_arg_after_file(lex->tokens);
 	handle_followed_red(lex->tokens); // handle ls >out>out2>ou3 || wc <<EOF <<EOF2 <<EOF3
 	// get_head(&lex->tokens);
 	// while (lex->tokens)

@@ -20,7 +20,9 @@
 # include <readline/history.h>
 # include <string.h>
 # include <fcntl.h>
+# include <sys/stat.h>
 # include "libft/libft.h"
+# include "get_next_line.h"
 
 # define CMD 1
 # define PIPE 2
@@ -32,9 +34,10 @@
 # define D_AND 9
 # define QOUTES 10
 # define RED_OUT 11
-# define D_RED_OUT 12 // Append
+# define D_RED_OUT 12
 # define FILE 13
-# define EXPAND 14
+# define LIMITER 14
+# define EXPAND 15
 
 // enum	e_parse
 // {

@@ -21,11 +21,9 @@ static void	start_job(char **env)
 
 	lex = malloc(sizeof(t_lexer));
 	line = readline("Minishell >");
-	if (line == NULL)
-	{
-		printf("Error: unable to read line\n");
-		return ;
-	}
+	add_history(line);
+	if (line == NULL || !ft_strncmp(line, "exit\n", 6))
+		exit (0);
 	get_token(lex, ft_strtrim(line, " "));
 	lex_tokens(lex, env); // put the type of each token in  int type
 	root = ast_tokenes(lex);

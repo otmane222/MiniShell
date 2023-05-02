@@ -12,6 +12,15 @@
 
 #include "lexer.h"
 
+void	get_type_small_call(t_token *t)
+{
+	if (t->prev->type == RED_OUT || t->prev->type == RED_IN || \
+		t->prev->type == D_RED_OUT)
+		t->type = FILE;
+	if (t->prev->type == D_RED_IN)
+		t->type = LIMITER;
+}
+
 void	get_type(t_token *t)
 {
 	if (strcmp("||", t->data) == 0)
@@ -33,11 +42,7 @@ void	get_type(t_token *t)
 	else if (strcmp(")", t->data) == 0)
 		t->type = C_PARENTHIS;
 	else if (t->prev)
-	{
-		if (t->prev->type == RED_OUT || t->prev->type == RED_IN || \
-			t->prev->type == D_RED_OUT || t->prev->type == D_RED_IN)
-			t->type = FILE;
-	}
+		get_type_small_call(t);
 }
 
 void	join_cmd(t_token *tmp, t_token *token, t_var *var, int *g)
