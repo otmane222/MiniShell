@@ -25,131 +25,6 @@ t_tree	*init_tree(void)
 	return (tree);
 }
 
-// int	search_find_and(t_tree *root, t_token *token)
-// {
-// 	t_token	*tmp;
-
-// 	tmp = token;
-// 	while (token)
-// 	{
-// 		if (token->type == DPIPE || token->type == D_AND)
-// 		{
-// 			creat_foro3(root, token);
-// 			search_find_red(root, tmp);
-// 			break ;
-// 		}
-// 		token = token->next;
-// 	}
-// 	if (!token)
-// 		search_find_red(root, tmp);
-// 	token = tmp;
-// 	return (0);
-// }
-
-// int	search_find_red(t_tree *root, t_token *token)
-// {
-// 	t_token	*tmp;
-
-// 	tmp = token;
-// 	while (token)
-// 	{
-// 		if (token->type == RED_IN || token->type == RED_OUT || \
-// 			token->type == D_RED_IN || token->type == D_RED_OUT)
-// 		{
-// 			creat_foro3(root, token);
-// 			search_find_red(root, tmp);
-// 		}
-// 		token = token->next;
-// 	}
-// 	token = tmp;
-// 	return (0);
-// }
-
-// void	creat_foro3(t_tree *root, t_token *t)
-// {
-// 	root->right = init_tree();
-// 	root->left = init_tree();
-// 	root->token = t;
-// }
-
-// void	get_head(t_token **head)
-// {
-// 	if (!(*head) || !(*head)->prev)
-// 		return ;
-// 	while ((*head)->prev)
-// 	{
-// 		if ((*head)->prev->flag == 0)
-// 		{
-// 			(*head)->prev = NULL;
-// 			break ;
-// 		}
-// 		(*head) = (*head)->prev;
-// 	}
-// }
-
-// t_tree	*ast_parenthese(t_tree **root, t_token *toke)
-// {
-// 	t_token	*begin;
-// 	t_token	*first;
-// 	t_var	var;
-
-// 	var.j = 0;
-// 	begin = (*toke);
-// 	first = NULL;
-// 	get_head(toke);
-// 	if (!(*toke)->next && !(*toke)->prev)
-// 		return ((*toke));
-// 	while ((*toke))
-// 	{
-// 		if ((*toke)->type == O_PARENTHIS)
-// 		{
-// 			if (var.j == 0)
-// 				first = (*toke);
-// 			var.j++;
-// 		}
-// 		else if ((*toke)->type == C_PARENTHIS)
-// 		{
-// 			var.j--;
-// 			if (var.j == 0)
-// 			{
-// 				(*toke)->flag = 0;
-// 				break ;
-// 			}
-// 		}
-// 		*toke = (*toke)->next;
-// 	}
-// 	if (!(*toke)->next && first && !first->prev)
-// 	{
-// 		begin = begin->next;
-// 		del_token(begin->prev);
-// 		(*toke) = (*toke)->prev;
-// 		del_token((*toke)->next);
-// 		(*toke) = begin;
-// 		var.j = 0;
-// 		ast_parenthese(root, toke);
-// 	}
-// 	else if ((*toke)->next && first)
-// 	{
-// 		begin = (*toke)->next;
-// 		(*toke)->next->flag = 0;
-// 		(*root)->right = ast_parenthese(root, &(*toke)->next->next);
-// 		(*toke)->next = NULL;
-// 		(*root)->left = ast_parenthese(root, &(*toke)->prev);
-// 		return (begin);
-// 	}
-// 	else if (!(*toke)->next && first && first->prev)
-// 	{
-// 		begin = first->prev;
-// 		(*root)->token = begin;
-// 		if ((*toke)->prev)
-// 		{
-// 			(*toke)->prev->flag = 0;
-// 			(*root)->left = ast_parenthese(root, &first->prev->prev);
-// 		}
-// 		return (begin);
-// 	}
-// }
-
 void	init_var_2(t_var **var)
 {
 	(*var) = malloc(sizeof(t_var));
@@ -163,7 +38,7 @@ void	init_var_2(t_var **var)
 	(*var)->end = 0;
 }
 
-void	get_head(t_token **head)
+void	get_head(t_rock **head)
 {
 	if (!(*head))
 		return ;
@@ -184,7 +59,7 @@ int	is_red(int a)
 	return (0);
 }
 
-t_tree	*case_file(t_token *tmp, t_tree *tree)
+t_tree	*case_file(t_rock *tmp, t_tree *tree)
 {
 	if (!tmp)
 		return (NULL);
@@ -202,9 +77,9 @@ t_tree	*case_file(t_token *tmp, t_tree *tree)
 	return (tree);
 }
 
-t_tree	*ast_and_or(t_token *tok)
+t_tree	*ast_and_or(t_rock *tok)
 {
-	t_token	*tmp;
+	t_rock	*tmp;
 	t_tree	*tree;
 	t_var	var;
 
@@ -222,7 +97,7 @@ t_tree	*ast_and_or(t_token *tok)
 		tok = tok->next;
 	}
 	if (var.i == 0)
-		return (ast_pipe(tmp));
+		return (free(tree), ast_pipe(tmp));
 	else if (var.i == 1)
 	{
 		tok->flag = 0;
@@ -234,10 +109,10 @@ t_tree	*ast_and_or(t_token *tok)
 	return (NULL);
 }
 
-t_tree	*ast_pipe(t_token *tok)
+t_tree	*ast_pipe(t_rock *tok)
 {
 	t_var	var;
-	t_token	*tmp;
+	t_rock	*tmp;
 	t_tree	*tree;
 
 	tree = init_tree();
@@ -256,7 +131,7 @@ t_tree	*ast_pipe(t_token *tok)
 	if (var.i == 0)
 	{
 		tok = tmp;
-		return (ast_redirections(tok));
+		return (free(tree), ast_redirections(tok));
 	}
 	else if (var.i)
 	{
@@ -269,10 +144,10 @@ t_tree	*ast_pipe(t_token *tok)
 	return (NULL);
 }
 
-t_tree	*ast_redirections(t_token *tok)
+t_tree	*ast_redirections(t_rock *tok)
 {
 	t_var	var;
-	t_token	*tmp;
+	t_rock	*tmp;
 	t_tree	*tree;
 
 	tree = init_tree();
@@ -319,25 +194,7 @@ static void	free_2d(char **str)
 	free (str);
 }
 
-void	del_token(t_token *tok)
-{
-	t_token	*tmp;
-	t_token	*tmp2;
-
-	if (!tok)
-		return ;
-	tmp = tok->next;
-	tmp2 = tok->prev;
-	free_2d(tok->cmd);
-	free(tok);
-	tok = NULL;
-	if (tmp)
-		tmp->prev = tmp2;
-	if (tmp2)
-		tmp2->next = tmp;
-}
-
-t_tree	*case_no_next(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
+t_tree	*case_no_next(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
 {
 	if (begin->prev->flag == 0)
 	{
@@ -356,7 +213,7 @@ t_tree	*case_no_next(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 	}
 }
 
-t_tree	*case_no_perv(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
+t_tree	*case_no_perv(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
 {
 	if (tok->next->flag == 0)
 	{
@@ -375,9 +232,27 @@ t_tree	*case_no_perv(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 	}
 }
 
-t_tree	*case_nothing(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
+void	del_token(t_rock *tok)
 {
-	t_token	*tmp;
+	t_rock	*tmp;
+	t_rock	*tmp2;
+
+	if (!tok)
+		return ;
+	tmp = tok->next;
+	tmp2 = tok->prev;
+	free_2d(tok->cmd);
+	free(tok);
+	tok = NULL;
+	if (tmp)
+		tmp->prev = tmp2;
+	if (tmp2)
+		tmp2->next = tmp;
+}
+
+t_tree	*case_nothing(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
+{
+	t_rock	*tmp;
 
 	tmp = begin->next;
 	del_token(begin);
@@ -402,7 +277,7 @@ int	ck_pr(int a, int b)
 	return (-1);
 }
 
-t_tree	*case_both_exit(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
+t_tree	*case_both_exit(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
 {
 	int	a;
 	int	g;
@@ -420,7 +295,7 @@ t_tree	*case_both_exit(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 	return (NULL);
 }
 
-t_tree	*cases(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
+t_tree	*cases(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
 {
 	if (!begin->prev && !tok->next)
 		return (case_nothing(begin, tok, b, tree));
@@ -433,11 +308,11 @@ t_tree	*cases(t_token *begin, t_token *tok, t_token *b, t_tree *tree)
 	return (NULL);
 }
 
-t_tree	*ast_parenthese(t_token *tok)
+t_tree	*ast_parenthese(t_rock *tok)
 {
 	t_var	var;
-	t_token	*begin;
-	t_token	*b;
+	t_rock	*begin;
+	t_rock	*b;
 	t_tree	*tree;
 
 	tree = init_tree();
@@ -466,7 +341,7 @@ t_tree	*ast_parenthese(t_token *tok)
 	if (var.i == -1)
 	{
 		tok = b;
-		return (ast_and_or(tok));
+		return (free(tree), ast_and_or(tok));
 	}
 	else if (var.i == 0)
 		return (cases(begin, tok, b, tree));
@@ -477,10 +352,7 @@ t_tree	*ast_tokenes(t_lexer *lex)
 {
 	t_tree	*root;
 	t_tree	*tmp;
-	t_var	*var;
 
-	init_var_2(&var);
-	root = ast_parenthese(lex->tokens);
-
+	root = ast_parenthese(lex->rock);
 	return (root);
 }

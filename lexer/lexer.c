@@ -5,242 +5,187 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/02 15:04:23 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 15:08:46 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/05/03 15:31:13 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/05/04 18:28:38 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-static void	put_operators_in_cmd(t_token *token)
+void	put_type_of_tokens(t_token *tmp)
 {
-	while (token)
-	{
-		if (token->type != -10)
-		{
-			if (!token->cmd)
-				token->cmd = malloc(sizeof(char *) * 5);
-			token->cmd[0] = token->data;
-			token->cmd[1] = NULL;
-		}
-		else if (token->type == -10)
-			token->type = CMD;
-		token = token->next;
-	}
-}
-
-void	del_token2(t_token *tok)
-{
-	t_token	*tmp;
-	t_token	*tmp2;
-
-	if (!tok)
-		return ;
-	tmp = tok->next;
-	tmp2 = tok->prev;
-	free(tok);
-	tok = NULL;
-	if (tmp)
-		tmp->prev = tmp2;
-	if (tmp2)
-		tmp2->next = tmp;
-}
-
-void	get_cmd(t_token **token)
-{
-	t_token	*tmp;
-	t_var	var;
-
-	if (!(*token)->next)
-		return ;
-	if ((*token)->next->type != CMD)
-		return ;
-	tmp = (*token)->next;
-	while ((*token) && (*token)->type != CMD)
-	{
-		*token = (*token)->prev;
-		if ((*token) && ((*token)->type == PIPE || (*token)->type \
-			== DPIPE || (*token)->type == D_AND))
-		{
-			(*token) = tmp;
-			return ;
-		}
-	}
-	if (!(*token))
-		return ;
-	var.i = 0;
-	var.j = 0;
-	while ((*token)->cmd[var.i])
-		var.i++;
-	while ((*token)->cmd[var.j])
-	{
-		(*token)->cmd[var.i] = tmp->cmd[var.j];
-		var.i++;
-		var.j++;
-		(*token)->cmd[var.i] = NULL;
-	}
-	del_token2(tmp);
-}
-
-void	case_of_arg_after_file(t_token *token)
-{
-	while (token)
-	{
-		if (token->type == FILE || token->type == LIMITER)
-		{
-			get_cmd(&token);
-			if (!token)
-				break ;
-		}
-		token = token->next;
-	}
-}
-
-void	fix(t_token **token)
-{
-	t_token	*tmp;
-	t_token	*tmp2;
-	t_token	*tmp3;
-	t_token	*tmp4;
-
-	tmp = (*token);
-	if (tmp->next)
-	{
-		if (tmp->next->type == CMD)
-		{
-			tmp2 = tmp->next;
-			while (tmp && !(tmp->type == PIPE || \
-				tmp->type == DPIPE || tmp->type == D_AND))
-			{
-				tmp3 = tmp;
-				tmp = tmp->prev;
-				if (!tmp || tmp->type == CMD)
-				{
-					if (!tmp)
-					{
-						tmp3->prev = tmp2;
-						(*token)->next = tmp2->next;
-						if (tmp2->next)
-							tmp2->next->prev = (*token);
-						tmp2->next = tmp3;
-						tmp2->prev = tmp;
-					}
-					return ;
-				}
-			}
-		}
-	}
-}
-
-void	case_cmd_after_file(t_token *token)
-{
-	get_head(&token);
-	while (token)
-	{
-		if (token->type == FILE || token->type == LIMITER)
-		{
-			fix(&token);
-			if (!token)
-				break ;
-		}
-		token = token->next;
-	}
-}
-
-void	get_tail(t_token **head)
-{
-	if (!(*head))
-		return ;
-	if (!(*head)->next)
-		return ;
-	while ((*head)->next)
-	{
-		if ((*head)->next->flag == 0)
-			break ;
-		(*head) = (*head)->next;
-	}
-}
-
-void	swap_token_char(t_token **a, t_token **b)
-{
-	char	*tmp;
-
-	if (!(*b) || !(*a))
-		return ;
-	if ((*a)->next)
-	{
-		if ((*a)->next->type == C_PARENTHIS)
-			return ;
-	}
-	tmp = (*a)->cmd[0];
-	(*a)->cmd[0] = (*b)->cmd[0];
-	(*b)->cmd[0] = tmp;
-}
-
-int	is_red2(int a)
-{
-	if (a == D_RED_OUT || a == RED_IN || a == RED_OUT)
-		return (1);
-	return (0);
-}
-
-
-void	handle_followed_red(t_token *token)
-{
-	t_token	*tmp;
-	t_token	*tmp2;
-
-	get_head(&token);
-	while (token)
-	{
-		if (token->type == FILE)
-		{
-			tmp = token;
-			token = token->next;
-			if (!token)
-				return ;
-			while (token->next && (token->next->type == FILE || is_red2(token->next->type)))
-				token = token->next;
-			if (token && token->type == FILE)
-				swap_token_char(&tmp, &token);
-		}
-		if (!token)
-			return ;
-		token = token->next;
-	}
-}
-
-void	lex_tokens(t_lexer *lex, char **env)
-{
-	t_token	*tmp;
-
-	tmp = lex->tokens;
 	while (tmp)
 	{
 		get_type(tmp);
 		tmp = tmp->next;
 	}
-	join_cmd_and_arg(lex);
-	put_operators_in_cmd(lex->tokens);
-	case_cmd_after_file(lex->tokens);
-	case_of_arg_after_file(lex->tokens);
-	handle_followed_red(lex->tokens); // handle ls >out>out2>ou3 || wc <<EOF <<EOF2 <<EOF3
-	// get_head(&lex->tokens);
-	// while (lex->tokens)
-	// {
-	// 	printf("%s\n", lex->tokens->cmd[0]);
-	// 	lex->tokens = lex->tokens->next;
-	// }
-	
-	// if (lex->tokens->prev)
-	// {
-	// 	printf("%s\n", lex->tokens->prev->cmd[0]);
-	// }
-	// while (lex->tokens->next)
-	// 	lex->tokens = lex->tokens->next;
-	// while (lex->tokens)
-	// {
-	// 	printf("%s\n", lex->tokens->cmd[0]);
-	// 	lex->tokens = lex->tokens->prev;
-	// }
+}
+
+void	put_type_of_rocks(t_rock *tmp)
+{
+	while (tmp)
+	{
+		get_type1(tmp);
+		tmp = tmp->next;
+	}
+}
+
+t_rock	*init_rock(void)
+{
+	t_rock	*rock;
+
+	rock = malloc(sizeof(t_rock));
+	if (!rock)
+		return (NULL);
+	rock->cmd = NULL;
+	rock->next = NULL;
+	rock->prev = NULL;
+	rock->flag = 1;
+	rock->type = -10;
+	return (rock);
+}
+
+void	join_cmd(t_rock *rock, t_token *token, t_var *var, int g)
+{
+	char	*str;
+
+	str = ft_strdup(token->data);
+	if (!rock->cmd)
+		rock->cmd = malloc(sizeof(char *) * g);
+	rock->cmd[var->i] = str;
+	var->i++;
+	rock->cmd[var->i] = NULL;
+	var->j = 1;
+}
+
+void	init_var_to_0(t_var *var)
+{
+	var->i = 0;
+	var->j = 0;
+}
+
+int	is_red2(int a)
+{
+	if (a == D_RED_OUT || a == RED_IN || a == RED_OUT || a == D_RED_IN)
+		return (1);
+	return (0);
+}
+
+int	is_stoper(int a)
+{
+	if (a == PIPE || a == DPIPE || a == D_AND || a == O_PARENTHIS || \
+		a == C_PARENTHIS)
+		return (1);
+	return (0);
+}
+
+int	num_of_arg(t_token *token)
+{
+	int	i;
+
+	i = 2;
+	while (token && !is_stoper(token->type))
+	{
+		token = token->next;
+		if (token && (!is_red2(token->type) || token->type != FILE || \
+			token->type != LIMITER))
+			i++;
+	}
+	return (i);
+}
+
+void	new_rock(t_rock **rock)
+{
+	t_rock	*tmp;
+
+	(*rock)->next = init_rock();
+	tmp = (*rock);
+	(*rock) = (*rock)->next;
+	(*rock)->prev = tmp;
+}
+
+void	put_the_op_in_cmd(t_rock *rock, t_token *token)
+{
+	char	*str;
+
+	str = ft_strdup(token->data);
+	if (!rock->cmd)
+		rock->cmd = malloc(sizeof(char *) * ft_strlen(token->data));
+	rock->cmd[0] = str;
+	rock->cmd[1] = NULL;
+}
+
+void	join_c(t_rock *rock, t_token **token, t_var *var)
+{
+	t_token	*tmp;
+
+	while ((*token) && (*token)->type == -10)
+	{
+		join_cmd(rock, *token, var, num_of_arg(*token));
+		(*token) = (*token)->next;
+	}
+}
+
+void	 join_arg_with_cmd(t_rock *rock, t_token *token)
+{
+	t_token	*tmp2;
+	t_var	var;
+
+	init_var_to_0(&var);
+	while (token)
+	{
+		if (token->type == -10)
+		{
+			join_c(rock, &token, &var);
+			if (!token)
+				return ;
+			new_rock(&rock);
+		}
+		if (token->type != -10)
+		{
+			init_var_to_0(&var);
+			put_the_op_in_cmd(rock, token);
+			if (token->next)
+				new_rock(&rock);
+		}
+		token = token->next;
+	}
+}
+
+void	get_head1(t_rock **head)
+{
+	if (!(*head))
+		return ;
+	if (!(*head)->prev)
+		return ;
+	while ((*head)->prev)
+		(*head) = (*head)->prev;
+}
+
+void	free_tokens(t_token *token)
+{
+	t_token	*tmp;
+
+	while (token)
+	{
+		tmp = token;
+		token = token->next;
+		free(tmp->data);
+		free(tmp);
+	}
+}
+
+t_rock	*lex_token(t_token *token)
+{
+	t_rock	*rock;
+
+	put_type_of_tokens(token);
+	rock = init_rock();
+	join_arg_with_cmd(rock, token);
+	free_tokens(token);
+	put_type_of_rocks(rock);
+	case_cmd_after_file(rock);
+	get_head1(&rock);
+	case_of_arg_after_file(rock);
+	return (rock);
 }

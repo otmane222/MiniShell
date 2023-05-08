@@ -15,6 +15,8 @@
 void	init_var(t_var **var)
 {
 	*var = malloc(sizeof(t_var));
+	if (!var)
+		return ;
 	(*var)->i = -1;
 	(*var)->j = 0;
 	(*var)->check = 1;
@@ -23,4 +25,5 @@ void	init_var(t_var **var)
 	(*var)->qoutes_flag = 0;
 	(*var)->start = 0;
 	(*var)->end = 0;
+	(*var)->flag = 0;
 }

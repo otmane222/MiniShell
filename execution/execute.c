@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/02 13:01:24 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/07 15:22:27 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -164,7 +164,7 @@ int	fd_to_here_doc(t_tree *root)
 
 int	check_root(t_tree *root)
 {
-	if (root->token->type == FILE && (!root->left && !root->right))
+	if ((root->token->type == FILE || (root->token->type == LIMITER)) && (!root->left && !root->right))
 		return (1);
 	return (0);
 }
@@ -284,6 +284,7 @@ int	execute_cmd(t_tree *root, int infile_fd, int outfile_fd, char **env)
 			cmd = check_path(paths, root->token->cmd[0]);
 			if (execve(cmd, root->token->cmd, NULL) == -1)
 				perror("command");
+			free_2dd(paths);
 			exit(1);
 		}
 		else

@@ -38,24 +38,39 @@ void	handle_chars(char *line, t_var *var, t_token **token, int *i)
 	store_data(line, var, token, i);
 	if (is_operator(line[var->i]))
 	{
+		if (!var->flag)
+			expand_tokens(*token);
 		next_node(token, line, i);
 		handle_seperators(line, var, token, i);
 	}
 	else if (is_white_space(line[var->i]))
 	{
+		if (!var->flag)
+			expand_tokens(*token);
 		next_node(token, line, i);
 		handle_spaces(line, var, token, i);
 	}
 	else if (is_qoutes(line[var->i]))
 	{
+		
 		if (line[var->i] == '\'')
 			handle_squotes(line, var, token, i);
 		else
+		{
+
 			handle_dquotes(line, var, token, i);
+		}
 	}
 	else if (is_parenthese(line[var->i]))
 	{
+		if (!var->flag)
+			expand_tokens(*token);
 		next_node(token, line, i);
 		handle_parenthese(line, var, token, i);
+	}
+	else
+	{
+		if (!var->flag)
+			expand_tokens(*token);
 	}
 }

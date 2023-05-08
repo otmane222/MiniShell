@@ -21,15 +21,18 @@ SRCS = minishell_utils.c \
 	tokenizer/handle_separators.c \
 	tokenizer/handle_parenthese.c \
 	lexer/lexer.c \
+	lexer/expand.c \
 	lexer/lexer_utils.c \
+	lexer/lexer_utils2.c \
 	tree/tree.c \
 	execution/execute.c \
 	get_next_line_bonus.c \
 	get_next_line_utils_bonus.c \
+	built_in_cmd/pwd.c \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS =   #-Wall -Wextra -Werror
+CFLAGS =  # -Wall -Wextra -Werror
 
 HEADER = minishell.h \
 	tokenizer/tokenizer.h \

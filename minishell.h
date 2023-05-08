@@ -81,42 +81,62 @@ typedef struct s_var
 	int		qoutes_flag;
 	int		start;
 	int		end;
+	int		flag;
 }	t_var;
 
 typedef struct s_token
 {
 	char			*data;
-	char			**cmd;
-	int				flag;
 	int				type;
 	struct s_token	*next;
 	struct s_token	*prev;
 }	t_token;
 
+typedef struct s_rock
+{
+	char			**cmd;
+	int				type;
+	int				flag;
+	struct s_rock	*next;
+	struct s_rock	*prev;
+}	t_rock;
+
 typedef struct s_lexer
 {
-	t_token	*tokens;
+	t_rock	*rock;
 	int		n_token;
 }	t_lexer;
 
 typedef struct s_tree
 {
-	t_token			*token;
+	t_rock			*token;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
 
-//	define functions
+char	**get_env(char **env);
+
 void	init_var(t_var **var);
 t_token	*init_token(size_t x);
-void	get_token(t_lexer *lex, char *line);
-char	**get_env(char **env);
-void	lex_tokens(t_lexer *lex, char **env);
-t_tree	*ast_tokenes(t_lexer *lex);
-int		is_red(int a);
-void	execute(t_tree *root, char **env);
-void	get_head(t_token **token);
+void	get_token(t_token *token, char *line);
+t_rock	*lex_token(t_token *token);
+// lexer
 
-void	del_token(t_token *tok);
+int		is_red(int a);
+int		is_white_space(char c);
+
+void	get_head1(t_rock **head);
+
+void	del_token(t_rock *tok);
+
+void	expand_tokens(t_token *token);
+
+void	get_head1(t_rock **head);
+
+void	free_2dd(char **str);
+
+t_tree	*ast_tokenes(t_lexer *lex);
+
+void	execute(t_tree *root, char **env);
 
 #endif

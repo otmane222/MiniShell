@@ -30,10 +30,7 @@ void	handle_seperators(char *line, t_var *var, t_token **token, int *i)
 {
 	store_data(line, var, token, i);
 	if (!line[var->i])
-	{
-		printf("Syntax Error!\n");
 		return ;
-	}
 	next_node(token, line, i);
 	if (is_operator(line[var->i]))
 		handle_seperators(line, var, token, i);

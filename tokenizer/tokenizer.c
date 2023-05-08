@@ -18,11 +18,10 @@ t_token	*init_token(size_t x)
 
 	token = malloc (sizeof(t_token));
 	if (!token)
-		exit (1);
+		return (NULL);
 	token->data = malloc(x + 1);
-	token->cmd = NULL;
 	token->next = NULL;
-	token->flag = 1;
+	// token->flag = 1;
 	token->type = -10;
 	token->prev = NULL;
 	return (token);
@@ -95,26 +94,16 @@ int	first_step(t_token **token, char *line, t_var *var)
 	return (1);
 }
 
-void	get_token(t_lexer *lex, char *line)
+void	get_token(t_token *token, char *line)
 {
 	t_var	*var;
-	t_token	*token;
 
 	init_var(&var);
-	token = init_token(ft_strlen(line) + 1);
-	token->data = malloc(ft_strlen(line) + 1);
-	lex->tokens = token;
-	lex->n_token = 0;
 	while (line[++var->i])
 	{
 		var->check = first_step(&token, line, var);
 		if (!line[var->i])
 			break ;
 	}
-	token = lex->tokens;
-	while (token)
-	{
-		lex->n_token++;
-		token = token->next;
-	}
+	free(var);
 }

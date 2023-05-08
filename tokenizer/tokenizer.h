@@ -15,7 +15,7 @@
 
 # include "../minishell.h"
 
-void	get_token(t_lexer *lex, char *line);
+void	get_token(t_token *token, char *line);
 t_token	*init_token(size_t x);
 int		first_step(t_token **token, char *line, t_var *var);
 
@@ -30,7 +30,6 @@ void	next_node(t_token **t, char *line, int *i);
 void	del_node(t_token *token);
 
 int		char_type(char c);
-int		is_white_space(char c);
 int		is_operator(char c);
 int		is_qoutes(char c);
 int		is_char(char c);

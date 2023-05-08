@@ -22,17 +22,18 @@ char	*ft_strtrim(char const *s1, char const *set)
 	if (!s1)
 		return (NULL);
 	if (!set)
-		return (ft_strdup(s1));
+		return (free((char *)s1), ft_strdup(s1));
 	j = ft_strlen((char *)s1) - 1;
 	while (ft_strchr(set, s1[i]) && s1[i])
 		i++;
 	while (ft_strchr(set, s1[j]) && j > 0)
 		j--;
 	if (i > j)
-		return (ft_strdup(""));
+		return (free((char *)s1), ft_strdup(""));
 	s = malloc(j - i + 2);
 	if (!s)
 		return (NULL);
 	ft_strlcpy(s, (char *)s1 + i, j - i + 2);
+	free((char *)s1);
 	return (s);
 }

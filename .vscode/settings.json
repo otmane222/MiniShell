@@ -2,6 +2,9 @@
 	"files.associations": {
 		"string.h": "c",
 		"minishell.h": "c",
-		"readline.h": "c"
+		"readline.h": "c",
+		"tokenizer.h": "c",
+		"lexer.h": "c",
+		"builtin.h": "c"
 	}
 }

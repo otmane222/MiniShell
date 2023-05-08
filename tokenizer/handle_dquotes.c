@@ -50,9 +50,15 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 	{
 		var->i++;
 		if (!line[var->i])
+		{
+			if (!var->flag)
+				expand_tokens(*token);
 			return ;
+		}
 		else if (is_white_space(line[var->i]) || is_operator(line[var->i]))
 		{
+			if (!var->flag)
+				expand_tokens(*token);
 			next_node(token, line, i);
 			if (is_operator(line[var->i]))
 				handle_seperators(line, var, token, i);
@@ -60,7 +66,15 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 				handle_spaces(line, var, token, i);
 		}
 		else if (char_type(line[var->i]) == D_GEN)
+		{
+			if (!var->flag)
+			{
+				expand_tokens(*token);
+				var->flag = 0;
+				*i = ft_strlen((*token)->data);
+			}
 			handle_chars(line, var, token, i);
+		}
 		else if (char_type(line[var->i]) == D_DQOUTE)
 			handle_dquotes(line, var, token, i);
 		else if (char_type(line[var->i]) == D_SQOUTE)

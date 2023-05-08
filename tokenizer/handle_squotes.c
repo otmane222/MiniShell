@@ -34,6 +34,7 @@ static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 {
+	var->flag = 1;
 	var->i++;
 	stor_data(token, line, var, "\'");
 	if (!line[var->i])
@@ -42,9 +43,15 @@ void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 	{
 		var->i++;
 		if (!line[var->i])
+		{
+			if (!var->flag)
+				expand_tokens(*token);
 			return ;
+		}
 		else if (is_white_space(line[var->i]) || is_operator(line[var->i]))
 		{
+			if (!var->flag)
+				expand_tokens(*token);
 			next_node(token, line, i);
 			if (is_operator(line[var->i]))
 				handle_seperators(line, var, token, i);
@@ -52,9 +59,15 @@ void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 				handle_spaces(line, var, token, i);
 		}
 		else if (char_type(line[var->i]) == D_GEN)
+		{
+			var->flag = 0;
 			handle_chars(line, var, token, i);
+		}
 		else if (char_type(line[var->i]) == D_DQOUTE)
+		{
+			var->flag = 0;
 			handle_dquotes(line, var, token, i);
+		}
 		else if (char_type(line[var->i]) == D_SQOUTE)
 			handle_squotes(line, var, token, i);
 		else if (is_parenthese(line[var->i]))

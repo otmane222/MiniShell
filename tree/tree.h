@@ -15,11 +15,11 @@
 
 # include "../minishell.h"
 
-t_tree	*ast_parenthese(t_token *tok);
-t_tree	*ast_parenthese(t_token *tok);
-t_tree	*ast_pipe(t_token *tok);
-t_tree	*ast_and_or(t_token *tok);
-t_tree	*case_file(t_token *tmp, t_tree *tree);
-t_tree	*ast_redirections(t_token *tok);
+t_tree	*ast_parenthese(t_rock *tok);
+t_tree	*ast_parenthese(t_rock *tok);
+t_tree	*ast_pipe(t_rock *tok);
+t_tree	*ast_and_or(t_rock *tok);
+t_tree	*case_file(t_rock *tmp, t_tree *tree);
+t_tree	*ast_redirections(t_rock *tok);
 
 #endif

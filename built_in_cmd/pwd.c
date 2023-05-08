@@ -1,31 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   lexer.h                                            :+:      :+:    :+:   */
+/*   pwd.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/03 15:31:39 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/08 14:35:13 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/05/07 14:47:38 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef LEXER_H
-# define LEXER_H
+#include "builtin.h"
 
-# include "../minishell.h"
+void	pwd(int outfile)
+{
+	char	*str;
+	char	*path;
 
-void	get_type(t_token *t);
-void	get_type_small_call(t_token *t);
-void	get_type1(t_rock *t);
-void	get_type_small_call1(t_rock *t);
-
-void	expand_tokens(t_token *token);
-
-void	case_cmd_after_file(t_rock *rock);
-void	case_of_arg_after_file(t_rock *rock);
-
-void	del_rock3(t_rock *rock);
-void	free_2dd(char **str);
-
-#endif
+	str = malloc(100);
+	path = getcwd(str, sizeof(str));
+	ft_putstr_fd(path, outfile);
+}
