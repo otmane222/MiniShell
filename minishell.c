@@ -48,25 +48,27 @@ static void	start_job(char **env)
 
 	lex = malloc(sizeof(t_lexer));
 	token = init_token(ft_strlen(line) + 1);
-	line = readline("\x1B[32mMinishell >  \x1B[0m");
+	line = readline("\x1B[34mMinishell >  \x1B[0m");
 	add_history(line);
 	if (line == NULL)
 		exit (0);
 	line = ft_strtrim(line, " ");
+	line = expand_line(line);
+	// printf("%s\n", line);
 	get_token(token, line);
-	while (token)
-	{
-		printf("%s\n", token->data);
-		token = token->next;
-	}
+	// while (token)
+	// {
+	// 	printf("%s\n", token->data);
+	// 	token = token->next;
+	// }
 	
-	// lex->rock = lex_token(token);
-	// get_head1(&lex->rock);
-	// root = ast_tokenes(lex);
-	// execute(root, env);
-	// free_rocks(lex);
-	// free_tree(root);
-	// free(line);
+	lex->rock = lex_token(token);
+	get_head1(&lex->rock);
+	root = ast_tokenes(lex);
+	execute(root, env);
+	free_rocks(lex);
+	free_tree(root);
+	free(line);
 	// exit(0);
 	// int	i = 0;
 	// while (lex->rock)

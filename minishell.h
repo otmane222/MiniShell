@@ -129,7 +129,7 @@ void	get_head1(t_rock **head);
 
 void	del_token(t_rock *tok);
 
-void	expand_tokens(t_token *token);
+char	*expand_line(char *line);
 
 void	get_head1(t_rock **head);
 

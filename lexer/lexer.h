@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:31:39 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/08 14:35:13 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/08 21:34:26 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ void	get_type_small_call(t_token *t);
 void	get_type1(t_rock *t);
 void	get_type_small_call1(t_rock *t);
 
-void	expand_tokens(t_token *token);
+void	expand_tokens(t_token *token, int *i, int k, t_var *var);
 
 void	case_cmd_after_file(t_rock *rock);
 void	case_of_arg_after_file(t_rock *rock);

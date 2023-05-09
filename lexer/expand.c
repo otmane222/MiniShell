@@ -6,107 +6,197 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/08 14:35:40 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/09 18:21:21 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
 
-char	*ft_strreplace(char *str, char *token, char *s, int index)
+static char	*ft_strreplace(char *str, char *token, char *s, int index)
 {
 	int		i;
 	int		j;
 	char	*ret;
 
 	ret = malloc (sizeof(char) * (ft_strlen(str) + \
-			(ft_strlen(token) - (ft_strlen(s)))));
+			(ft_strlen(token) - (ft_strlen(s)) + 1)));
+	i = 0;
+	j = 0;
+	while (token[i] && i < index - 1)
+		ret[j++] = token[i++];
 	i = -1;
-	while (token[++i] && token[i] != '$')
-		ret[i] = token[i];
-	j = -1;
-	while (str[++j])
-		ret[i++] = str[j];
-	j = index + ft_strlen(s) + 1;
-	while (token[j])
+	while (str[++i])
+		ret[j++] = str[i];
+	i = index + ft_strlen(s);
+	while (token[i])
 	{
-		ret[i++] = token[j];
-		j++;
+		ret[j++] = token[i++];
+		ret[j] = '\0';
 	}
-	ret[i] = '\0';
+	ret[j] = '\0';
 	free(token);
 	return (ret);
 }
 
-char	*get_env_var(char *s)
+static char	*ft_strreplace_non(char *token, char *s, int index)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	ret = malloc (sizeof(char) * ((ft_strlen(token) - (ft_strlen(s)) + 1)));
+	i = 0;
+	j = 0;
+	while (token[i] && i < index - 1)
+		ret[j++] = token[i++];
+	i = index + ft_strlen(s);
+	while (token[i])
+	{
+		ret[j++] = token[i++];
+		ret[j] = '\0';
+	}
+	ret[j] = '\0';
+	free(token);
+	return (ret);
+}
+
+// verified √
+static char	*get_env_var(char *s)
 {
 	char	*str;
 	int		i;
+	int		j;
 
 	i = 0;
+	j = 0;
 	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'))
 		i++;
-	str = malloc (sizeof(char) * i);
+	str = malloc (sizeof(char) * (i + 1));
+	if (!str)
+		return (NULL);
 	i = 0;
-	while (s[i] && (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'))
+	while (s[i] != '\0' && (ft_isalnum(s[i]) || s[i] == '_' || s[i] == '?'))
 	{
-		str[i] = s[i];
+		str[j] = s[i];
 		i++;
+		j++;
 	}
 	str[i] = '\0';
 	return (str);
 }
 
-int	expand_1(t_token *token, int i)
+char *expand_var_nq(char *line, int *start)
 {
 	int		j;
 	char	*str;
 	char	*s;
 
 	j = 0;
-	while (token->data[i])
+	while (line[(*start)] && line[(*start)] != '\'' && line[(*start)] != '\"')
 	{
-		if (token->data[i] == '$')
+		if (line[(*start)] && line[(*start)] == '$')
 		{
 			j++;
 			if (j == 2)
 				j = 0;
 		}
-		if (token->data[i] != '$' && j == 1)
+		if (line[(*start)] && line[(*start)] != '$' && j == 1)
 		{
-			s = get_env_var(&token->data[i]);
+			s = get_env_var(&line[(*start)]);
 			str = getenv(s);
 			if (str)
-				token->data = ft_strreplace(str, token->data, s, i - 1);
+			{
+				line = ft_strreplace(str, line, s, (*start));
+				(*start) = (*start) + ft_strlen(str) - 1;
+			}
 			else
 			{
-				free(token->data);
-				token->data = ft_strdup("\0");
+				line = ft_strreplace_non(line, s, (*start));
+				(*start) = (*start) - 1;
 			}
-			while (token->data[i] && token->data[i] != '$')
-				i++;
+			free(s);
+			while (line[(*start)] && line[(*start)] != '$' && \
+				line[(*start)] != '\'' && line[(*start)] != '\"')
+				(*start)++;
 		}
-		if (!token->data[i])
+		if (!line[(*start)] || line[(*start)] == '\'' || line[(*start)] == '\"')
+		{
+			if (line[(*start)] == '\'' || line[(*start)] == '\"')
+				(*start) = (*start) - 1;
 			break ;
-		i++;
+		}
+		(*start)++;
 	}
-	return (1);
+	return (line);
 }
 
-void	expand_tokens(t_token *token)
+char	*expand_var_dq(char *line, int *start)
+{
+	int		j;
+	char	*str;
+	char	*s;
+
+	j = 0;
+	(*start)++;
+	while (line[(*start)] && line[(*start)] != '\"')
+	{
+		if (line[(*start)] && line[(*start)] == '$')
+		{
+			j++;
+			if (j == 2)
+				j = 0;
+		}
+		if (line[(*start)] && line[(*start)] != '$' && j == 1)
+		{
+			s = get_env_var(&line[(*start)]);
+			str = getenv(s);
+			if (str)
+			{
+				line = ft_strreplace(str, line, s, (*start));
+				(*start) = (*start) + ft_strlen(str) - 1;
+			}
+			else
+			{
+				line = ft_strreplace_non(line, s, (*start));
+				(*start) = (*start) - 1;
+			}
+			free(s);
+			while (line[(*start)] && line[(*start)] != '$' \
+				&& line[(*start)] != '\"')
+				(*start)++;
+		}
+		if (!line[(*start)] || line[*start] == '\"')
+			break ;
+		(*start)++;
+	}
+	return (line);
+}
+
+char *expand_line(char *line)
 {
 	int		i;
+	int		flag;
 	int		j;
 
 	i = 0;
-	j = 0;
-	while (token->data[i])
+	flag = 0;
+	while (line[i])
 	{
-		if (token->data[i] == '$')
+		if (line[i] == '\'')
 		{
-			j = expand_1(token, i);
-			if (j)
-				break ;
+			i++;
+			while (line[i] && line[i] != '\'')
+				i++;
 		}
+		if (line[i] == '\"')
+		{
+			line = expand_var_dq(line, &i);
+		}
+		if (line[i] == '$')
+			line = expand_var_nq(line, &i);
+		if (!line[i])
+			break ;
 		i++;
 	}
+	return (line);
 }
