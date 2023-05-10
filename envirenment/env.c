@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:23:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/10 17:29:15 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:26:26 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,8 +154,6 @@ t_env	*put_env_to_new(char **env)
 	head = our_env;
 	while (*env)
 	{
-		if (!our_env)
-			our_env = init_env();
 		add_value(our_env, *env);
 		our_env->next = init_env();
 		tmp = our_env;

@@ -104,9 +104,9 @@ void	lk(void)
 
 int	main(int ac, char **av, char **env)
 {
-	// while (1)
-	// {
+	while (1)
+	{
 		start_job(env);
-	// }
+	}
 	return (0);
 }

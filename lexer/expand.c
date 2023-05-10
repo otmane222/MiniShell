@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/10 17:48:27 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/10 18:34:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,9 +115,10 @@ static char	*get_env_var(char *s)
 
 char	*ft_getenv(char *var, t_env *env)
 {
-	while (env)
+	while (env->next)
 	{
-		if (strcmp(env->key, var) == 0)
+		if (ft_strncmp(env->key, var, ft_strlen(env->key)) == 0 \
+			&& ft_strlen(env->key) == ft_strlen(var))
 			return (env->value);
 		env = env->next;
 	}
@@ -129,10 +130,13 @@ char *expand_var_nq(char *line, int *start, t_env *our_env)
 	int		j;
 	char	*str;
 	char	*s;
+	int		flag;
 
+	flag = 0;
 	j = 0;
 	while (line[(*start)] && line[(*start)] != '\'' && line[(*start)] != '\"')
 	{
+		flag = 0;
 		if (line[(*start)] && line[(*start)] == '$')
 		{
 			j++;
@@ -152,6 +156,7 @@ char *expand_var_nq(char *line, int *start, t_env *our_env)
 			{
 				line = ft_strreplace_non(line, s, (*start));
 				(*start) = (*start) - 1;
+				flag = 1;
 			}
 			free(s);
 			while (line[(*start)] && line[(*start)] != '$' && \
@@ -160,7 +165,7 @@ char *expand_var_nq(char *line, int *start, t_env *our_env)
 		}
 		if (!line[(*start)] || line[(*start)] == '\'' || line[(*start)] == '\"')
 		{
-			if (line[(*start)] == '\'' || line[(*start)] == '\"')
+			if (line[(*start)] == '\"' || flag)
 				(*start) = (*start) - 1;
 			break ;
 		}
@@ -196,6 +201,7 @@ char	*expand_var_dq(char *line, int *start, t_env *our_env)
 			}
 			else
 			{
+				
 				line = ft_strreplace_non(line, s, (*start));
 				(*start) = (*start) - 1;
 			}
