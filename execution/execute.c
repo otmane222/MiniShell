@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/07 15:22:27 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/10 21:13:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,7 @@ int	fd_to_out(t_tree *root)
 	root = root->right;
 	while (root->left)
 		root = root->left;
-	if (root->token->type == FILE)
+	if (root && root->token->type == FILE)
 	{
 		fd = open(root->token->cmd[0], O_RDWR | O_CREAT | O_TRUNC, 0655);
 		if (fd == -1)

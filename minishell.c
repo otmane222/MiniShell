@@ -56,7 +56,6 @@ static void	start_job(char **env)
 	line = expand_line(line, env);
 	printf("%s\n", line);
 	// get_token(token, line);
-
 	// lex->rock = lex_token(token);
 
 	// get_head1(&lex->rock);

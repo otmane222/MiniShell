@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/10 18:34:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/10 21:17:33 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -151,12 +151,12 @@ char *expand_var_nq(char *line, int *start, t_env *our_env)
 			{
 				line = ft_strreplace_no_q(str, line, s, (*start));
 				(*start) = (*start) + ft_strlen(str) - 1;
+				flag = 1;
 			}
 			else
 			{
 				line = ft_strreplace_non(line, s, (*start));
 				(*start) = (*start) - 1;
-				flag = 1;
 			}
 			free(s);
 			while (line[(*start)] && line[(*start)] != '$' && \
@@ -164,13 +164,11 @@ char *expand_var_nq(char *line, int *start, t_env *our_env)
 				(*start)++;
 		}
 		if (!line[(*start)] || line[(*start)] == '\'' || line[(*start)] == '\"')
-		{
-			if (line[(*start)] == '\"' || flag)
-				(*start) = (*start) - 1;
 			break ;
-		}
 		(*start)++;
 	}
+	if ((line[(*start)] == '\'' && !flag) || line[(*start)] == '\"')
+		(*start) = (*start) - 1;
 	return (line);
 }
 
@@ -201,7 +199,6 @@ char	*expand_var_dq(char *line, int *start, t_env *our_env)
 			}
 			else
 			{
-				
 				line = ft_strreplace_non(line, s, (*start));
 				(*start) = (*start) - 1;
 			}
@@ -241,7 +238,7 @@ char *expand_line(char *line, char **env)
 		}
 		if (line[i] == '$')
 			line = expand_var_nq(line, &i, our_env);
-		if (!line[i])
+		if (!line[i] && i != -1)
 			break ;
 		i++;
 	}
