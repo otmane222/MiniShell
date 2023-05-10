@@ -53,23 +53,31 @@ static void	start_job(char **env)
 	if (line == NULL)
 		exit (0);
 	line = ft_strtrim(line, " ");
-	line = expand_line(line);
-	// printf("%s\n", line);
-	get_token(token, line);
+	line = expand_line(line, env);
+	printf("%s\n", line);
+	// get_token(token, line);
+
+	// lex->rock = lex_token(token);
+
+	// get_head1(&lex->rock);
+
+	// root = ast_tokenes(lex);
+
+	// printf("%s\n", root->token->cmd[0]);
+	// printf("%s\n", root->right->token->cmd[0]);
+	// execute(root, env);
+
+	// free_rocks(lex);
+	// free_tree(root);
+	// free(line);
+
+	// exit(0);
 	// while (token)
 	// {
 	// 	printf("%s\n", token->data);
 	// 	token = token->next;
 	// }
 	
-	lex->rock = lex_token(token);
-	get_head1(&lex->rock);
-	root = ast_tokenes(lex);
-	execute(root, env);
-	free_rocks(lex);
-	free_tree(root);
-	free(line);
-	// exit(0);
 	// int	i = 0;
 	// while (lex->rock)
 	// {
@@ -96,28 +104,9 @@ void	lk(void)
 
 int	main(int ac, char **av, char **env)
 {
-	while (1)
-	{
-		// atexit(lk);
+	// while (1)
+	// {
 		start_job(env);
-	}
+	// }
 	return (0);
 }
-/*
-	printf("root->left %s\n", root->left->token->cmd[0]);
-	printf("root %s\n", root->token->cmd[0]);
-	printf("root->right->left %s\n", root->right->left->token->cmd[0]);
-	printf("root->right %s\n", root->right->token->cmd[0]);
-	printf("root->right->right %s\n", root->right->right->token->cmd[0]);
-*/
-/*
-	while (lex->tokens)
-	{
-		tmp = lex->tokens;
-		lex->tokens = lex->tokens->next;
-		free(tmp->data);
-		free(tmp);
-	}
-	free(lex);
-	free(line);
-*/

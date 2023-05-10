@@ -6,11 +6,39 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/09 18:21:21 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/10 17:48:27 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "lexer.h"
+
+static char	*ft_strreplace_no_q(char *str, char *token, char *s, int index)
+{
+	int		i;
+	int		j;
+	char	*ret;
+
+	ret = malloc (sizeof(char) * (ft_strlen(str) + \
+			(ft_strlen(token) - (ft_strlen(s)) + 3)));
+	i = 0;
+	j = 0;
+	while (token[i] && i < index - 1)
+		ret[j++] = token[i++];
+	ret[j++] = '\'';
+	i = -1;
+	while (str[++i])
+		ret[j++] = str[i];
+	ret[j++] = '\'';
+	i = index + ft_strlen(s);
+	while (token[i])
+	{
+		ret[j++] = token[i++];
+		ret[j] = '\0';
+	}
+	ret[j] = '\0';
+	free(token);
+	return (ret);
+}
 
 static char	*ft_strreplace(char *str, char *token, char *s, int index)
 {
@@ -85,7 +113,18 @@ static char	*get_env_var(char *s)
 	return (str);
 }
 
-char *expand_var_nq(char *line, int *start)
+char	*ft_getenv(char *var, t_env *env)
+{
+	while (env)
+	{
+		if (strcmp(env->key, var) == 0)
+			return (env->value);
+		env = env->next;
+	}
+	return (NULL);
+}
+
+char *expand_var_nq(char *line, int *start, t_env *our_env)
 {
 	int		j;
 	char	*str;
@@ -103,10 +142,10 @@ char *expand_var_nq(char *line, int *start)
 		if (line[(*start)] && line[(*start)] != '$' && j == 1)
 		{
 			s = get_env_var(&line[(*start)]);
-			str = getenv(s);
+			str = ft_getenv(s, our_env);
 			if (str)
 			{
-				line = ft_strreplace(str, line, s, (*start));
+				line = ft_strreplace_no_q(str, line, s, (*start));
 				(*start) = (*start) + ft_strlen(str) - 1;
 			}
 			else
@@ -130,7 +169,7 @@ char *expand_var_nq(char *line, int *start)
 	return (line);
 }
 
-char	*expand_var_dq(char *line, int *start)
+char	*expand_var_dq(char *line, int *start, t_env *our_env)
 {
 	int		j;
 	char	*str;
@@ -149,7 +188,7 @@ char	*expand_var_dq(char *line, int *start)
 		if (line[(*start)] && line[(*start)] != '$' && j == 1)
 		{
 			s = get_env_var(&line[(*start)]);
-			str = getenv(s);
+			str = ft_getenv(s, our_env);
 			if (str)
 			{
 				line = ft_strreplace(str, line, s, (*start));
@@ -172,14 +211,16 @@ char	*expand_var_dq(char *line, int *start)
 	return (line);
 }
 
-char *expand_line(char *line)
+char *expand_line(char *line, char **env)
 {
 	int		i;
 	int		flag;
 	int		j;
+	t_env	*our_env;
 
 	i = 0;
 	flag = 0;
+	our_env = put_env_to_new(env);
 	while (line[i])
 	{
 		if (line[i] == '\'')
@@ -190,10 +231,10 @@ char *expand_line(char *line)
 		}
 		if (line[i] == '\"')
 		{
-			line = expand_var_dq(line, &i);
+			line = expand_var_dq(line, &i, our_env);
 		}
 		if (line[i] == '$')
-			line = expand_var_nq(line, &i);
+			line = expand_var_nq(line, &i, our_env);
 		if (!line[i])
 			break ;
 		i++;

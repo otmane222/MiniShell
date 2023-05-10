@@ -48,7 +48,6 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 		return ;
 	else
 	{
-		
 		var->i++;
 		if (!line[var->i])
 		{
@@ -56,6 +55,7 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 		}
 		else if (is_white_space(line[var->i]) || is_operator(line[var->i]))
 		{
+			next_node(token, line, i);
 			if (is_operator(line[var->i]))
 				handle_seperators(line, var, token, i);
 			else

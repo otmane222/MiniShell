@@ -114,6 +114,16 @@ typedef struct s_tree
 	struct s_tree	*right;
 }	t_tree;
 
+typedef struct s_env
+{
+	char			*key;
+	char			*value;
+	struct s_env	*next;
+	struct s_env	*prev;
+}	t_env;
+
+t_env	*put_env_to_new(char **env);
+
 char	**get_env(char **env);
 
 void	init_var(t_var **var);
@@ -129,7 +139,7 @@ void	get_head1(t_rock **head);
 
 void	del_token(t_rock *tok);
 
-char	*expand_line(char *line);
+char	*expand_line(char *line, char **env);
 
 void	get_head1(t_rock **head);
 

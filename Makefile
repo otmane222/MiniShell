@@ -29,6 +29,7 @@ SRCS = minishell_utils.c \
 	get_next_line_bonus.c \
 	get_next_line_utils_bonus.c \
 	built_in_cmd/pwd.c \
+	envirenment/env.c \
 
 OBJS = $(SRCS:.c=.o)
 
