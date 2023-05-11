@@ -122,6 +122,12 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
+// typedef struct s_envinfo
+// {
+// 	t_env	*our_env;
+// 	char	**copy_env;
+// }	t_envinfo;
+
 t_env	*put_env_to_new(char **env);
 
 char	**get_env(char **env);
@@ -139,7 +145,7 @@ void	get_head1(t_rock **head);
 
 void	del_token(t_rock *tok);
 
-char	*expand_line(char *line, char **env);
+char	*expand_line(char *line, t_env *our_env);
 
 void	get_head1(t_rock **head);
 

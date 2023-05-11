@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/10 21:17:33 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/11 12:29:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,7 +115,7 @@ static char	*get_env_var(char *s)
 
 char	*ft_getenv(char *var, t_env *env)
 {
-	while (env->next)
+	while (env)
 	{
 		if (ft_strncmp(env->key, var, ft_strlen(env->key)) == 0 \
 			&& ft_strlen(env->key) == ft_strlen(var))
@@ -214,16 +214,14 @@ char	*expand_var_dq(char *line, int *start, t_env *our_env)
 	return (line);
 }
 
-char *expand_line(char *line, char **env)
+char *expand_line(char *line, t_env *our_env)
 {
 	int		i;
 	int		flag;
 	int		j;
-	t_env	*our_env;
 
 	i = 0;
 	flag = 0;
-	our_env = put_env_to_new(env);
 	while (line[i])
 	{
 		if (line[i] == '\'')

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:23:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/10 18:26:26 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/11 16:32:21 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ t_env	*ft_lstnew_env(char *value, char *key)
 		return (0);
 	(new)->value = value;
 	(new)->key = key;
-	(new)->next = 0;
+	(new)->next = NULL;
+	(new)->prev = NULL;
 	return (new);
 }
 
@@ -143,23 +144,66 @@ void	add_value(t_env *env, char *line)
 	env->value = get_value(line);
 }
 
-t_env	*put_env_to_new(char **env)
-{
-	t_env	*our_env;
-	t_env	*head;
-	t_env	*tmp;
-	t_env	*tmp2;
+// t_envinfo	*init_env_info(void)
+// {
+// 	t_envinfo	*envinfo;
 
-	our_env = init_env();
-	head = our_env;
+// 	envinfo = malloc(sizeof(t_envinfo));
+// 	if (!envinfo)
+// 		return (NULL);
+// 	envinfo->our_env = NULL;
+// 	envinfo->copy_env = NULL;
+// 	return (envinfo);
+// }
+
+static int	env_len(char **env)
+{
+	int	i;
+
+	i = 0;
 	while (*env)
 	{
-		add_value(our_env, *env);
-		our_env->next = init_env();
-		tmp = our_env;
-		our_env = our_env->next;
-		our_env->prev = tmp;
+		env++;
+		i++;
+	}
+	return (i);
+}
+
+char	**full_env_copy(char **env)
+{
+	char	**tmp;
+	char	**env_copy;
+	int		i;
+
+	i = env_len(env);
+	env_copy = malloc(sizeof(char *) * (i + 1));
+	if (!env_copy)
+		return (NULL);
+	i = 0;
+	while (*env)
+	{
+		printf("%s\n", *env);
+		env_copy[i] = ft_strdup(*env);
+		env++;
+		i++;
+	}
+	env_copy[i] = NULL;
+	return (env_copy);
+}
+
+t_env	*put_env_to_new(char **env)
+{
+	t_env		*our_env;
+
+	if (!env || !*env)
+		return (NULL);
+	our_env = ft_lstnew_env(get_value(*env), get_key(*env));
+	env++;
+	while (*env)
+	{
+		ft_lstadd_back_env(&our_env, ft_lstnew_env(get_value(*env), \
+				get_key(*env)));
 		env++;
 	}
-	return (head);
+	return (our_env);
 }

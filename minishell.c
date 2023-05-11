@@ -41,11 +41,13 @@ void	free_rocks(t_lexer *lex)
 
 static void	start_job(char **env)
 {
-	t_token	*token;
-	t_lexer	*lex;
-	t_tree	*root;
-	char	*line;
+	t_token		*token;
+	t_lexer		*lex;
+	t_tree		*root;
+	char		*line;
+	t_env		*our_env;
 
+	our_env = put_env_to_new(env);
 	lex = malloc(sizeof(t_lexer));
 	token = init_token(ft_strlen(line) + 1);
 	line = readline("\x1B[34mMinishell >  \x1B[0m");
@@ -53,12 +55,10 @@ static void	start_job(char **env)
 	if (line == NULL)
 		exit (0);
 	line = ft_strtrim(line, " ");
-	line = expand_line(line, env);
-	printf("%s\n", line);
-	// get_token(token, line);
-	// lex->rock = lex_token(token);
-
-	// get_head1(&lex->rock);
+	line = expand_line(line, our_env);
+	get_token(token, line);
+	lex->rock = lex_token(token);
+	get_head1(&lex->rock);
 
 	// root = ast_tokenes(lex);
 
@@ -77,15 +77,15 @@ static void	start_job(char **env)
 	// 	token = token->next;
 	// }
 	
-	// int	i = 0;
-	// while (lex->rock)
-	// {
-	// 	i = 0;
-	// 	while (lex->rock->cmd[i])
-	// 		printf("%s\t", lex->rock->cmd[i++]);
-	// 	printf("\n");
-	// 	lex->rock = lex->rock->next;
-	// }
+	int	i = 0;
+	while (lex->rock)
+	{
+		i = 0;
+		while (lex->rock->cmd[i])
+			printf("%s\t", lex->rock->cmd[i++]);
+		printf("\n");
+		lex->rock = lex->rock->next;
+	}
 }
 	// free(lex);
 
