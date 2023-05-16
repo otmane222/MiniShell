@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   env.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/10 15:23:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/11 16:32:21 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/16 17:45:50 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,8 +94,10 @@ char	*get_key(char *line)
 	char	*key;
 
 	i = 0;
-	while (line[i] && line[i] != '=')
+	while (line[i] && line[i] != ' ' && line[i] != '=')
 		i++;
+	if (line[i] == ' ')
+		return (printf("Error : syntax error !\n"), NULL);
 	key = malloc(i + 1);
 	if (!key)
 		return (NULL);
@@ -119,6 +121,8 @@ char	*get_value(char *line)
 	j = 0;
 	while (line[i] && line[i] != '=')
 		i++;
+	if (i == 0)
+		return (NULL);
 	i++;
 	j = i;
 	while (line[i])
