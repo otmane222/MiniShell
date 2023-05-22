@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:06 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 17:21:08 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/22 18:53:23 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,18 +34,13 @@ static int	parenthese_call(t_rock *rock, t_rock **begin, t_var *var)
 static t_tree	*cases(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree)
 {
 	if (!begin->prev && !tok->next)
-	{
 		return (case_nothing(begin, tok, tree));
-	}
 	else if (begin->prev && !tok->next)
-	{
 		return (case_no_next(begin, tok, b, tree));
-	}
 	else if (!begin->prev && tok->next)
 		return (case_no_perv(begin, tok, b, tree));
 	else if (begin->prev && tok->next)
 		return (case_both_exit(begin, tok, b, tree));
-	printf("hela\n");
 	return (NULL);
 }
 
@@ -70,10 +65,7 @@ t_tree	*ast_parenthese(t_rock *rock)
 		rock = rock->next;
 	}
 	if (var.i == -1)
-	{
-		rock = b;
-		return (free(tree), ast_and_or(rock));
-	}
+		return (free(tree), ast_and_or(b));
 	else if (var.i == 0)
 		return (cases(begin, rock, b, tree));
 	return (NULL);

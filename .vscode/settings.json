@@ -5,6 +5,7 @@
 		"readline.h": "c",
 		"tokenizer.h": "c",
 		"lexer.h": "c",
-		"builtin.h": "c"
+		"builtin.h": "c",
+		"libft.h": "c"
 	}
 }

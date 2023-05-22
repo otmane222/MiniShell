@@ -1,0 +1,2 @@
+((ls|wc)) | ( ls ) >out
+(ls && wc minishell) > lol && ls
