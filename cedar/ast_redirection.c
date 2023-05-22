@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 17:21:21 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:29:41 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,22 +21,37 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
 	return (tree);
 }
 
+t_rock	*get_tail(t_rock *rock)
+{
+	if (!rock)
+		return (NULL);
+	if (!rock->next)
+		return (rock);
+	while (rock->next && rock->next->flag)
+		rock = rock->next;
+	return (rock);
+}
+
 static t_tree	*case_file(t_rock *tmp, t_tree *tree)
 {
-	if (!tmp)
-		return (NULL);
-	if (tmp->next)
+	t_rock	*tmp2;
+	t_rock	*tmp3;
+
+	tmp3 = get_tail(tmp);
+	if (tmp->type == O_PARENTHIS)
 	{
-		if (tmp->next->flag && tmp->type == FILE)
-		{
-			tree->left = init_tree();
-			tree->left->token = tmp;
-			tree->token = tmp->next;
-			return (tree);
-		}
+		tmp2 = tmp->next;
+		del_token(tmp);
+		del_token(tmp3);
+		free(tree);
+		return (ast_and(tmp2));
 	}
-	tree->token = tmp;
-	return (tree);
+	else
+	{
+		tree->token = tmp;
+		tree->token->flag = 0;
+		return (tree);
+	}
 }
 
 int	is_red(int a)
@@ -46,30 +61,31 @@ int	is_red(int a)
 	return (0);
 }
 
-t_tree	*ast_redirections(t_rock *tok)
+t_tree	*ast_redirections(t_rock *rock)
 {
 	t_var	var;
 	t_rock	*tmp;
 	t_tree	*tree;
 
 	tree = init_tree();
-	get_head(&tok);
-	if (!tok)
+	get_head(&rock);
+	if (!rock)
 		return (NULL);
-	tmp = tok;
+	tmp = rock;
 	var.i = 0;
-	while (tok && tok->flag)
+	while (rock && rock->flag)
 	{
-		if (is_red(tok->type))
+		skip_parenthese(&rock);
+		if (is_red(rock->type))
 		{
 			var.i = 1;
 			break ;
 		}
-		tok = tok->next;
+		rock = rock->next;
 	}
 	if (var.i == 0)
 		return (case_file(tmp, tree));
 	else if (var.i)
-		return (fill_right_left(tree, tok));
+		return (fill_right_left(tree, rock));
 	return (NULL);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 16:15:03 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/22 20:45:29 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -109,5 +109,6 @@ t_rock	*lex_token(t_token **token);
 int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
 t_tree	*ast_tokenes(t_rock *rock);
+void	execute(t_tree *root, char **env);
 
 #endif

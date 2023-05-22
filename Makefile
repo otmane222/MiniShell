@@ -16,8 +16,10 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard tokenizer/*.c) \
 		$(wildcard expander/*.c) \
 		$(wildcard lexer/*.c) \
-		$(wildcard cedar/*.c) \
 		$(wildcard parser/*.c) \
+		$(wildcard cedar/*.c) \
+		$(wildcard execution/*.c) \
+		$(wildcard get_next_line/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
@@ -27,6 +29,9 @@ HEADER = minishell.h \
 	envirenment/env.h \
 	tokenizer/tokenizer.h \
 	expander/expand.h \
+	execution/execute.h \
+	parser/parser.h \
+	get_next_line/get_next_line.h \
 
 RM = rm -rf
 

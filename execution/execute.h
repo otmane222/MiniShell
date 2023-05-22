@@ -1,33 +1,21 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   tree.h                                             :+:      :+:    :+:   */
+/*   execute.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 22:14:52 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/05/22 20:47:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef TREE_H
-# define TREE_H
+#ifndef EXECUTE_H
+# define EXECUTE_H
 
 # include "../minishell.h"
 
-//ASTs
-t_tree	*ast_pipe(t_rock *tok);
-t_tree	*ast_and(t_rock *tok);
-t_tree	*ast_or(t_rock *tok);
-t_tree	*ast_parenthese(t_rock *rock);
-t_tree	*ast_redirections(t_rock *tok);
-
-void	skip_parenthese(t_rock **rock);
-
-t_tree	*init_tree(void);
-void	get_head(t_rock **head);
-void	init_var_2(t_var **var);
-void	del_token(t_rock *tok);
-int		is_red(int a);
+void	execute_pipe(t_tree *root, int infile_fd, int outfile_fd, char **env);
+char	*get_next_line(int fd);
 
 #endif

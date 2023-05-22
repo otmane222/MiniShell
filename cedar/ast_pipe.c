@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:13 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 17:21:15 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:23:49 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,28 +21,31 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
 	return (tree);
 }
 
-t_tree	*ast_pipe(t_rock *tok)
+t_tree	*ast_pipe(t_rock *rock)
 {
 	t_var	var;
 	t_rock	*tmp;
 	t_tree	*tree;
 
 	tree = init_tree();
-	get_head(&tok);
-	tmp = tok;
+	get_head(&rock);
+	tmp = rock;
 	var.i = 0;
-	while (tok && tok->flag)
+	while (rock && rock->flag)
 	{
-		if (tok->type == PIPE)
+		skip_parenthese(&rock);
+		if (rock->type == PIPE)
 		{
 			var.i = 1;
 			break ;
 		}
-		tok = tok->next;
+		rock = rock->next;
 	}
 	if (var.i == 0)
 		return (free(tree), ast_redirections(tmp));
 	else if (var.i)
-		return (fill_right_left(tree, tok));
+	{
+		return (fill_right_left(tree, rock));
+	}
 	return (NULL);
 }

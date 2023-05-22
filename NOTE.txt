@@ -1,2 +1,7 @@
 ((ls|wc)) | ( ls ) >out
 (ls && wc minishell) > lol && ls
+
+
+fix parser
+(ls)(wc)
+ls (sl) out

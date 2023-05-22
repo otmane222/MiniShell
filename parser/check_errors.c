@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 11:31:00 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 19:36:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/22 22:45:58 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,16 @@ int	func5(t_token *token)
 			return (printf("syntax error near unexpected token `('\n"), 0);
 		if (token->type == O_PARENTHIS && token->next \
 			&& (is_op(token->next->type) || token->next->type == C_PARENTHIS))
-			return (printf("syntax error near unexpected token1 `('\n"), 0);
+			return (printf("syntax error near unexpected token `('\n"), 0);
+		if (token->type == -10 && token->next && token->next->type \
+			== O_PARENTHIS)
+			return (printf("syntax error near unexpected token \n"), 0);
+		if (token->type == C_PARENTHIS && token->next && token->next->type \
+			== O_PARENTHIS)
+			return (printf("syntax error near unexpected token `('\n"), 0);
+		if (token->type == C_PARENTHIS && token->next && token->next->type \
+			== -10)
+			return (printf("syntax error near unexpected token `('\n"), 0);
 		token = token->next;
 	}
 	return (1);
