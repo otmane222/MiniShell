@@ -15,14 +15,18 @@
 static void	store_data(char *line, t_var *var, t_token **token, int *i)
 {
 	int	k;
+	int	j;
 
 	k = var->i;
-	while (line[var->i] && char_type(line[var->i]) == char_type(line[k]))
+	j = 0;
+	while (line[var->i] && char_type(line[var->i]) == char_type(line[k]) \
+		&& j < 2)
 	{
 		(*token)->data[*i] = line[var->i];
 		*i = *i + 1;
 		(*token)->data[*i] = '\0';
 		var->i++;
+		j++;
 	}
 }
 
@@ -48,4 +52,3 @@ void	handle_seperators(char *line, t_var *var, t_token **token, int *i)
 	else if (is_parenthese(line[var->i]))
 		handle_parenthese(line, var, token, i);
 }
-

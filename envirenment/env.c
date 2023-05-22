@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:41:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/17 14:50:32 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/22 14:34:51 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,11 +31,10 @@ char	*get_value(char *line)
 	value = malloc(i - j + 1);
 	if (!value)
 		return (NULL);
-	i = j;
-	j = 0;
-	while (line[i])
-		value[j++] = line[i++];
-	value[j] = '\0';
+	i = 0;
+	while (line[j])
+		value[i++] = line[j++];
+	value[i] = '\0';
 	return (value);
 }
 

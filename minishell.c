@@ -6,37 +6,66 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:35:42 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/17 22:44:28 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/22 15:10:33 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-static void	start_job(char **env)
+void	print_tree(t_tree *tree)
 {
-	t_env	*our_env;
-	t_token	*token;
-	char	*line;
-	t_rock	*rock;
+	int			i;
+	static int	j = 0;
 
-	our_env = NULL;
-	if (!our_env)
-		our_env = put_env_to_new(env);
+	i = 0;
+	if (!tree)
+		return ;
+	while (tree->token->cmd[i])
+	{
+		printf("%s	", tree->token->cmd[i]);
+		i++;
+	}
+	printf("\n-----%d------\n", j++);
+	print_tree(tree->left);
+	print_tree(tree->right);
+}
+
+void	free_rock(t_rock **rock)
+{
+	t_rock	*tmp;
+
+	while ((*rock))
+	{
+		tmp = (*rock);
+		(*rock) = (*rock)->next;
+		free_2dd(tmp->cmd);
+		free(tmp);
+		tmp = NULL;
+	}
+}
+
+static void	start_job(t_env **our_env)
+{
+	t_token	*token;
+	t_rock	*rock;
+	// t_tree	*tree;
+	char	*line;
+
 	line = readline("\x1B[34mMinishell >  \x1B[0m");
 	if (line == NULL)
 		exit (0);
 	line = ft_strtrim(line, " \t\r\v\f");
 	add_history(line);
-	line = expand_line(line, our_env);
+	line = expand_line(line, *our_env);
 	token = init_token(ft_strlen(line) + 1);
-	get_token(token, line);
+	if (!get_token(&token, line))
+		return (free(line));
 	free(line);
-	rock = lex_token(token);
-	while (rock)
-	{
-		printf("%s -> %d\n", rock->cmd[0], rock->type);
-		rock = rock->next;
-	}
+	rock = lex_token(&token);
+	free_rock(&rock);
+	
+	// tree = ast_tokenes(rock);
+	// print_tree(tree);
 }
 
 void	lk(void)
@@ -44,14 +73,33 @@ void	lk(void)
 	system("leaks minishell");
 }
 
+void	free_env(t_env **our_env)
+{
+	t_env	*tmp;
+
+	while ((*our_env))
+	{
+		tmp = (*our_env);
+		(*our_env) = (*our_env)->next;
+		free(tmp->value);
+		free(tmp->key);
+		free(tmp);
+		tmp = NULL;
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
-	// atexit(lk);
+	t_env	*our_env;
+
+	atexit(lk);
+	our_env = put_env_to_new(env);
 	while (1)
 	{
 		(void)ac;
 		(void)av;
-		start_job(env);
+		start_job(&our_env);
 	}
+	free_env(&our_env);
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/17 22:38:46 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/22 16:15:03 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@
 enum	e_token
 {
 	D_PIPE = '|',
+	DD_AND = '&',
 	D_BIGGER = '>',
 	D_SMALLER = '<',
 	D_DQOUTE = '\"',
@@ -102,7 +103,11 @@ typedef struct s_env
 t_env	*put_env_to_new(char **env);
 t_token	*init_token(size_t x);
 char	*expand_line(char *line, t_env *our_env);
-void	get_token(t_token *token, char *line);
-t_rock	*lex_token(t_token *token);
+int		get_token(t_token **token, char *line);
+
+t_rock	*lex_token(t_token **token);
+int		check_errors(t_token *token);
+void	free_tokens(t_token **token);
+t_tree	*ast_tokenes(t_rock *rock);
 
 #endif

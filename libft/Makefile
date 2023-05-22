@@ -46,6 +46,7 @@ SRCS =	ft_isalpha.c \
 	ft_putstr_fd.c \
 	ft_putendl_fd.c \
 	ft_putnbr_fd.c \
+	ft_free_2d_arr.c
 
 B_SRCS = ft_lstnew.c \
 	ft_lstadd_front.c \
@@ -61,7 +62,7 @@ OBJS = $(SRCS:.c=.o)
 
 B_OBJS = $(B_SRCS:.c=.o)
 
-CFLAGS = #-Wall -Werror -Wextra
+CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
 
 HEADER = libft.h
 

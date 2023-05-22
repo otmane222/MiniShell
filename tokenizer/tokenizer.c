@@ -12,21 +12,6 @@
 
 #include "tokenizer.h"
 
-t_token	*init_token(size_t x)
-{
-	t_token	*token;
-
-	token = malloc (sizeof(t_token));
-	if (!token)
-		return (NULL);
-	token->data = malloc(x + 1);
-	token->next = NULL;
-	token->flag = 1;
-	token->type = -10;
-	token->prev = NULL;
-	return (token);
-}
-
 int	char_type(char c)
 {
 	if (c == '|')
@@ -93,16 +78,22 @@ int	first_step(t_token **token, char *line, t_var *var)
 	return (1);
 }
 
-void	get_token(t_token *token, char *line)
+int	get_token(t_token **token, char *line)
 {
 	t_var	*var;
 
 	init_var(&var);
 	while (line[++var->i])
 	{
-		var->check = first_step(&token, line, var);
+		var->check = first_step(token, line, var);
+		if (!*token)
+			return (free(var), get_head_token(token), 0);
 		if (!line[var->i])
 			break ;
 	}
+	get_head_token(token);
+	if (!check_errors(*token))
+		return (free(var), free_tokens(token), 0);
 	free(var);
+	return (1);
 }

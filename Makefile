@@ -6,7 +6,7 @@
 #    By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/17 14:33:03 by nakebli           #+#    #+#              #
-#    Updated: 2023/05/17 22:37:05 by nakebli          ###   ########.fr        #
+#    Updated: 2023/05/22 14:29:15 by nakebli          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,10 +16,12 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard tokenizer/*.c) \
 		$(wildcard expander/*.c) \
 		$(wildcard lexer/*.c) \
+		$(wildcard cedar/*.c) \
+		$(wildcard parser/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
 
 HEADER = minishell.h \
 	envirenment/env.h \
@@ -37,7 +39,7 @@ all: $(NAME) $(OBJS) $(HEADER)
 
 $(NAME): $(OBJS) minishell.o $(HEADER)
 	make bonus -C libft
-	@gcc minishell.c -I/path/to/readline/include -lreadline -o $(NAME) $(OBJS) libft/libft.a
+	@gcc  minishell.c -I/path/to/readline/include -lreadline -o $(NAME) $(OBJS) libft/libft.a
 
 clean:
 	$(RM) $(OBJS) minishell.o
