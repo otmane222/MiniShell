@@ -37,7 +37,36 @@ static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 		var->i++;
 	}
 	if (!line[var->i])
-		printf("Error!\n");
+	{
+		get_head_token(t);
+		free_tokens(t);
+		printf("syntax error\n");
+		return ;
+	}
+	(*t)->flag = 0;
+}
+
+static void	check_after(t_token **token, char *line, t_var *var, int *i)
+{
+	if (is_white_space(line[var->i]) || is_operator(line[var->i]))
+	{
+		next_node(token, line, i);
+		if (is_operator(line[var->i]))
+			handle_seperators(line, var, token, i);
+		else
+			handle_spaces(line, var, token, i);
+	}
+	else if (char_type(line[var->i]) == D_GEN)
+		handle_chars(line, var, token, i);
+	else if (char_type(line[var->i]) == D_DQOUTE)
+		handle_dquotes(line, var, token, i);
+	else if (char_type(line[var->i]) == D_SQOUTE)
+		handle_squotes(line, var, token, i);
+	else if (is_parenthese(line[var->i]))
+	{
+		next_node(token, line, i);
+		handle_parenthese(line, var, token, i);
+	}
 }
 
 void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
@@ -50,27 +79,8 @@ void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 	{
 		var->i++;
 		if (!line[var->i])
-		{
 			return ;
-		}
-		else if (is_white_space(line[var->i]) || is_operator(line[var->i]))
-		{
-			next_node(token, line, i);
-			if (is_operator(line[var->i]))
-				handle_seperators(line, var, token, i);
-			else
-				handle_spaces(line, var, token, i);
-		}
-		else if (char_type(line[var->i]) == D_GEN)
-			handle_chars(line, var, token, i);
-		else if (char_type(line[var->i]) == D_DQOUTE)
-			handle_dquotes(line, var, token, i);
-		else if (char_type(line[var->i]) == D_SQOUTE)
-			handle_squotes(line, var, token, i);
-		else if (is_parenthese(line[var->i]))
-		{
-			next_node(token, line, i);
-			handle_parenthese(line, var, token, i);
-		}
+		else
+			check_after(token, line, var, i);
 	}
 }

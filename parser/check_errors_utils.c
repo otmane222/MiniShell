@@ -1,25 +1,22 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   check_errors_utils.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/17 14:55:59 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/22 15:44:45 by nakebli           #+#    #+#             */
+/*   Updated: 2023/05/22 16:13:58 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "parser.h"
 
-# include "../minishell.h"
-# include "../envirenment/env.h"
-
-void	pwd(int outfile);
-void	ft_export(t_rock **rock, t_env **env);
-void	ft_unset(t_rock **rock, t_env **env);
-void	builtin_cmds(t_rock **rock, t_env **env);
-void	ft_env(t_rock **rock, t_env **env);
-
-#endif
+int	is_op(int a)
+{
+	if (a == RED_IN || a == RED_OUT || a == D_RED_IN || \
+		a == D_RED_OUT || a == PIPE || a == DPIPE \
+		|| a == D_AND)
+		return (1);
+	return (0);
+}

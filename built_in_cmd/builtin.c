@@ -1,25 +1,23 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   builtin.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/17 14:55:59 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/15 15:33:28 by nakebli           #+#    #+#             */
+/*   Updated: 2023/05/17 14:16:45 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "builtin.h"
 
-# include "../minishell.h"
-# include "../envirenment/env.h"
-
-void	pwd(int outfile);
-void	ft_export(t_rock **rock, t_env **env);
-void	ft_unset(t_rock **rock, t_env **env);
-void	builtin_cmds(t_rock **rock, t_env **env);
-void	ft_env(t_rock **rock, t_env **env);
-
-#endif
+void	builtin_cmds(t_rock **rock, t_env **env)
+{
+	if (ft_strncmp((*rock)->cmd[0], "export", 7) == 0)
+		ft_export(rock, env);
+	if (ft_strncmp((*rock)->cmd[0], "unset", 6) == 0)
+		ft_unset(rock, env);
+	if (ft_strncmp((*rock)->cmd[0], "env", 4) == 0)
+		ft_env(rock, env);
+}

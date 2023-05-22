@@ -12,6 +12,45 @@
 
 #include "tokenizer.h"
 
+void	get_head_token(t_token **token)
+{
+	if (!(*token) || !(*token)->prev)
+		return ;
+	while ((*token)->prev)
+		*token = (*token)->prev;
+}
+
+t_token	*init_token(size_t x)
+{
+	t_token	*token;
+
+	token = malloc (sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->data = malloc(x + 1);
+	token->next = NULL;
+	token->flag = 1;
+	token->type = -10;
+	token->prev = NULL;
+	return (token);
+}
+
+void	init_var(t_var **var)
+{
+	*var = malloc(sizeof(t_var));
+	if (!var)
+		return ;
+	(*var)->i = -1;
+	(*var)->j = 0;
+	(*var)->check = 1;
+	(*var)->status = 0;
+	(*var)->counter = 0;
+	(*var)->qoutes_flag = 0;
+	(*var)->start = 0;
+	(*var)->end = 0;
+	(*var)->flag = 0;
+}
+
 void	handle_spaces(char *line, t_var *var, t_token **token, int *i)
 {
 	while (is_white_space(line[var->i]))

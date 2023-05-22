@@ -1,25 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   builtin.h                                          :+:      :+:    :+:   */
+/*   ft_free_2d_arr.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/17 14:55:59 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/21 18:48:33 by nakebli           #+#    #+#             */
+/*   Updated: 2023/05/21 18:50:19 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef BUILTIN_H
-# define BUILTIN_H
+#include "libft.h"
 
-# include "../minishell.h"
-# include "../envirenment/env.h"
+void	free_2dd(char **str)
+{
+	int	i;
 
-void	pwd(int outfile);
-void	ft_export(t_rock **rock, t_env **env);
-void	ft_unset(t_rock **rock, t_env **env);
-void	builtin_cmds(t_rock **rock, t_env **env);
-void	ft_env(t_rock **rock, t_env **env);
-
-#endif
+	i = 0;
+	while (str[i])
+	{
+		free (str[i]);
+		i++;
+	}
+	free (str);
+}

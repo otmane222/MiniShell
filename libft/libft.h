@@ -15,6 +15,8 @@
 
 # include <unistd.h>
 # include <stdlib.h>
+//additional functions
+void	free_2dd(char **str);
 //first part
 int		ft_isalpha(int arg);
 int		ft_isdigit(int arg);

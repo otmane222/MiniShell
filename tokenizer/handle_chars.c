@@ -58,9 +58,4 @@ void	handle_chars(char *line, t_var *var, t_token **token, int *i)
 		next_node(token, line, i);
 		handle_parenthese(line, var, token, i);
 	}
-	// else
-	// {
-	// 	expand_tokens(*token, i, )
-	// 	return ;
-	// }
 }
