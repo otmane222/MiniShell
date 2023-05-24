@@ -6,6 +6,7 @@
 		"tokenizer.h": "c",
 		"lexer.h": "c",
 		"builtin.h": "c",
-		"libft.h": "c"
+		"libft.h": "c",
+		"sstream": "c"
 	}
 }

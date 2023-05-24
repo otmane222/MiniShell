@@ -19,6 +19,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard parser/*.c) \
 		$(wildcard cedar/*.c) \
 		$(wildcard execution/*.c) \
+		$(wildcard built_in_cmd/*.c) \
 		$(wildcard get_next_line/*.c) \
 
 OBJS = $(SRCS:.c=.o)
@@ -31,16 +32,25 @@ HEADER = minishell.h \
 	expander/expand.h \
 	execution/execute.h \
 	parser/parser.h \
+	built_in_cmd/builtin.h\
 	get_next_line/get_next_line.h \
 
 RM = rm -rf
 
 all: $(NAME) $(OBJS) $(HEADER)
-	@printf "\033[0;32mDONE ✅\033[0;0m\n"
+	@printf " \033[1;38m   ▄▄▄▄███▄▄▄▄    ▄█  ███▄▄▄▄    ▄█     ▄████████    ▄█    █▄       ▄████████  ▄█        ▄█       \033[0m\n"
+	@printf " \033[1;37m ▄██▀▀▀███▀▀▀██▄ ███  ███▀▀▀██▄ ███    ███    ███   ███    ███     ███    ███ ███       ███       \033[0m\n"
+	@printf " \033[1;38m ███   ███   ███ ███▌ ███   ███ ███▌   ███    █▀    ███    ███     ███    █▀  ███       ███       \033[0m\n"
+	@printf " \033[1;37m ███   ███   ███ ███▌ ███   ███ ███▌   ███         ▄███▄▄▄▄███▄▄  ▄███▄▄▄     ███       ███       \033[0m\n"
+	@printf " \033[1;38m ███   ███   ███ ███▌ ███   ███ ███▌ ▀███████████ ▀▀███▀▀▀▀███▀  ▀▀███▀▀▀     ███       ███       \033[0m\n"
+	@printf " \033[1;37m ███   ███   ███ ███  ███   ███ ███           ███   ███    ███     ███    █▄  ███       ███       \033[0m\n"
+	@printf " \033[1;38m ███   ███   ███ ███  ███   ███ ███     ▄█    ███   ███    ███     ███    ███ ███▌    ▄ ███▌    ▄ \033[0m\n"
+	@printf " \033[1;37m  ▀█   ███   █▀  █▀    ▀█   █▀  █▀    ▄████████▀    ███    █▀      ██████████ █████▄▄██ █████▄▄██ \033[0m\n"
+	@printf " \033[1;32m                          MINISHELL is built successfully!\033               \033[1;38m 		       \033[0m         \033[0m\n"
 
 %.o: %.c $(HEADER) libft/libft.h
 	@gcc -c $(CFLAGS) $<  -o $@ 
-	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m\r" ${notdir $@}
+	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m \r" ${notdir $@}
 
 $(NAME): $(OBJS) minishell.o $(HEADER)
 	make bonus -C libft

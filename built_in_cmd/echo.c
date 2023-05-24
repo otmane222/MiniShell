@@ -1,30 +1,43 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.c                                              :+:      :+:    :+:   */
+/*   echo.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 14:11:02 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/23 22:28:07 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/05/14 13:34:33 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/05/23 22:06:11 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-void	ft_env(t_rock **rock, t_env **env, int outfile)
+static void	help_cal(char *arg, int *flag, int *i)
 {
-	t_env	*tmp;
-
-	tmp = *env;
-	if (!(*rock) || (*rock)->cmd[1])
-		return ;
-	while (tmp)
+	if (ft_strncmp(arg, "-n", 3) == 0 && \
+	ft_strlen(arg) == 2)
 	{
-		ft_putstr_fd(tmp->key, outfile);
-		ft_putchar_fd('=', outfile);
-		ft_putstr_fd(tmp->value, outfile);
-		ft_putchar_fd('\n', outfile);
-		tmp = tmp->next;
+		(*i) = 2;
+		*flag = 1;
+	}
+}
+
+void	ft_echo(int outfile, char **arg)
+{
+	int		i;
+	int		flag;
+
+	flag = 0;
+	i = 1;
+	if (arg[i])
+		help_cal(arg[i], &flag, &i);
+	while (arg[i])
+	{
+		ft_putstr_fd(arg[i], outfile);
+		if (arg[i + 1])
+			ft_putchar_fd(' ', outfile);
+		if (!arg[i + 1] && !flag)
+			write (outfile, "\n", 2);
+		i++;
 	}
 }

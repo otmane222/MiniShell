@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 21:21:41 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/24 18:50:36 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ t_tree	*init_tree(void)
 	tree = malloc(sizeof(t_tree));
 	if (!tree)
 		return (NULL);
+	tree->red = NULL;
 	tree->left = NULL;
 	tree->right = NULL;
 	tree->token = NULL;

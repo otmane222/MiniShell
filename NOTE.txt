@@ -1,7 +1,3 @@
 ((ls|wc)) | ( ls ) >out
 (ls && wc minishell) > lol && ls
-
-
-fix parser
-(ls)(wc)
-ls (sl) out
+(echo 1) && (echo 2) || (echo 3) 

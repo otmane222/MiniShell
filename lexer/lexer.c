@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 14:58:14 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/24 19:05:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ t_rock	*init_rock(void)
 	rock->next = NULL;
 	rock->prev = NULL;
 	rock->flag = 1;
+	rock->flag2 = 0;
 	rock->type = -10;
 	return (rock);
 }
@@ -51,6 +52,20 @@ void	get_head1(t_rock **head)
 		(*head) = (*head)->prev;
 }
 
+void	swap_token_char(t_rock **a, t_rock **b)
+{
+	char	*tmp;
+
+	if (!(*b) || !(*a))
+		return ;
+	if ((*a)->next)
+		if ((*a)->next->type == C_PARENTHIS)
+			return ;
+	tmp = (*a)->cmd[0];
+	(*a)->cmd[0] = (*b)->cmd[0];
+	(*b)->cmd[0] = tmp;
+}
+
 t_rock	*lex_token(t_token **token)
 {
 	t_rock	*rock;
@@ -61,5 +76,6 @@ t_rock	*lex_token(t_token **token)
 	join_arg_with_cmd(rock, *token);
 	free_tokens(token);
 	case_cmd_after_file(rock);
+	// handle_followed_red(rock);
 	return (rock);
 }

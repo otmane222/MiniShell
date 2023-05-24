@@ -3,14 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   builtin.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-<<<<<<< HEAD
-/*   Updated: 2023/05/17 14:55:59 by nakebli          ###   ########.fr       */
-=======
-/*   Updated: 2023/05/16 18:37:07 by nakebli          ###   ########.fr       */
->>>>>>> 5b403648007d759a46feb40e78a8dc3ec22f6161
+/*   Updated: 2023/05/24 11:30:33 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,13 +16,14 @@
 # include "../minishell.h"
 # include "../envirenment/env.h"
 
-void	pwd(int outfile);
+void	ft_env(t_rock **rock, t_env **env, int outfile);
+void	ft_lstdelone_env1(t_env **env, t_env **head);
+void	builtin_cmds(t_rock **rock, t_env **env);
 void	ft_export(t_rock **rock, t_env **env);
 void	ft_unset(t_rock **rock, t_env **env);
-void	builtin_cmds(t_rock **rock, t_env **env);
-<<<<<<< HEAD
-void	ft_env(t_rock **rock, t_env **env);
-=======
->>>>>>> 5b403648007d759a46feb40e78a8dc3ec22f6161
+void	ft_echo(int outfile, char **arg);
+int		ft_exit(t_tree *root);
+int		ft_cd(char *path);
+void	ft_pwd(int outfile);
 
 #endif

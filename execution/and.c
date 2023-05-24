@@ -1,22 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pwd.c                                              :+:      :+:    :+:   */
+/*   and.c                                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/23 22:09:01 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/05/23 19:18:18 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/05/23 19:19:31 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "builtin.h"
+#include "execute.h"
 
-void	ft_pwd(int outfile)
+int	handle_and(t_tree *root, t_data *data, t_env **env)
 {
-	char	*path;
-
-	path = getcwd(NULL, 0);
-	ft_putstr_fd(path, outfile);
-	write(outfile, "\n", 1);
+	data->status = execute_cmd(root->left, data->infile_fd, \
+		data->outfile_fd, env);
+	if (data->status == 1)
+		return (1);
+	data->status = execute_cmd(root->right, data->infile_fd, \
+		data->outfile_fd, env);
+	if (data->status == 1)
+		return (1);
+	return (0);
 }

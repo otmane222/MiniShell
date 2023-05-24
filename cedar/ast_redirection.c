@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 22:29:41 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:41:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,9 +15,14 @@
 static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
 {
 	rock->flag = 0;
-	tree->token = rock;
+	tree->red = malloc(sizeof(t_red));
+	if (!tree->red)
+		return (NULL);
+	tree->red->token = NULL;
+	tree->red->right = NULL;
+	tree->red->token = rock;
 	tree->left = ast_redirections(rock->prev);
-	tree->right = ast_redirections(rock->next);
+	tree->red->right = ast_redirections(rock->next);
 	return (tree);
 }
 
@@ -41,6 +46,7 @@ static t_tree	*case_file(t_rock *tmp, t_tree *tree)
 	if (tmp->type == O_PARENTHIS)
 	{
 		tmp2 = tmp->next;
+		tmp2->flag2 = 1;
 		del_token(tmp);
 		del_token(tmp3);
 		free(tree);

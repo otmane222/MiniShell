@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 20:45:29 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/24 15:38:02 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,16 +81,25 @@ typedef struct s_rock
 	char			**cmd;
 	int				type;
 	int				flag;
+	int				flag2;
 	struct s_rock	*next;
 	struct s_rock	*prev;
 }	t_rock;
 
+typedef struct s_red
+{
+	t_rock			*token;
+	struct s_tree	*right;
+}	t_red;
+
 typedef struct s_tree
 {
 	t_rock			*token;
+	t_red			*red;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
+
 
 typedef struct s_env
 {
@@ -109,6 +118,6 @@ t_rock	*lex_token(t_token **token);
 int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
 t_tree	*ast_tokenes(t_rock *rock);
-void	execute(t_tree *root, char **env);
+void	execute(t_tree *root, t_env **env);
 
 #endif
