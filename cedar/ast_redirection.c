@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/24 15:41:10 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 12:36:01 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,9 @@
 static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
 {
 	rock->flag = 0;
-	tree->red = malloc(sizeof(t_red));
-	if (!tree->red)
-		return (NULL);
-	tree->red->token = NULL;
-	tree->red->right = NULL;
-	tree->red->token = rock;
+	tree->token = rock;
 	tree->left = ast_redirections(rock->prev);
-	tree->red->right = ast_redirections(rock->next);
+	tree->right = ast_redirections(rock->next);
 	return (tree);
 }
 

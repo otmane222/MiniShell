@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:40:46 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/23 14:56:44 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 14:57:49 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,7 +89,7 @@ void	handle_followed_red(t_rock *rock)
 			if (!rock)
 				return ;
 			while (rock->next && (rock->next->type == FILE \
-				|| rock->type == LIMITER || is_red2(rock->next->type)))
+				|| rock->next->type == LIMITER || is_red2(rock->next->type)))
 				rock = rock->next;
 			if (rock->type == FILE || rock->type == LIMITER)
 				swap_token_char(&tmp, &rock);

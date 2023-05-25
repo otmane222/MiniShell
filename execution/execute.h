@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/24 14:51:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/24 21:38:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ typedef struct s_data
 }	t_data;
 
 int		execute_cmd(t_tree *root, int infile_fd, int outfile_fd, t_env **env);
-int		handle_here_doc(t_tree *root, t_data *data, t_env **env);
+int		handle_here_doc(t_tree *root, t_data data, t_env **env);
 int		red_out_hanlde(t_tree *root, t_data data, t_env **env);
 int		handle_append(t_tree *root, t_data *data, t_env **env);
 int		handle_red_in(t_tree *root, t_data *data, t_env **env);

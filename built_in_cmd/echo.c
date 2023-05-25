@@ -6,20 +6,32 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:34:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/23 22:06:11 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:04:18 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-static void	help_cal(char *arg, int *flag, int *i)
+static int	call_help(char *str)
 {
-	if (ft_strncmp(arg, "-n", 3) == 0 && \
-	ft_strlen(arg) == 2)
-	{
-		(*i) = 2;
+	int	i;
+
+	if (!str || str[0] != '-')
+		return (0);
+	i = 1;
+	while (str[i] && str[i] == 'n')
+		i++;
+	if (!str[i])
+		return (1);
+	return (0);
+}
+
+static void	help_cal(char *arg, int *flag)
+{
+	if (call_help(arg))
 		*flag = 1;
-	}
+	else
+		*flag = 2;
 }
 
 void	ft_echo(int outfile, char **arg)
@@ -29,8 +41,13 @@ void	ft_echo(int outfile, char **arg)
 
 	flag = 0;
 	i = 1;
-	if (arg[i])
-		help_cal(arg[i], &flag, &i);
+	while (arg[i] && arg[i][0] == '-')
+	{
+		help_cal(arg[i], &flag);
+		if (flag == 2)
+			break ;
+		i++;
+	}
 	while (arg[i])
 	{
 		ft_putstr_fd(arg[i], outfile);

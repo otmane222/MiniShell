@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/24 11:30:48 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:40:12 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,14 +92,21 @@ int	handle_command(t_tree *root, t_data *data, t_env **env)
 			}
 			paths = ft_split(ft_getenv("PATH", *env), ':');
 			cmd = check_path(paths, root->token->cmd[0]);
+			if (!cmd)
+			{
+				write(2, "command not found\n", 19);
+				exit (127);
+			}
 			if (execve(cmd, root->token->cmd, paths) == -1)
 				perror("command");
 			free_2dd(paths);
+			free(cmd);
 			exit(1);
 		}
 		else
 		{
 			waitpid(data->i, &data->status, 0);
+			g_exit_status = WEXITSTATUS(data->status);
 			if (data->status)
 				return (1);
 		}

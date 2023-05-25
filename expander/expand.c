@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   expand.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/17 17:43:47 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/25 13:31:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,15 @@ static char	*helpful_call(char *line, int *start, t_env *our_env, int *flag)
 	char	*s;
 	char	*str;
 
+	str = NULL;
+	if (line[*start] == '?')
+	{
+		str = ft_itoa(g_exit_status);
+		line = ft_strreplace_no_q(str, line, "?", (*start));
+		free(str);
+		(*start) = (*start) + ft_strlen(str) - 1;
+		return (line);
+	}
 	s = get_env_var(&line[(*start)]);
 	str = ft_getenv(s, our_env);
 	if (str)

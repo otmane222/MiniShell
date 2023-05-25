@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/24 15:38:02 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 13:24:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@
 # define FILE 13
 # define LIMITER 14
 # define EXPAND 15
+
+int	g_exit_status;
 
 enum	e_token
 {
@@ -95,7 +97,6 @@ typedef struct s_red
 typedef struct s_tree
 {
 	t_rock			*token;
-	t_red			*red;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
