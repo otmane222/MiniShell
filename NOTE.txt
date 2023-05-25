@@ -1,3 +1,5 @@
 ((ls|wc)) | ( ls ) >out
 (ls && wc minishell) > lol && ls
 (echo 1) && (echo 2) || (echo 3) 
+
+ls | << l

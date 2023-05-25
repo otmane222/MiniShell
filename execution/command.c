@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 13:40:12 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 21:52:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,7 @@ int	handle_command(t_tree *root, t_data *data, t_env **env)
 			cmd = check_path(paths, root->token->cmd[0]);
 			if (!cmd)
 			{
+				printf("++%s++\n", root->token->cmd[0]);
 				write(2, "command not found\n", 19);
 				exit (127);
 			}

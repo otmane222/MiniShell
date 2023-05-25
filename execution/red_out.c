@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 12:39:25 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 20:35:14 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,6 @@ static int	fd_to_out(t_tree *root)
 
 int	red_out_hanlde(t_tree *root, t_data data, t_env **env)
 {
-	int	k;
-
-	k = data.outfile_fd;
 	data.j = fd_to_out(root);
 	if (data.j == -1)
 	{

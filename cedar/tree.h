@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 22:14:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 17:54:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ t_tree	*ast_pipe(t_rock *tok);
 t_tree	*ast_and(t_rock *tok);
 t_tree	*ast_or(t_rock *tok);
 t_tree	*ast_parenthese(t_rock *rock);
-t_tree	*ast_redirections(t_rock *tok);
+t_tree	*ast_redirections(t_rock *tok, int flag);
 
 void	skip_parenthese(t_rock **rock);
 

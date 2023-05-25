@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:20:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/22 22:30:39 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 20:26:45 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ t_tree	*ast_and(t_rock *rock)
 	t_tree	*tree;
 	t_var	var;
 
-	if (!rock)
+	if (!rock || !rock->flag)
 		return (NULL);
 	get_head(&rock);
 	tmp = rock;
@@ -87,7 +87,7 @@ t_tree	*ast_or(t_rock *rock)
 	t_tree	*tree;
 	t_var	var;
 
-	if (!rock)
+	if (!rock || !rock->flag)
 		return (NULL);
 	get_head(&rock);
 	tmp = rock;

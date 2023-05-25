@@ -79,9 +79,10 @@ static void	start_job(t_env **our_env)
 		return (free(line));
 	free(line);
 	rock = lex_token(&token);
+	get_head1(&rock);
 	tree = ast_tokenes(rock);
-	// print_tree(tree);
 	execute(tree, our_env);
+	// print_tree(tree);
 	free_tree(tree);
 }
 
@@ -109,7 +110,7 @@ int	main(int ac, char **av, char **env)
 {
 	t_env	*our_env;
 
-	// atexit(lk);
+	atexit(lk);
 	g_exit_status = 0;
 	our_env = put_env_to_new(env);
 	while (1)

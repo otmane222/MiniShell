@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:22:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 15:19:53 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 16:13:59 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,16 +72,14 @@ int	fd_to_here_doc(t_tree *root)
 			str = get_next_line(0);
 			if (str == NULL)
 				break ;
-			// printf("%zu-%s-%s-%zu\n", ft_strlen(str), str, root->token->cmd[0], ft_strlen(root->token->cmd[0]));
 			if (ft_strncmp(str, root->token->cmd[0], \
 				ft_strlen(str) - 1) == 0 && \
 				ft_strlen(str) - 1 == ft_strlen(root->token->cmd[0]))
 				break ;
 			ft_putstr_fd(str, fd);
-			// sleep (1);
 			free(str);
 		}
-		close(fd);
+		// close(fd);
 		free(str);
 		str = NULL;
 		return (fd);
@@ -97,10 +95,11 @@ int	handle_here_doc(t_tree *root, t_data data, t_env **env)
 	data.j = open("/tmp/temp_file", O_RDONLY | O_EXCL, 0655);
 	if (data.j == -1)
 		return (1);
-	if (execute_cmd(root->left, data.j, data.outfile_fd, env))
-		return (1);
 	if (execute_cmd(root->right, data.infile_fd, \
 		data.outfile_fd, env))
 		return (1);
+	if (execute_cmd(root->left, data.j, data.outfile_fd, env))
+		return (1);
+	unlink("/tmp/temp_file");
 	return (0);
 }

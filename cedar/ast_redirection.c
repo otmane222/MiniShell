@@ -6,18 +6,18 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 12:36:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 19:36:50 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tree.h"
 
-static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
+static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, int flag)
 {
 	rock->flag = 0;
 	tree->token = rock;
-	tree->left = ast_redirections(rock->prev);
-	tree->right = ast_redirections(rock->next);
+	tree->left = ast_redirections(rock->prev, flag);
+	tree->right = ast_redirections(rock->next, flag);
 	return (tree);
 }
 
@@ -62,22 +62,22 @@ int	is_red(int a)
 	return (0);
 }
 
-t_tree	*ast_redirections(t_rock *rock)
+t_tree	*ast_redirections(t_rock *rock, int flag)
 {
 	t_var	var;
 	t_rock	*tmp;
 	t_tree	*tree;
 
+	if (!rock || !rock->flag)
+		return (NULL);
 	tree = init_tree();
 	get_head(&rock);
-	if (!rock)
-		return (NULL);
 	tmp = rock;
 	var.i = 0;
 	while (rock && rock->flag)
 	{
 		skip_parenthese(&rock);
-		if (is_red(rock->type))
+		if (rock->type == flag)
 		{
 			var.i = 1;
 			break ;
@@ -85,8 +85,17 @@ t_tree	*ast_redirections(t_rock *rock)
 		rock = rock->next;
 	}
 	if (var.i == 0)
-		return (case_file(tmp, tree));
+	{
+		if (flag == RED_OUT)
+			return (free(tree), ast_redirections(tmp, D_RED_OUT));
+		else if (flag == D_RED_OUT)
+			return (free(tree), ast_redirections(tmp, RED_IN));
+		else if (flag == RED_IN)
+			return (free(tree), ast_redirections(tmp, D_RED_IN));
+		else if (flag == D_RED_IN)
+			return (case_file(tmp, tree));
+	}
 	else if (var.i)
-		return (fill_right_left(tree, rock));
+		return (fill_right_left(tree, rock, flag));
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/25 15:19:31 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/25 20:43:19 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,6 +76,6 @@ t_rock	*lex_token(t_token **token)
 	join_arg_with_cmd(rock, *token);
 	free_tokens(token);
 	case_cmd_after_file(rock);
-	// handle_followed_red(rock);
+	handle_followed_red(rock);
 	return (rock);
 }
