@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/25 20:43:19 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/29 15:56:05 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_rock	*init_rock(void)
 	rock->prev = NULL;
 	rock->flag = 1;
 	rock->flag2 = 0;
+	rock->is_last = 0;
 	rock->type = -10;
 	return (rock);
 }
@@ -66,6 +67,34 @@ void	swap_token_char(t_rock **a, t_rock **b)
 	(*b)->cmd[0] = tmp;
 }
 
+void	flag_cmd(t_rock *rock)
+{
+	if (!rock)
+		return ;
+	while (rock && rock->type != D_AND && rock->type != DPIPE)
+	{
+		if (rock->type == CMD)
+		{
+			rock->is_last = 1;
+			return ;
+		}
+		rock = rock->prev;
+	}
+}
+
+void	flag_last_cmds(t_rock *rock)
+{
+	get_head1(&rock);
+	while (rock)
+	{
+		if (!rock->next)
+			flag_cmd(rock);
+		if (rock->type == D_AND || rock->type == DPIPE)
+			flag_cmd(rock->prev);
+		rock = rock->next;
+	}
+}
+
 t_rock	*lex_token(t_token **token)
 {
 	t_rock	*rock;
@@ -77,5 +106,6 @@ t_rock	*lex_token(t_token **token)
 	free_tokens(token);
 	case_cmd_after_file(rock);
 	handle_followed_red(rock);
+	flag_last_cmds(rock);
 	return (rock);
 }

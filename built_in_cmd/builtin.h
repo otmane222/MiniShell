@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/24 11:30:33 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/29 22:50:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	ft_export(t_rock **rock, t_env **env);
 void	ft_unset(t_rock **rock, t_env **env);
 void	ft_echo(int outfile, char **arg);
 int		ft_exit(t_tree *root);
-int		ft_cd(char *path);
+int		ft_cd(char *path, t_env **env);
 void	ft_pwd(int outfile);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 12:35:46 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/26 11:06:06 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,9 @@ void	init_var_2(t_var **var)
 
 void	get_head(t_rock **head)
 {
-	if (!(*head))
+	if (!(*head) || !(*head)->flag)
 		return ;
-	if (!(*head)->prev)
+	if (!(*head)->prev || !(*head)->prev->flag)
 		return ;
 	while ((*head)->prev)
 	{

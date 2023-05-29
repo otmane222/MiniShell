@@ -82,7 +82,6 @@ static void	start_job(t_env **our_env)
 	get_head1(&rock);
 	tree = ast_tokenes(rock);
 	execute(tree, our_env);
-	// print_tree(tree);
 	free_tree(tree);
 }
 
@@ -106,11 +105,21 @@ void	free_env(t_env **our_env)
 	}
 }
 
+void	disableInputBuffering(void)
+{
+	struct termios	term;
+
+	tcgetattr (STDIN_FILENO, &term);
+	term.c_lflag &= ~(ICANON | ECHO);
+	tcsetattr (STDIN_FILENO, TCSANOW, &term);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_env	*our_env;
 
-	atexit(lk);
+	// atexit(lk);
+	// disableInputBuffering();
 	g_exit_status = 0;
 	our_env = put_env_to_new(env);
 	while (1)

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/25 19:40:12 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/29 16:08:51 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,9 @@
 # include <string.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <errno.h>
+# include <dirent.h>
+# include <termios.h>
 # include "libft/libft.h"
 
 # define CMD 1
@@ -37,6 +40,9 @@
 # define FILE 13
 # define LIMITER 14
 # define EXPAND 15
+
+# define PIPE_L 16
+# define PIPE_R 17
 
 int	g_exit_status;
 
@@ -84,15 +90,10 @@ typedef struct s_rock
 	int				type;
 	int				flag;
 	int				flag2;
+	int				is_last;
 	struct s_rock	*next;
 	struct s_rock	*prev;
 }	t_rock;
-
-typedef struct s_red
-{
-	t_rock			*token;
-	struct s_tree	*right;
-}	t_red;
 
 typedef struct s_tree
 {
@@ -116,6 +117,7 @@ t_token	*init_token(size_t x);
 char	*expand_line(char *line, t_env *our_env);
 int		get_token(t_token **token, char *line);
 void	get_head1(t_rock **head);
+int		ft_printf(const char *format, ...);
 
 t_rock	*lex_token(t_token **token);
 int		check_errors(t_token *token);

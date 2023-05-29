@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 20:35:14 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/29 21:58:13 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,27 +24,23 @@ static int	fd_to_out(t_tree *root)
 		fd = open(root->token->cmd[0], O_RDWR | O_CREAT | O_TRUNC, 0655);
 		if (fd == -1)
 		{
-			printf ("Error opening :%s\n", root->token->cmd[0]);
+			printf ("Minishell: %s: No such file or directory\n", \
+				root->token->cmd[0]);
 			return (1);
 		}
 		return (fd);
 	}
-	return (0);
+	return (1);
 }
 
-int	red_out_hanlde(t_tree *root, t_data data, t_env **env)
+int	red_out_hanlde(t_tree *root, t_data data, t_env **env, t_fds *list)
 {
 	data.j = fd_to_out(root);
-	if (data.j == -1)
-	{
-		printf ("Error opening :%s\n", root->token->cmd[0]);
+	if (data.j == 1)
 		return (1);
-	}
-	data.status = execute_cmd(root->left, data.infile_fd, data.j, env);
-	if (data.status == 1)
-		return (1);
-	data.status = execute_cmd(root->right, data.infile_fd, \
-		data.outfile_fd, env);
+	data.outfile_fd = data.j;
+	data.type = RED_OUT;
+	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);
 	close(data.j);
