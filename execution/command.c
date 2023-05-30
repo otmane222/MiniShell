@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/29 22:56:43 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 16:58:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,12 +15,17 @@
 char	*check_path(char **paths, char *path)
 {
 	int		i;
+	char	*save;
 
 	i = 0;
 	if (!path || path[0] == '\0')
-		return (NULL);
+	{
+		ft_printf("Minishell: %s: command not found\n", path);
+		exit (127);
+	}
 	if (access(path, X_OK) == 0)
 		return (path);
+	save = path;
 	path = ft_strjoin("/", path);
 	while (paths[i])
 	{
@@ -29,7 +34,8 @@ char	*check_path(char **paths, char *path)
 			return (paths[i]);
 		i++;
 	}
-	return (NULL);
+	ft_printf("Minishell: %s: command not found\n", save);
+	exit (127);
 }
 
 int	built_in(char *str)
@@ -70,83 +76,103 @@ int	run_built_in(t_tree *root, t_data data, t_env **env)
 	return (0);
 }
 
-int	handle_command(t_tree *root, t_data data, t_env **env, t_fds *list)
+void	handle_files(t_data *data)
+{
+
+	if (data->type == RED_OUT)
+	{
+		if (dup2(data->outfile_fd, STDOUT_FILENO) == -1)
+			perror("dup out");
+		close(data->outfile_fd);
+	}
+	else if (data->type == RED_IN)
+	{
+		if (dup2(data->infile_fd, STDIN_FILENO) == -1)
+			perror("dup out");
+		close(data->infile_fd);
+	}
+	else if (data->type == PIPE_L)
+	{
+		close(data->fd[0]);
+		if (dup2(data->outfile_fd, STDOUT_FILENO) == -1)
+			perror("dup out");
+		close(data->outfile_fd);
+	}
+	else if (data->type == PIPE_R)
+	{
+		close(data->fd[1]);
+		if (data->outfile_fd != 1)
+		{
+			if (dup2(data->outfile_fd, STDOUT_FILENO) == -1)
+				perror("dup out");
+			close(data->outfile_fd);
+		}
+	}
+	if (data->infile_fd != 0 && data->type != RED_IN)
+	{
+		if (data->outfile_fd != 1)
+			close(data->outfile_fd);
+		if (dup2(data->infile_fd, STDIN_FILENO) == -1)
+			perror("dup in");
+		close(data->infile_fd);
+	}
+}
+
+void	case_directory(char *str)
+{
+	DIR		*k;
+
+	k = opendir(str);
+	if (k)
+	{
+		ft_printf("Minishell: %s: is directory\n", \
+			str);
+		exit (126);
+	}
+}
+
+void	execute_execve(char *cmd, char **cmds, char **env)
+{
+	execve(cmd, cmds, env);
+	perror("command");
+	if (errno == ENOENT)
+	{
+		ft_printf("Minishell: %s: command not found\n", cmd);
+		exit (127);
+	}
+}
+
+int	wait_last_cmd(t_data data)
+{
+	waitpid(data.i, &data.status, 0);
+	g_exit_status = WEXITSTATUS(data.status);
+	if (data.status)
+		return (1);
+	return (0);
+}
+
+int	handle_command(t_tree *root, t_data data, t_env **env)
 {
 	char	**paths;
 	char	*cmd;
-	DIR 	*k;
 
-	(void)list;
 	if (built_in(root->token->cmd[0]))
 		return (run_built_in(root, data, env));
 	else
 	{
 		data.i = fork();
+		if (data.i < 0)
+			return (perror("fork"), 1);
 		if (data.i == 0)
 		{
-			if (data.type == RED_OUT)
-			{
-				if (dup2(data.outfile_fd, STDOUT_FILENO) == -1)
-					perror("dup out");
-				close(data.outfile_fd);
-			}
-			else if (data.type == RED_IN)
-			{
-				if (dup2(data.infile_fd, STDIN_FILENO) == -1)
-					perror("dup out");
-				close(data.infile_fd);
-			}
-			else if (data.type == PIPE_L)
-			{
-				close(data.fd[0]);
-				if (dup2(data.outfile_fd, STDOUT_FILENO) == -1)
-					perror("dup out");
-				close(data.outfile_fd);
-			}
-			else if (data.type == PIPE_R)
-			{
-				close(data.fd[1]);
-				if (data.outfile_fd != 1)
-				{
-					if (dup2(data.outfile_fd, STDOUT_FILENO) == -1)
-						perror("dup out");
-					close(data.outfile_fd);
-				}
-			}
-			if (data.infile_fd != 0)
-			{
-				if (data.outfile_fd != 1)
-					close(data.outfile_fd);
-				if (dup2(data.infile_fd, STDIN_FILENO) == -1)
-					perror("dup in");
-				close(data.infile_fd);
-			}
+			handle_files(&data);
 			paths = ft_split(ft_getenv("PATH", *env), ':');
-			k = opendir(root->token->cmd[0]);
-			if (k)
-			{
-				ft_printf("Minishell: %s: is directory\n", \
-					root->token->cmd[0]);
-				exit (126);
-			}
+			case_directory(root->token->cmd[0]);
 			cmd = check_path(paths, root->token->cmd[0]);
-			if (!cmd)
-			{
-				ft_printf("Minishell: %s: command not found\n", \
-					root->token->cmd[0]);
-				exit (127);
-			}
-			execve(cmd, root->token->cmd, paths);
-			perror("command");
-			exit(1);
+			execute_execve(cmd, root->token->cmd, NULL);
 		}
 		if (root->token->is_last)
-		{
-			waitpid(data.i, &data.status, 0);
-			g_exit_status = WEXITSTATUS(data.status);
-			if (data.status)
-				return (1);
-		}
+			return (wait_last_cmd(data));
 	}
 	return (0);
 }

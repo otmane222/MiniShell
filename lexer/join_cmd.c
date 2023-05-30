@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join_cmd.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:46:49 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 11:00:48 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/30 15:35:39 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	join_arg_with_cmd(t_rock *rock, t_token *token)
 	{
 		if (token->type == -10)
 		{
+			rock->expand = token->flag;
 			join_c(rock, &token, &var);
 			rock->type = CMD;
 			if (!token)
@@ -86,6 +87,7 @@ void	join_arg_with_cmd(t_rock *rock, t_token *token)
 		}
 		if (token->type != -10)
 		{
+			rock->expand = token->flag;
 			put_the_op_in_cmd(rock, token, &var);
 			if (token->next)
 				new_rock(&rock);

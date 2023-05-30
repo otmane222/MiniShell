@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/29 15:56:05 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 15:34:45 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ t_rock	*init_rock(void)
 	rock->prev = NULL;
 	rock->flag = 1;
 	rock->flag2 = 0;
+	rock->expand = 1;
 	rock->is_last = 0;
 	rock->type = -10;
 	return (rock);
@@ -105,7 +106,6 @@ t_rock	*lex_token(t_token **token)
 	join_arg_with_cmd(rock, *token);
 	free_tokens(token);
 	case_cmd_after_file(rock);
-	handle_followed_red(rock);
 	flag_last_cmds(rock);
 	return (rock);
 }

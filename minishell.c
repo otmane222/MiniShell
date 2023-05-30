@@ -69,7 +69,7 @@ static void	start_job(t_env **our_env)
 	line = readline("\x1B[34mMinishell >  \x1B[0m");
 	if (line == NULL)
 		exit (0);
-	line = ft_strtrim(line, " \t\r\v\f");
+	line = ft_strtrim(line, " \t\r\v\f\n");
 	if (!line[0])
 		return ;
 	add_history(line);
@@ -82,6 +82,7 @@ static void	start_job(t_env **our_env)
 	get_head1(&rock);
 	tree = ast_tokenes(rock);
 	execute(tree, our_env);
+	// print_tree(tree);
 	free_tree(tree);
 }
 

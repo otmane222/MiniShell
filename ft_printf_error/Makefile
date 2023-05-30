@@ -6,7 +6,7 @@
 #    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/11/01 16:42:01 by oaboulgh          #+#    #+#              #
-#    Updated: 2023/05/29 14:38:47 by oaboulgh         ###   ########.fr        #
+#    Updated: 2023/05/30 17:05:43 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -22,7 +22,7 @@ OBJS		= $(SRCS:%.c=%.o)
 
 INCS		= ft_printf.h
 
-FLAGS		= -Wall -Werror -Wextra
+FLAGS		= -Wall -Werror -Wextra -fsanitize=address -g
 
 all: $(NAME)
 

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/29 22:25:19 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 16:07:09 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	execute_cmd(t_tree *root, t_data data, t_env **env, t_fds *list)
 		return (0);
 	if (root->token && root->token->type == PIPE && pipe_handle(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == CMD && handle_command(root, data, env, list))
+	else if (root->token && root->token->type == CMD && handle_command(root, data, env))
 		return (1);
 	else if (root && root->token->type == RED_OUT && red_out_hanlde(root, data, env, list))
 		return (1);
@@ -36,10 +36,10 @@ int	execute_cmd(t_tree *root, t_data data, t_env **env, t_fds *list)
 		return (1);
 	else if (root->token && root->token->type == DPIPE && d_pipe_handle(root, data, env, list))
 		return (1);
-	// else if (root && root->token->type == D_RED_OUT && handle_append(root, data, env))
-	// 	return (1);
-	// else if (root && root->token->type == D_RED_IN && handle_here_doc(root, data, env))
-	// 	return (1);
+	else if (root && root->token->type == D_RED_IN && handle_here_doc(root, data, env, list))
+		return (1);
+	else if (root && root->token->type == D_RED_OUT && handle_append(root, data, env, list))
+		return (1);
 	return (0);
 }
 
@@ -55,14 +55,17 @@ t_fds	*init_list(int fd)
 	return (list);
 }
 
-void	free_fds(t_fds *list, int k)
+void	free_fds(t_fds *list)
 {
+	t_fds	*tmp;
+
 	while (list)
 	{
-		if (list->fd != k)
-			close(list->fd);
-		printf("---%d---\n", list->fd);
+		tmp = list;
 		list = list->next;
+		if (tmp->fd != 1 && tmp->fd != 0)
+			close(tmp->fd);
+		free(tmp);
 	}
 }
 
@@ -71,6 +74,7 @@ void	execute(t_tree *root, t_env **env)
 	t_fds	*list;
 	t_data	data;
 
+	list = NULL;
 	data.infile_fd = 0;
 	data.outfile_fd = 1;
 	data.fd[0] = -2;
@@ -78,9 +82,9 @@ void	execute(t_tree *root, t_env **env)
 	list = NULL;
 	if (execute_cmd(root, data, env, list) == 1)
 	{
-		// free_fds(list);
-		return ;
+		;
 	}
 	while (wait(NULL) != -1)
 		;
+	free_fds(list);
 }

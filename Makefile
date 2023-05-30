@@ -24,7 +24,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 
 HEADER = minishell.h \
 	envirenment/env.h \
@@ -47,7 +47,7 @@ all: $(NAME) $(OBJS) $(HEADER)
 $(NAME): $(OBJS) minishell.o $(HEADER)
 	make bonus -C libft
 	make -C ft_printf_error
-	@gcc  minishell.c -I/path/to/readline/include -lreadline -o $(NAME) $(OBJS) libft/libft.a ft_printf_error/libftprintf.a
+	@gcc  minishell.c -fsanitize=address -I/path/to/readline/include -lreadline -o $(NAME) $(OBJS) libft/libft.a ft_printf_error/libftprintf.a
 
 clean:
 	$(RM) $(OBJS) minishell.o

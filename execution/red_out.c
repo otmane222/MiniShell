@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/29 21:58:13 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 15:36:23 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	fd_to_out(t_tree *root)
 
 	root = root->right;
 	while (root->left)
-		root = root->left;
+	root = root->left;
 	if (root && root->token->type == FILE)
 	{
 		fd = open(root->token->cmd[0], O_RDWR | O_CREAT | O_TRUNC, 0655);
@@ -35,12 +35,20 @@ static int	fd_to_out(t_tree *root)
 
 int	red_out_hanlde(t_tree *root, t_data data, t_env **env, t_fds *list)
 {
+	int	k;
+
 	data.j = fd_to_out(root);
 	if (data.j == 1)
 		return (1);
+	add_b_list(&list, init_list(data.j));
+	k = data.outfile_fd;
 	data.outfile_fd = data.j;
 	data.type = RED_OUT;
 	data.status = execute_cmd(root->left, data, env, list);
+	if (data.status == 1)
+		return (1);
+	data.outfile_fd = k;
+	data.status = execute_cmd(root->right, data, env, list);
 	if (data.status == 1)
 		return (1);
 	close(data.j);

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/29 16:08:51 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 16:41:42 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,6 +90,7 @@ typedef struct s_rock
 	int				type;
 	int				flag;
 	int				flag2;
+	int				expand;
 	int				is_last;
 	struct s_rock	*next;
 	struct s_rock	*prev;

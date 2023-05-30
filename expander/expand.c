@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 13:31:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 14:32:34 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,42 @@ static char	*expand_var_nq(char *line, int *start, t_env *our_env)
 	return (line);
 }
 
+static void	skip_spaces(char *line, int *start)
+{
+	while (line[*start] && is_white_space(line[*start]))
+		*start = *start + 1;
+}
+
+void	skip_in_q(char *line, int *start, char *stop)
+{
+	*start = *start + 1;
+	while (line[*start] && !ft_strchr(stop, line[*start]))
+		*start = *start + 1;
+	if (line[*start] == '\"')
+		*start = *start + 1;
+	if (line[*start] && !is_operator(line[*start]))
+		skip_char(line, start);
+}
+
+void	skip_char(char *line, int *start)
+{
+	while (line[*start] && !is_white_space(line[*start]) \
+		&& line[*start] != '\"' && line[*start] != '\'' && \
+			!is_operator(line[*start]))
+		*start = *start + 1;
+	if (line[*start] && line[*start] == '\"')
+		skip_in_q(line, start, "\"");
+	if (line[*start] && line[*start] == '\'')
+		skip_in_q(line, start, "\'");
+}
+
+static void	skip_until(char *line, int *start)
+{
+	*start = *start + 2;
+	skip_spaces(line, start);
+	skip_char(line, start);
+}
+
 static char	*expand_var_dq(char *line, int *start, t_env *our_env)
 {
 	int		j;
@@ -123,18 +159,18 @@ static char	*expand_var_dq(char *line, int *start, t_env *our_env)
 char	*expand_line(char *line, t_env *our_env)
 {
 	int		i;
-	int		flag;
 
 	i = 0;
-	flag = 0;
 	while (line[i])
 	{
-		if (line[i] == '\'')
+		if (line[i] == '<' && line[i + 1] == '<')
 		{
-			i++;
-			while (line[i] && line[i] != '\'')
-				i++;
+			skip_until(line, &i);
+			if (!line[i])
+				return (line);
 		}
+		if (line[i] == '\'')
+			skip_in_q(line, &i, "\'");
 		if (line[i] == '\"')
 			line = expand_var_dq(line, &i, our_env);
 		if (line[i] == '$')
