@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 15:36:23 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 19:35:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,15 +42,16 @@ int	red_out_hanlde(t_tree *root, t_data data, t_env **env, t_fds *list)
 		return (1);
 	add_b_list(&list, init_list(data.j));
 	k = data.outfile_fd;
-	data.outfile_fd = data.j;
-	data.type = RED_OUT;
+	if (!data.redout)
+		data.outfile_fd = data.j;
+	data.redout = RED_OUT;
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);
-	data.outfile_fd = k;
-	data.status = execute_cmd(root->right, data, env, list);
-	if (data.status == 1)
-		return (1);
+	// data.outfile_fd = k;
+	// data.status = execute_cmd(root->right, data, env, list);
+	// if (data.status == 1)
+	// 	return (1);
 	close(data.j);
 	return (0);
 }

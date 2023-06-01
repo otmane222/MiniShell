@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/25 19:36:50 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 18:42:19 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, int flag)
 	return (tree);
 }
 
-t_rock	*get_tail(t_rock *rock)
+t_rock	*get_last(t_rock *rock)
 {
 	if (!rock)
 		return (NULL);
@@ -37,7 +37,7 @@ static t_tree	*case_file(t_rock *tmp, t_tree *tree)
 	t_rock	*tmp2;
 	t_rock	*tmp3;
 
-	tmp3 = get_tail(tmp);
+	tmp3 = get_last(tmp);
 	if (tmp->type == O_PARENTHIS)
 	{
 		tmp2 = tmp->next;
@@ -62,6 +62,42 @@ int	is_red(int a)
 	return (0);
 }
 
+void	get_tail(t_rock **head)
+{
+	if (!(*head) || !(*head)->flag)
+		return ;
+	if (!(*head)->next || !(*head)->next->flag)
+		return ;
+	while ((*head)->next)
+	{
+		if ((*head)->next->flag == 0)
+			break ;
+		(*head) = (*head)->next;
+	}
+}
+
+void	skip_parenthese1(t_rock **rock)
+{
+	int	i;
+
+	i = 0;
+	if ((*rock)->type == C_PARENTHIS)
+	{
+		while ((*rock) && (*rock)->flag)
+		{
+			if ((*rock)->type == C_PARENTHIS)
+				i++;
+			else if ((*rock)->type == O_PARENTHIS)
+			{
+				i--;
+				if (i == 0)
+					break ;
+			}
+			*rock = (*rock)->prev;
+		}
+	}
+}
+
 t_tree	*ast_redirections(t_rock *rock, int flag)
 {
 	t_var	var;
@@ -73,28 +109,20 @@ t_tree	*ast_redirections(t_rock *rock, int flag)
 	tree = init_tree();
 	get_head(&rock);
 	tmp = rock;
+	get_tail(&rock);
 	var.i = 0;
 	while (rock && rock->flag)
 	{
-		skip_parenthese(&rock);
-		if (rock->type == flag)
+		skip_parenthese1(&rock);
+		if (is_red(rock->type))
 		{
 			var.i = 1;
 			break ;
 		}
-		rock = rock->next;
+		rock = rock->prev;
 	}
 	if (var.i == 0)
-	{
-		if (flag == RED_OUT)
-			return (free(tree), ast_redirections(tmp, D_RED_OUT));
-		else if (flag == D_RED_OUT)
-			return (free(tree), ast_redirections(tmp, RED_IN));
-		else if (flag == RED_IN)
-			return (free(tree), ast_redirections(tmp, D_RED_IN));
-		else if (flag == D_RED_IN)
-			return (case_file(tmp, tree));
-	}
+		return (case_file(tmp, tree));
 	else if (var.i)
 		return (fill_right_left(tree, rock, flag));
 	return (NULL);

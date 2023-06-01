@@ -28,6 +28,7 @@ static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 		(*t)->data[var->counter] = '\0';
 		var->i++;
 	}
+	(*t)->data[var->counter] = '\0';
 	if (!line[var->i])
 	{
 		free_tokens(t);

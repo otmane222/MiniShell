@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:22:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 15:36:29 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 21:42:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,7 +102,9 @@ int	handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds *list)
 		return (1);
 	add_b_list(&list, init_list(data.j));
 	k = data.infile_fd;
-	data.infile_fd = data.j;
+	if (!data.redin)
+		data.infile_fd = data.j;
+	data.redin = D_RED_IN;
 	if (execute_cmd(root->left, data, env, list))
 		return (1);
 	data.infile_fd = k;

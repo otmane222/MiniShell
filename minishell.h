@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/30 16:41:42 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:11:36 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,7 @@
 
 # define PIPE_L 16
 # define PIPE_R 17
+# define PIPE_LR 18
 
 int	g_exit_status;
 
@@ -125,5 +126,6 @@ int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
 t_tree	*ast_tokenes(t_rock *rock);
 void	execute(t_tree *root, t_env **env);
+
 
 #endif

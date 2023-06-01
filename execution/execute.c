@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 16:07:09 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 22:03:21 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,13 +77,14 @@ void	execute(t_tree *root, t_env **env)
 	list = NULL;
 	data.infile_fd = 0;
 	data.outfile_fd = 1;
+	data.type = 0;
+	data.redin = 0;
+	data.redout = 0;
 	data.fd[0] = -2;
 	data.fd[1] = -2;
 	list = NULL;
 	if (execute_cmd(root, data, env, list) == 1)
-	{
 		;
-	}
 	while (wait(NULL) != -1)
 		;
 	free_fds(list);

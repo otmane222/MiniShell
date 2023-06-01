@@ -1,23 +1,19 @@
-((ls|wc)) | ( ls ) >out
-(ls && wc minishell) > lol && ls
-(echo 1) && (echo 2) || (echo 3) 
 
-ls | << l
+
 
 cat | cat | ls
 
-$VA="ls -la"
 
-. || ..
+
+
+	// wild cards
+
+"hello *.h*.c"
+
+
 
 
 here_doc 16 lim
-
-(((ls | wc) && cat Makefile | wc ) && ls -lha | cat > out ) > outfile || ls
-
-export  #l l "$HOME=hana lala"
-
-
 
 
 

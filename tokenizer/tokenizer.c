@@ -54,7 +54,7 @@ void	next_node(t_token **t, char *line, int *i)
 {
 	t_token	*temp;
 
-	temp = init_token(ft_strlen(line) + 1);
+	temp = init_token(ft_strlen(line));
 	(*t)->next = temp;
 	temp->prev = (*t);
 	*t = temp;

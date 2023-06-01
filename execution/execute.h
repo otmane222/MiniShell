@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 16:07:03 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 18:53:09 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,6 @@ typedef struct s_fds
 	struct s_fds	*next;
 }	t_fds;
 
-
 typedef struct s_data
 {
 	int		fd[2];
@@ -33,9 +32,12 @@ typedef struct s_data
 	int		outfile_fd;
 	int		i;
 	int		j;
+	int		redin;
+	int		redout;
 	int		type;
 	int		status;
 }	t_data;
+
 
 int		execute_cmd(t_tree *root, t_data data, t_env **env, t_fds *list);
 int		handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds *list);
@@ -60,7 +62,7 @@ void	ft_unset(t_rock **rock, t_env **env);
 void	ft_echo(int outfile, char **arg);
 int		ft_exit(t_tree *root);
 int		ft_cd(char *path, t_env **env);
-void	ft_pwd(int outfile);
+void	ft_pwd(int outfile, t_env **env);
 
 char	*expand_line(char *line, t_env *our_env);
 char	*check_path(char **paths, char *path);

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:34:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/27 23:48:06 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/30 19:54:50 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static int	call_help(char *str)
 	i = 1;
 	while (str[i] && str[i] == 'n')
 		i++;
-	if (!str[i])
+	if (!str[i] && i != 1)
 		return (1);
 	return (0);
 }
@@ -57,6 +57,6 @@ void	ft_echo(int outfile, char **arg)
 			write (outfile, "\n", 2);
 		i++;
 	}
-	if (!arg[1])
+	if (flag == 2)
 		write (outfile, "\n", 2);
 }

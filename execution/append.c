@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:53:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 15:36:33 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/05/31 18:52:08 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,8 @@ int	handle_append(t_tree *root, t_data data, t_env **env, t_fds *list)
 	if (data.j == 1)
 		return (1);
 	add_b_list(&list, init_list(data.j));
+	if (!data.redout)
+		data.outfile_fd = data.j;
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);

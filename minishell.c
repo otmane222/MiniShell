@@ -74,7 +74,7 @@ static void	start_job(t_env **our_env)
 		return ;
 	add_history(line);
 	line = expand_line(line, *our_env);
-	token = init_token(ft_strlen(line) + 1);
+	token = init_token(ft_strlen(line));
 	if (!get_token(&token, line))
 		return (free(line));
 	free(line);

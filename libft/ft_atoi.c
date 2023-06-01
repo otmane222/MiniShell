@@ -11,7 +11,7 @@
 /* ************************************************************************** */
 
 #include "libft.h"
-#include "../ft_printf_error/ft_printf.h"
+// #include "../ft_printf_error/ft_printf.h"
 
 static int	ft_isoverflow(long long int prev, long long curr)
 {
@@ -63,7 +63,9 @@ int	ft_atoi(const char *str)
 		value = value * 10 + (str[i] - 48);
 		if (ft_isoverflow(prev, value) == 1)
 		{
-			ft_printf("exit: %s: numeric argument required\n", str);
+			write(2, "exit: ", 7);
+			write(2, str, ft_strlen(str));
+			write(2, ": numeric argument required\n", 29);
 			if (*signe == 1)
 				return (-1);
 			return (0);
