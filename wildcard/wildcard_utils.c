@@ -1,34 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   jajacard_utils.c                                   :+:      :+:    :+:   */
+/*   wildcard_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:56:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/01 18:33:09 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 14:13:11 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wildcard.h"
 
-char	*ft_strreplace_no_q(char *str, char *token, int len, int index)
+char	*ft_strreplace1(char *str, char *token, int len, int index)
 {
 	int		i;
 	int		j;
 	char	*ret;
 
 	ret = malloc (sizeof(char) * (ft_strlen(str) + \
-			(ft_strlen(token) + 4)));
+			(ft_strlen(token) + 1)));
 	i = 0;
 	j = 0;
 	while (token[i] && i < index)
 		ret[j++] = token[i++];
-	ret[j++] = '\'';
 	i = -1;
 	while (str[++i])
 		ret[j++] = str[i];
-	ret[j++] = '\'';
 	ret[j++] = ' ';
 	i = index + len;
 	while (token[i])
@@ -70,17 +68,34 @@ int	found_it(const char *big, const char *little, size_t len)
 	return (0);
 }
 
-/*
-	files->counter = found_it(&files->name[files->counter], to_find[i], \
-		ft_strlen(&files->name[files->counter]));
-	if (!files->counter)
-		files->usable = 0;
-	if (i == 0 && var->check && !ft_strncmp(files->name, \
-	to_find[i], ft_strlen(to_find[i]) + 1))
-		files->usable = 0;
-	if (!to_find[i + 1] && var->end && \
-	!ft_strnstr(&files->name[ft_strlen(files->name) \
-		- ft_strlen(to_find[i])], \
-		to_find[i], ft_strlen(&files->name[counter])))
-		files->usable = 0;
-*/
+void	skip_najmat(char *line, int *j)
+{
+	while (line[*j] && line[*j] == '*')
+		*j = *j + 1;
+}
+
+void	skip_chars(char *line, int *j, int *i)
+{
+	*i = *i + 1;
+	while (line[*j] && line[*j] != '*' && line[*j] != ' ')
+		*j = *j + 1;
+}
+
+int	num_of_char(char *line)
+{
+	int	i;
+	int	j;
+
+	i = 1;
+	j = 0;
+	while (line[j] && line[j] != ' ')
+	{
+		if (line[j] == '*')
+			skip_najmat(line, &j);
+		if (line[j] && line[j] != '*')
+			skip_chars(line, &j, &i);
+		if (!line[j])
+			return (i);
+	}
+	return (i);
+}

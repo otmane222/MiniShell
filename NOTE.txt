@@ -10,8 +10,9 @@ cat | cat | ls
 
 "hello *.h*.c"
 
+cd ~ && cd -
 
-
+cat < a >> a >> a >> a loop infinie
 
 here_doc 16 lim
 

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/31 22:11:36 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 15:45:09 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,6 +116,9 @@ typedef struct s_env
 t_env	*put_env_to_new(char **env);
 void	add_to_env(char *var, char *val, t_env **env);
 t_token	*init_token(size_t x);
+
+void	handle_wildcard(t_token **tok);
+
 char	*expand_line(char *line, t_env *our_env);
 int		get_token(t_token **token, char *line);
 void	get_head1(t_rock **head);

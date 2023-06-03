@@ -15,6 +15,7 @@ NAME =    minishell
 SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard tokenizer/*.c) \
 		$(wildcard expander/*.c) \
+		$(wildcard wildcard/*.c) \
 		$(wildcard lexer/*.c) \
 		$(wildcard parser/*.c) \
 		$(wildcard cedar/*.c) \

@@ -62,10 +62,11 @@ void	free_tree(t_tree *tree)
 static void	start_job(t_env **our_env)
 {
 	t_token	*token;
-	t_rock	*rock;
-	t_tree	*tree;
+	// t_rock	*rock;
+	// t_tree	*tree;
 	char	*line;
 
+	// (void) our_env;
 	line = readline("\x1B[34mMinishell >  \x1B[0m");
 	if (line == NULL)
 		exit (0);
@@ -78,12 +79,30 @@ static void	start_job(t_env **our_env)
 	if (!get_token(&token, line))
 		return (free(line));
 	free(line);
-	rock = lex_token(&token);
-	get_head1(&rock);
-	tree = ast_tokenes(rock);
-	execute(tree, our_env);
-	// print_tree(tree);
-	free_tree(tree);
+	t_token	*tmp;
+
+	while (token)
+	{
+		handle_wildcard(&token);
+		if (!token)
+			break ;
+		tmp = token;
+		token = token->next;
+	}
+	while (tmp->prev)
+		tmp = tmp->prev;
+	while (tmp)
+	{
+		printf("%s\n", tmp->data);
+		tmp = tmp->next;
+	}
+	// rock = lex_token(&token);
+	// get_head1(&rock);
+	
+// 	tree = ast_tokenes(rock);
+// 	execute(tree, our_env);
+// 	// print_tree(tree);
+// 	free_tree(tree);
 }
 
 void	lk(void)
