@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:46:49 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/30 18:28:12 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:15:50 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,12 +49,30 @@ static void	put_the_op_in_cmd(t_rock *rock, t_token *token, t_var *var)
 	rock->type = token->type;
 	rock->cmd[0] = str;
 	rock->cmd[1] = NULL;
+	rock->arr = malloc(sizeof(int));
+	if (!rock->arr)
+		return ;
+	rock->arr[0] = token->flag;
 }
 
 static void	join_c(t_rock *rock, t_token **token, t_var *var)
 {
 	char	*str;
+	int		i;
+	t_token	*tmp;
 
+	i = 0;
+	tmp = *token;
+	while ((*token) && (*token)->type == -10)
+	{
+		i++;
+		(*token) = (*token)->next;
+	}
+	rock->arr = malloc(sizeof(int) * i + 1);
+	if (!rock->arr)
+		return ;
+	*token = tmp;
+	i = 0;
 	while ((*token) && (*token)->type == -10)
 	{
 		str = ft_strdup((*token)->data);
@@ -62,6 +80,8 @@ static void	join_c(t_rock *rock, t_token **token, t_var *var)
 			rock->cmd = malloc(sizeof(char *) * num_of_arg(*token));
 		rock->cmd[var->i] = str;
 		var->i++;
+		rock->arr[i] = (*token)->flag;
+		i++;
 		rock->cmd[var->i] = NULL;
 		var->j = 1;
 		(*token) = (*token)->next;

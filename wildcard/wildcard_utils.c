@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:56:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 14:13:11 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 19:30:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,32 @@ void	skip_najmat(char *line, int *j)
 void	skip_chars(char *line, int *j, int *i)
 {
 	*i = *i + 1;
-	while (line[*j] && line[*j] != '*' && line[*j] != ' ')
+	while (line[*j] && line[*j] != '*' && !is_valid(line[*j]))
+	{
+		if (line[*j] == '\'')
+			skip_q(line, j, '\'');
+		if (line[*j] == '\"')
+			skip_q(line, j, '\"');
+		if (line[*j] == '*')
+			break ;
 		*j = *j + 1;
+	}
+}
+
+int	is_not_q(char *line, int *j)
+{
+	if (line[*j] && line[*j + 1] && line[*j] == '\'' && line[*j + 1] == '\'')
+	{
+		*j = *j + 2;
+		return (0);
+	}
+	else if (line[*j] && line[*j + 1] && line[*j] == '\"' && \
+		line[*j + 1] == '\"')
+	{
+		*j = *j + 2;
+		return (0);
+	}
+	return (1);
 }
 
 int	num_of_char(char *line)
@@ -88,10 +112,12 @@ int	num_of_char(char *line)
 
 	i = 1;
 	j = 0;
-	while (line[j] && line[j] != ' ')
+	while (line[j] && !is_valid(line[j]))
 	{
 		if (line[j] == '*')
 			skip_najmat(line, &j);
+		while (!is_not_q(line, &j))
+			;
 		if (line[j] && line[j] != '*')
 			skip_chars(line, &j, &i);
 		if (!line[j])

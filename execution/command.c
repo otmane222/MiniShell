@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/31 22:26:07 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/04 00:10:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ int	run_built_in(t_tree *root, t_data data, t_env **env)
 	else if (ft_strncmp(root->token->cmd[0], "unset", 6) == 0)
 		return (5);
 	else if (ft_strncmp(root->token->cmd[0], "export", 7) == 0)
-		ft_export(&root->token, env);
+		ft_export(&root->token, env, data.outfile_fd);
 	else if (ft_strncmp(root->token->cmd[0], "env", 4) == 0)
 		ft_env(&root->token, env, data.outfile_fd);
 	return (0);
@@ -135,8 +135,12 @@ void	case_directory(char *str)
 
 void	execute_execve(char *cmd, char **cmds, char **env)
 {
+	t_tree	*tree;
+
+	tree = tree_head(NULL);
 	execve(cmd, cmds, env);
 	perror(cmd);
+	free_tree(tree);
 	if (errno == ENOENT)
 	{
 		ft_printf("Minishell: %s: command not found\n", cmd);
@@ -153,14 +157,35 @@ int	wait_last_cmd(t_data data)
 	return (0);
 }
 
+void	expander_in_execution(t_rock *rock, t_env **env)
+{
+	int	i;
+
+	i = 0;
+	while (rock->cmd[i])
+	{
+		if (rock->arr[i] != -9)
+			rock->cmd[i] = expand_line(rock->cmd[i], *env);
+		i++;
+	}
+	i = 0;
+	while (rock->cmd[i])
+	{
+		if (rock->arr[i] != -9)
+			rock->cmd[i] = deleted_q(rock->cmd[i]);
+		i++;
+	}
+}
+
 int	handle_command(t_tree *root, t_data data, t_env **env)
 {
 	char	**paths;
 	char	*cmd;
 
+	expander_in_execution(root->token, env);
 	if (built_in(root->token->cmd[0]))
 		return (run_built_in(root, data, env));
-	else
+	if (1)
 	{
 		data.i = fork();
 		if (data.i < 0)

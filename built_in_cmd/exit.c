@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:33:50 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/24 15:07:08 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 21:47:05 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,25 +30,36 @@ static int	is_valid(t_tree *root)
 	return (0);
 }
 
-int	ft_exit(t_tree *root)
+void	call_help(t_tree *root)
 {
 	int	status;
+
+	if (is_valid(root))
+	{
+		write(2, "exit\n", 6);
+		status = ft_atoi(root->token->cmd[1]);
+		exit (status);
+	}
+}
+
+int	ft_exit(t_tree *root)
+{
 	int	i;
 
 	i = 0;
 	while (root->token->cmd[i])
 		i++;
 	if (i > 2)
-		return (write(2, "exit: too many arguments\n", 26), 1);
-	if (root && root->token->cmd && root->token->cmd[1])
 	{
-		if (is_valid(root))
-		{
-			write(2, "exit\n", 6);
-			status = ft_atoi(root->token->cmd[1]);
-			exit (status);
-		}
+		i = 0;
+		while (root->token->cmd[1][i] >= '0' && root->token->cmd[1][i] <= '9')
+			i++;
+		if (!root->token->cmd[1][i])
+			return (write(2, "exit\nminishell: exit: too many arguments\n", \
+				42), 1);
 	}
+	if (root && root->token->cmd && root->token->cmd[1])
+		call_help(root);
 	else if (is_valid(root))
 	{
 		write(2, "exit\n", 6);

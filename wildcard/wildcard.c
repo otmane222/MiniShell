@@ -6,11 +6,26 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:35:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 16:54:47 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/04 00:04:08 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wildcard.h"
+
+int	is_operator2(char c)
+{
+	if (c == '|' || c == '>' || c == '<' || c == '&' || c == ')' \
+		|| c == '(')
+		return (1);
+	return (0);
+}
+
+int	is_valid(int a)
+{
+	if (is_white_space(a) || is_operator2(a))
+		return (1);
+	return (0);
+}
 
 char	*chars(char *line, t_var *var)
 {
@@ -20,13 +35,15 @@ char	*chars(char *line, t_var *var)
 	int		k;
 
 	k = 0;
-	if (!line || line[var->start] == '\0' || line[var->start] == ' ')
+	while (!is_not_q(line, &var->start))
+		;
+	if (!line || line[var->start] == '\0' || is_valid(line[var->start]))
 		return (NULL);
 	if (line[var->start] == '*')
 	{
 		while (line[var->start] && line[var->start] == '*')
 			var->start++;
-		if (!line[var->start] || line[var->start] == ' ')
+		if (!line[var->start] || is_valid(line[var->start]))
 		{
 			var->i = var->start;
 			return (NULL);
@@ -34,27 +51,34 @@ char	*chars(char *line, t_var *var)
 	}
 	i = var->start;
 	while (line[i] && line[i] != '*')
+	{
+		if (line[i] == '\'')
+			skip_q(line, &i, '\'');
+		if (line[i] == '\"')
+			skip_q(line, &i, '\"');
+		if (!line[i])
+			break ;
 		i++;
+	}
 	str = malloc(sizeof(char) * i - var->start + 1);
 	if (!str)
 		return (NULL);
 	j = 0;
 	i = var->start;
 	while (line[i] && line[i] != '*' && \
-		line[i] != ' ')
+		!is_valid(line[i]))
 	{
 		if (line[i] == '\'')
-		{
-			var->start += 2;
-			str = store_datas(str, line, &i, &j);
-		}
-		if (!line[i] || line[i] == ' ')
+			str = store_datas(str, line, &i, &j, var);
+		if (line[i] == '\"')
+			str = store_datad(str, line, &i, &j, var);
+		if (!line[i] || is_valid(line[var->start]) || line[i] == '*')
 			break ;
 		str[j] = line[i];
 		i++;
 		j++;
 	}
-	if (!line[i] || line[i] == ' ')
+	if (!line[i] || is_valid(line[var->start]))
 		var->end = 1;
 	str[j] = '\0';
 	var->start += ft_strlen(str);
@@ -81,31 +105,6 @@ char	**to_find_str(char *line, t_var *var)
 	return (find);
 }
 
-char	*change_line(char *line, t_filename *files, t_var *var)
-{
-	int	i;
-	int	j;
-
-	j = 0;
-	i = var->j;
-	while (line[i] && line[i] != ' ')
-		i++;
-	i = i - var->j;
-	while (files)
-	{
-		if (files->usable == 1)
-		{
-			line = ft_strreplace1(files->name, line, i, var->j);
-			var->i += ft_strlen(files->name) + 1 - i;
-			var->j += ft_strlen(files->name) + 1;
-			i = 0;
-		}
-		files = files->next;
-	}
-	var->i += i;
-	return (line);
-}
-
 void	wild_card_line(t_token **tok, t_var *var, t_filename *files, t_token **head)
 {
 	char		**to_find;
@@ -122,7 +121,7 @@ void	wild_card_line(t_token **tok, t_var *var, t_filename *files, t_token **head
 	{
 		if (files->usable)
 		{
-			node = init_token(ft_strlen(files->name));
+			node = init_token_wild(ft_strlen(files->name));
 			node->data = ft_strdup(files->name);
 			if (!var->flag)
 			{
@@ -194,11 +193,13 @@ void	handle_wildcard(t_token **tok)
 		return ;
 	files = get_files_name();
 	init_var_2(&var);
-	if ((*tok)->data[0] == '*')
+	while (!is_not_q((*tok)->data, &var->i))
+		;
+	if ((*tok)->data[var->i] == '*')
 		var->check = 0;
 	while ((*tok)->data[var->i])
 	{
-		if ((*tok)->data[var->i] == ' ')
+		if (is_valid((*tok)->data[var->i]))
 		{
 			var->j = var->i + 1;
 			if ((*tok)->data[var->j] == '*')
@@ -213,4 +214,21 @@ void	handle_wildcard(t_token **tok)
 		var->i++;
 	}
 	free_all3(var, files);
+}
+
+void	wild_card_handle(t_token **token)
+{
+	t_token	*tmp;
+
+	while ((*token))
+	{
+		handle_wildcard(token);
+		if (!(*token))
+			break ;
+		tmp = (*token);
+		(*token) = (*token)->next;
+	}
+	while (tmp->prev)
+		tmp = tmp->prev;
+	(*token) = tmp;
 }

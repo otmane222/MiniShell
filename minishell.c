@@ -59,11 +59,22 @@ void	free_tree(t_tree *tree)
 	tree = NULL;
 }
 
+t_tree	*tree_head(t_tree *root)
+{
+	static t_tree	*tree;
+
+	if (!tree)
+		return (tree);
+	else
+		tree = root;
+	return (NULL);
+}
+
 static void	start_job(t_env **our_env)
 {
 	t_token	*token;
-	// t_rock	*rock;
-	// t_tree	*tree;
+	t_rock	*rock;
+	t_tree	*tree;
 	char	*line;
 
 	// (void) our_env;
@@ -74,35 +85,18 @@ static void	start_job(t_env **our_env)
 	if (!line[0])
 		return ;
 	add_history(line);
-	line = expand_line(line, *our_env);
+	// line = expand_line(line, *our_env);
 	token = init_token(ft_strlen(line));
 	if (!get_token(&token, line))
 		return (free(line));
 	free(line);
-	t_token	*tmp;
-
-	while (token)
-	{
-		handle_wildcard(&token);
-		if (!token)
-			break ;
-		tmp = token;
-		token = token->next;
-	}
-	while (tmp->prev)
-		tmp = tmp->prev;
-	while (tmp)
-	{
-		printf("%s\n", tmp->data);
-		tmp = tmp->next;
-	}
-	// rock = lex_token(&token);
-	// get_head1(&rock);
-	
-// 	tree = ast_tokenes(rock);
-// 	execute(tree, our_env);
-// 	// print_tree(tree);
-// 	free_tree(tree);
+	rock = lex_token(&token);
+	get_head1(&rock);
+	tree = ast_tokenes(rock);
+	tree_head(tree);
+	execute(tree, our_env);
+	// print_tree(tree);
+	free_tree(tree);
 }
 
 void	lk(void)

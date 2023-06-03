@@ -38,4 +38,9 @@ int		is_char(char c);
 int		is_parenthese(char c);
 int		is_white_space(char c);
 
+void	wild_card_handle(t_token **token);
+void	del_q(t_token **token);
+char	*store_dq(char *str, char *line, int *i, int *j);
+char	*store_sq(char *str, char *line, int *i, int *j);
+
 #endif

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/31 18:53:09 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/04 00:09:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,15 +56,16 @@ void	add_b_list(t_fds **lst, t_fds *neud);
 void	free_fds(t_fds *list);
 
 // built-in //
+void	ft_export(t_rock **rock, t_env **env, int outfile);
 void	ft_env(t_rock **rock, t_env **env, int outfile);
-void	ft_export(t_rock **rock, t_env **env);
 void	ft_unset(t_rock **rock, t_env **env);
-void	ft_echo(int outfile, char **arg);
-int		ft_exit(t_tree *root);
-int		ft_cd(char *path, t_env **env);
 void	ft_pwd(int outfile, t_env **env);
+void	ft_echo(int outfile, char **arg);
+int		ft_cd(char *path, t_env **env);
+int		ft_exit(t_tree *root);
 
 char	*expand_line(char *line, t_env *our_env);
 char	*check_path(char **paths, char *path);
+char	*deleted_q(char *line);
 
 #endif

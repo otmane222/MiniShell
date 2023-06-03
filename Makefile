@@ -28,7 +28,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
 LFLAGS = -L/Users/nakebli/.brew/opt/readline/lib 
 IFLAGS = -I/Users/nakebli/.brew/opt/readline/include
 
@@ -41,6 +41,7 @@ HEADERS = minishell.h \
 		built_in_cmd/builtin.h\
 		get_next_line/get_next_line.h \
 		/Users/nakebli/.brew/opt/readline/include \
+		wildcard/wildcard.h \
 		libft/libft.h \
 		ft_printf_error/ft_printf.h
 
@@ -48,6 +49,7 @@ HEADER_INC =	-Iminishell.h \
 				-Ienvirenment/env.h \
 				-Itokenizer/tokenizer.h \
 				-Iexpander/expand.h \
+				-Iwildcard/wildcard.h \
 				-Iexecution/execute.h \
 				-Iparser/parser.h \
 				-Ibuilt_in_cmd/builtin.h\

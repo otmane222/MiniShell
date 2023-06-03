@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/03 15:45:09 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 23:53:00 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,6 +91,7 @@ typedef struct s_rock
 	int				type;
 	int				flag;
 	int				flag2;
+	int				*arr;
 	int				expand;
 	int				is_last;
 	struct s_rock	*next;
@@ -124,9 +125,12 @@ int		get_token(t_token **token, char *line);
 void	get_head1(t_rock **head);
 int		ft_printf(const char *format, ...);
 
+t_tree	*tree_head(t_tree *root);
+
 t_rock	*lex_token(t_token **token);
 int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
+void	free_tree(t_tree *tree);
 t_tree	*ast_tokenes(t_rock *rock);
 void	execute(t_tree *root, t_env **env);
 

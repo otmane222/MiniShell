@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   export.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:54:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/16 17:42:31 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/04 00:09:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ void	add_to_env(char *var, char *val, t_env **env)
 	ft_lstadd_back_env(env, ft_lstnew_env(val, var));
 }
 
-void	ft_export(t_rock **rock, t_env **env)
+void	ft_export(t_rock **rock, t_env **env, int outfile)
 {
 	char	**temp;
 	t_env	*temp_e;
@@ -44,7 +44,11 @@ void	ft_export(t_rock **rock, t_env **env)
 		temp_e = *env;
 		while (temp_e)
 		{
-			printf("declare -x %s=\"%s\"\n", temp_e->key, temp_e->value);
+			ft_putstr_fd("declare -x ", outfile);
+			ft_putstr_fd(temp_e->key, outfile);
+			ft_putstr_fd("=\"", outfile);
+			ft_putstr_fd(temp_e->value, outfile);
+			ft_putstr_fd("\"\n", outfile);
 			temp_e = temp_e->next;
 		}
 	}

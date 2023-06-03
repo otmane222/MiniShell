@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:37:05 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 16:10:31 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 20:36:31 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,21 @@ void	del_tokenx(t_token **tok)
 		tmp->prev = tmp2;
 	if (tmp2)
 		tmp2->next = tmp;
+}
+
+t_token	*init_token_wild(size_t x)
+{
+	t_token	*token;
+
+	token = malloc (sizeof(t_token));
+	if (!token)
+		return (NULL);
+	token->data = malloc(x + 1);
+	token->next = NULL;
+	token->flag = -9;
+	token->type = -10;
+	token->prev = NULL;
+	return (token);
 }
 
 t_filename	*get_files_name(void)

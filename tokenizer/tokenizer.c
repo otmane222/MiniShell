@@ -81,8 +81,10 @@ int	first_step(t_token **token, char *line, t_var *var)
 int	get_token(t_token **token, char *line)
 {
 	t_var	*var;
+	t_token	*tmp;
 
 	init_var(&var);
+	tmp = *token;
 	while (line[++var->i])
 	{
 		var->check = first_step(token, line, var);
@@ -95,5 +97,7 @@ int	get_token(t_token **token, char *line)
 	if (!check_errors(*token))
 		return (free(var), free_tokens(token), 0);
 	free(var);
+	wild_card_handle(&tmp);
+	*token = tmp;
 	return (1);
 }

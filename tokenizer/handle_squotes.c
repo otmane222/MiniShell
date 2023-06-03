@@ -21,6 +21,10 @@ int	is_qoutes(char c)
 
 static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 {
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
+	var->i++;
 	while (line[var->i] && !ft_strchr(stop, line[var->i]))
 	{
 		(*t)->data[var->counter] = line[var->i];
@@ -35,6 +39,9 @@ static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 		printf("syntax error\n");
 		return ;
 	}
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
 	(*t)->flag = 0;
 }
 
@@ -63,7 +70,7 @@ static void	check_after(t_token **token, char *line, t_var *var, int *i)
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 {
-	var->i++;
+	// var->i++;
 	stor_data(token, line, var, "\'");
 	if (!line[var->i])
 		return ;

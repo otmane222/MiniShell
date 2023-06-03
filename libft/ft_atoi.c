@@ -42,7 +42,7 @@ static void	call_help(char *str)
 {
 	write(2, "exit: ", 7);
 	write(2, str, ft_strlen(str));
-	write(2, ": numeric argument required\n", 34);
+	write(2, ": numeric argument required\n", 29);
 }
 
 int	ft_atoi(const char *str)
@@ -63,7 +63,7 @@ int	ft_atoi(const char *str)
 		value = value * 10 + (str[i] - 48);
 		if (ft_isoverflow(prev, value) == 1)
 		{
-			write(2, "exit: ", 7);
+			write(2, "minishell exit: ", 17);
 			write(2, str, ft_strlen(str));
 			write(2, ": numeric argument required\n", 29);
 			if (*signe == 1)

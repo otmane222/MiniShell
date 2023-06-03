@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/03 19:22:36 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 18:27:27 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 22:58:40 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,16 +83,4 @@ void	ft_malloc(t_l *head, char **line)
 		head = head->next;
 	}
 	(*line) = malloc (i * (sizeof(char) + 1));
-}
-
-size_t	ft_strlen(const char *s)
-{
-	size_t	i;
-
-	i = 0;
-	while (s[i])
-	{
-		i++;
-	}
-	return (i);
 }

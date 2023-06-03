@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:29:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 13:33:51 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/03 19:08:08 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ void	skip_q(char *line, int *i, char c)
 	*i = *i + 1;
 	while (line[*i] && line[*i] != c)
 		*i = *i + 1;
+	*i = *i + 1;
 	if (line[*i] && line[*i] == '\'')
 		skip_q(line, i, '\'');
 	if (line[*i] && line[*i] == '\"')
@@ -80,8 +81,9 @@ void	search_for_same_files(char **to_find, t_filename *files, t_var *var)
 	}
 }
 
-char	*store_datas(char *str, char *line, int *i, int *j)
+char	*store_datas(char *str, char *line, int *i, int *j, t_var *var)
 {
+	var->start += 2;
 	*i = *i + 1;
 	while (line[*i] && line[*i] != '\'')
 	{
@@ -91,5 +93,28 @@ char	*store_datas(char *str, char *line, int *i, int *j)
 	}
 	str[*j] = '\0';
 	*i = *i + 1;
+	if (line[*i] == '\"')
+		str = store_datad(str, line, i, j, var);
+	if (line[*i] == '\'')
+		str = store_datas(str, line, i, j, var);
+	return (str);
+}
+
+char	*store_datad(char *str, char *line, int *i, int *j, t_var *var)
+{
+	var->start += 2;
+	*i = *i + 1;
+	while (line[*i] && line[*i] != '\"')
+	{
+		str[*j] = line[*i];
+		*i = *i + 1;
+		*j = *j + 1;
+	}
+	str[*j] = '\0';
+	*i = *i + 1;
+	if (line[*i] == '\'')
+		str = store_datas(str, line, i, j, var);
+	if (line[*i] == '\"')
+		str = store_datad(str, line, i, j, var);
 	return (str);
 }
