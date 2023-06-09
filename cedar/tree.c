@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/26 11:06:06 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/08 16:58:47 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	del_token(t_rock *tok)
 	tmp = tok->next;
 	tmp2 = tok->prev;
 	free_2dd(tok->cmd);
+	free(tok->arr);
 	free(tok);
 	tok = NULL;
 	if (tmp)
@@ -40,6 +41,7 @@ t_tree	*init_tree(void)
 	tree->left = NULL;
 	tree->right = NULL;
 	tree->token = NULL;
+	tree->heredoc = NULL;
 	return (tree);
 }
 
@@ -70,10 +72,28 @@ void	get_head(t_rock **head)
 	}
 }
 
-t_tree	*ast_tokenes(t_rock *rock)
+void	free_parenthese(t_rock *rock)
+{
+	t_rock	*tmp;
+
+	while (rock)
+	{
+		tmp = rock;
+		rock = rock->next;
+		if (tmp->type == O_PARENTHIS || tmp->type == C_PARENTHIS)
+		{
+			free_2dd(tmp->cmd);
+			free(tmp->arr);
+			free(tmp);
+		}
+	}
+}
+
+t_tree	*ast_tokenes(t_rock *rock, t_env *env)
 {
 	t_tree	*root;
 
-	root = ast_and(rock);
+	root = ast_and(rock, env);
+	// free_parenthese(rock);
 	return (root);
 }

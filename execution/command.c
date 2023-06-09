@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/04 00:10:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 20:54:12 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,26 +16,26 @@ char	*check_path(char **paths, char *path)
 {
 	int		i;
 	char	*save;
+	char	*tmp;
 
 	i = 0;
-	if (!path || path[0] == '\0')
-	{
-		ft_printf("Minishell: %s: command not found\n", path);
-		exit (127);
-	}
+	if (!paths)
+		ft_printf("minishell: %s: No such file or directory\n", path);
 	if (access(path, X_OK) == 0)
 		return (path);
 	save = path;
 	path = ft_strjoin("/", path);
 	while (paths[i])
 	{
+		tmp = paths[i];
 		paths[i] = ft_strjoin(paths[i], path);
+		free (tmp);
+		tmp = NULL;
 		if (access(paths[i], X_OK) == 0)
-			return (paths[i]);
+			return (free(path), paths[i]);
 		i++;
 	}
-	ft_printf("Minishell: %s: command not found\n", save);
-	exit (127);
+	return (save);
 }
 
 int	built_in(char *str)
@@ -68,7 +68,7 @@ int	run_built_in(t_tree *root, t_data data, t_env **env)
 	else if (ft_strncmp(root->token->cmd[0], "exit", 5) == 0)
 		ft_exit(root);
 	else if (ft_strncmp(root->token->cmd[0], "unset", 6) == 0)
-		return (5);
+		ft_unset(&root->token, env);
 	else if (ft_strncmp(root->token->cmd[0], "export", 7) == 0)
 		ft_export(&root->token, env, data.outfile_fd);
 	else if (ft_strncmp(root->token->cmd[0], "env", 4) == 0)
@@ -88,6 +88,17 @@ void	handle_files(t_data *data)
 		if (dup2(data->outfile_fd, STDOUT_FILENO) == -1)
 			perror("dup out3");
 		close(data->outfile_fd);
+	}
+	else if (data->type == PIPE_RL)
+	{
+		close(data->i);
+		if (dup2(data->outfile_fd, STDOUT_FILENO) == -1)
+			perror("dup out3");
+		close(data->outfile_fd);
+		close(data->fd[1]);
+		if (dup2(data->infile_fd, STDIN_FILENO) == -1)
+			perror("dup out4");
+		close(data->infile_fd);
 	}
 	else
 	{
@@ -133,19 +144,20 @@ void	case_directory(char *str)
 	}
 }
 
-void	execute_execve(char *cmd, char **cmds, char **env)
+void	execute_execve(char *cmd, char **cmds, t_env *env)
 {
-	t_tree	*tree;
+	char	**our_env;
 
-	tree = tree_head(NULL);
-	execve(cmd, cmds, env);
-	perror(cmd);
-	free_tree(tree);
+	(void)env;
+	our_env = change_env(env);
+	execve(cmd, cmds, our_env);
+	free_2dd(our_env);
 	if (errno == ENOENT)
 	{
 		ft_printf("Minishell: %s: command not found\n", cmd);
 		exit (127);
 	}
+	exit (1);
 }
 
 int	wait_last_cmd(t_data data)
@@ -177,29 +189,27 @@ void	expander_in_execution(t_rock *rock, t_env **env)
 	}
 }
 
-int	handle_command(t_tree *root, t_data data, t_env **env)
+int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
 	char	**paths;
 	char	*cmd;
 
+	(void)list;
 	expander_in_execution(root->token, env);
 	if (built_in(root->token->cmd[0]))
 		return (run_built_in(root, data, env));
-	if (1)
+	data.i = fork();
+	if (data.i < 0)
+		return (perror("fork"), 1);
+	if (data.i == 0)
 	{
-		data.i = fork();
-		if (data.i < 0)
-			return (perror("fork"), 1);
-		if (data.i == 0)
-		{
-			handle_files(&data);
-			paths = ft_split(ft_getenv("PATH", *env), ':');
-			case_directory(root->token->cmd[0]);
-			cmd = check_path(paths, root->token->cmd[0]);
-			execute_execve(cmd, root->token->cmd, NULL);
-		}
-		if (root->token->is_last)
-			return (wait_last_cmd(data));
+		handle_files(&data);
+		paths = ft_split(ft_getenv("PATH", *env), ':');
+		case_directory(root->token->cmd[0]);
+		cmd = check_path(paths, root->token->cmd[0]);
+		execute_execve(cmd, root->token->cmd, *env);
 	}
+	else if (root->token->is_last)
+		return (wait_last_cmd(data));
 	return (0);
 }

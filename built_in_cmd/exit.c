@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:33:50 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 21:47:05 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/05 23:38:38 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ static int	is_valid(t_tree *root)
 	else if (root->token->next && \
 		(root->token->next->type == D_AND || root->token->next->type == DPIPE))
 		return (1);
-	else if (!root->token->prev && !root->token->flag2)
+	else if (!root->token->prev && !root->token->is_exit)
 		return (1);
-	else if (!root->token->next && !root->token->flag2)
+	else if (!root->token->next && !root->token->is_exit)
 		return (1);
 	return (0);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   2d_array_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 17:17:17 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 12:11:37 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/05 19:39:56 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ void	del_rock(t_rock *rock)
 		return ;
 	tmp = rock->next;
 	tmp2 = rock->prev;
+	free(rock->arr);
 	free_2dd(rock->cmd);
 	free(rock);
 	rock = NULL;
@@ -53,9 +54,28 @@ static void	helpful_call(t_rock *tmp, t_rock *rock, char **arr, t_var var)
 	arr[var.i] = NULL;
 }
 
+static void	helpful_call2(t_rock *tmp, t_rock *rock, int *num, t_var var)
+{
+	while (tmp->cmd[var.i])
+	{
+		num[var.i] = tmp->arr[var.i];
+		var.i++;
+	}
+	while (rock->cmd[var.j])
+	{
+		num[var.i] = rock->arr[var.j];
+		var.i++;
+		var.j++;
+	}
+	free(tmp->arr);
+	tmp->arr = num;
+	// num[var.i] = 0;
+}
+
 void	join_2d_arrs(t_rock *rock, t_rock *tmp)
 {
 	char	**arr;
+	int		*num;
 	t_var	var;
 
 	var.i = 0;
@@ -64,12 +84,16 @@ void	join_2d_arrs(t_rock *rock, t_rock *tmp)
 		var.i++;
 	while (tmp->cmd[var.j])
 		var.j++;
+	num = malloc(sizeof(int) * (var.i + var.j + 1));
+	if (!num)
+		return ;
 	arr = malloc(sizeof(char *) * (var.i + var.j + 1));
 	if (!arr)
 		return ;
 	var.i = 0;
 	var.j = 0;
 	helpful_call(tmp, rock, arr, var);
+	helpful_call2(tmp, rock, num, var);
 	del_rock(rock);
 	free_2dd(tmp->cmd);
 	tmp->cmd = arr;

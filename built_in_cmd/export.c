@@ -6,11 +6,40 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:54:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/04 00:09:03 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 18:26:49 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
+
+char	**change_env(t_env *env)
+{
+	char	**str;
+	char	*s1;
+	int		i;
+	t_env	*tmp;
+
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		i++;
+		tmp = tmp->next;
+	}
+	str = malloc (sizeof(char *) * (i + 1));
+	if (!str)
+		return (NULL);
+	tmp = env;
+	i = 0;
+	while (tmp)
+	{
+		s1 = ft_strjoin("=", tmp->value);
+		str[i++] = ft_strjoin(tmp->key, s1);
+		free (s1);
+		tmp = tmp->next;
+	}
+	return (str[i] = NULL, str);
+}
 
 void	add_to_env(char *var, char *val, t_env **env)
 {

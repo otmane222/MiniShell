@@ -28,6 +28,7 @@ static void	store_data(char *line, t_var *var, t_token **token, int *i)
 		var->i++;
 		j++;
 	}
+	(*token)->data[*i] = '\0';
 }
 
 void	handle_seperators(char *line, t_var *var, t_token **token, int *i)

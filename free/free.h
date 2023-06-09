@@ -1,26 +1,18 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   and.c                                              :+:      :+:    :+:   */
+/*   free.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/23 19:18:18 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/06 19:12:38 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/09 14:14:04 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/09 14:16:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "execute.h"
+#ifndef FREE_H
+# define FREE_H
 
-int	handle_and(t_tree *root, t_data data, t_env **env, t_fds **fds)
-{
-	data.status = execute_cmd(root->left, data, env, fds);
-	if (data.status == 1)
-		return (1);
-	while (wait(NULL) != -1)
-		;
-	data.status = execute_cmd(root->right, data, env, fds);
-	if (data.status == 1)
-		return (1);
-	return (0);
-}
+# include "../minishell.h"
+
+#endif

@@ -6,13 +6,13 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 14:32:34 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/08 19:00:59 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "expand.h"
 
-static char	*helpful_call(char *line, int *start, t_env *our_env, int *flag)
+static char	*helpful_call(char *line, int *start, t_env *our_env)
 {
 	char	*s;
 	char	*str;
@@ -22,8 +22,8 @@ static char	*helpful_call(char *line, int *start, t_env *our_env, int *flag)
 	{
 		str = ft_itoa(g_exit_status);
 		line = ft_strreplace_no_q(str, line, "?", (*start));
+		(*start) += ft_strlen(str) - 1;
 		free(str);
-		(*start) = (*start) + ft_strlen(str) - 1;
 		return (line);
 	}
 	s = get_env_var(&line[(*start)]);
@@ -31,8 +31,7 @@ static char	*helpful_call(char *line, int *start, t_env *our_env, int *flag)
 	if (str)
 	{
 		line = ft_strreplace_no_q(str, line, s, (*start));
-		(*start) = (*start) + ft_strlen(str) - 1;
-		*flag = 1;
+		(*start) = (*start) + ft_strlen(str) + 1;
 	}
 	else
 	{
@@ -41,7 +40,7 @@ static char	*helpful_call(char *line, int *start, t_env *our_env, int *flag)
 	}
 	free(s);
 	while (line[(*start)] && line[(*start)] != '$' && \
-		line[(*start)] != '\'' && line[(*start)] != '\"')
+	line[(*start)] != '\'' && line[(*start)] != '\"')
 		(*start)++;
 	return (line);
 }
@@ -77,7 +76,7 @@ static char	*expand_var_nq(char *line, int *start, t_env *our_env)
 
 	flag = 0;
 	j = 0;
-	while (line[(*start)] && line[(*start)] != '\'' && line[(*start)] != '\"')
+	while (line[(*start)])
 	{
 		flag = 0;
 		if (line[(*start)] && line[(*start)] == '$')
@@ -87,12 +86,12 @@ static char	*expand_var_nq(char *line, int *start, t_env *our_env)
 				j = 0;
 		}
 		if (line[(*start)] && line[(*start)] != '$' && j == 1)
-			line = helpful_call(line, start, our_env, &flag);
+			line = helpful_call(line, start, our_env);
 		if (!line[(*start)] || line[(*start)] == '\'' || line[(*start)] == '\"')
 			break ;
 		(*start)++;
 	}
-	if ((line[(*start)] == '\'' && !flag) || line[(*start)] == '\"')
+	if (line[(*start)] == '\'' || line[(*start)] == '\"')
 		(*start) = (*start) - 1;
 	return (line);
 }
@@ -103,15 +102,15 @@ static void	skip_spaces(char *line, int *start)
 		*start = *start + 1;
 }
 
-void	skip_in_q(char *line, int *start, char *stop)
+void	skip_in_q(char *line, int *start, char stop)
 {
 	*start = *start + 1;
-	while (line[*start] && !ft_strchr(stop, line[*start]))
+	while (line[*start] && line[*start] != stop)
 		*start = *start + 1;
-	if (line[*start] == '\"')
-		*start = *start + 1;
-	if (line[*start] && !is_operator(line[*start]))
-		skip_char(line, start);
+	// if (line[*start] == '\"')
+	// 	*start = *start + 1;
+	// if (line[*start] && !is_operator(line[*start]))
+	// 	skip_char(line, start);
 }
 
 void	skip_char(char *line, int *start)
@@ -121,9 +120,9 @@ void	skip_char(char *line, int *start)
 			!is_operator(line[*start]))
 		*start = *start + 1;
 	if (line[*start] && line[*start] == '\"')
-		skip_in_q(line, start, "\"");
+		skip_in_q(line, start, '\"');
 	if (line[*start] && line[*start] == '\'')
-		skip_in_q(line, start, "\'");
+		skip_in_q(line, start, '\'');
 }
 
 static void	skip_until(char *line, int *start)
@@ -170,7 +169,7 @@ char	*expand_line(char *line, t_env *our_env)
 				return (line);
 		}
 		if (line[i] == '\'')
-			skip_in_q(line, &i, "\'");
+			skip_in_q(line, &i, '\'');
 		if (line[i] == '\"')
 			line = expand_var_dq(line, &i, our_env);
 		if (line[i] == '$')

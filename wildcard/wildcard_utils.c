@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:56:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 19:30:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 16:49:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ char	*ft_strreplace1(char *str, char *token, int len, int index)
 	i = -1;
 	while (str[++i])
 		ret[j++] = str[i];
-	ret[j++] = ' ';
 	i = index + len;
 	while (token[i])
 	{
@@ -35,7 +34,7 @@ char	*ft_strreplace1(char *str, char *token, int len, int index)
 		ret[j] = '\0';
 	}
 	ret[j] = '\0';
-	// free(token);
+	free(token);
 	return (ret);
 }
 
@@ -66,12 +65,6 @@ int	found_it(const char *big, const char *little, size_t len)
 		i++;
 	}
 	return (0);
-}
-
-void	skip_najmat(char *line, int *j)
-{
-	while (line[*j] && line[*j] == '*')
-		*j = *j + 1;
 }
 
 void	skip_chars(char *line, int *j, int *i)

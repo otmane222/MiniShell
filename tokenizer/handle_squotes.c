@@ -35,6 +35,7 @@ static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 	(*t)->data[var->counter] = '\0';
 	if (!line[var->i])
 	{
+		get_head_token(t);
 		free_tokens(t);
 		printf("syntax error\n");
 		return ;

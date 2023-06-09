@@ -24,11 +24,12 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard execution/*.c) \
 		$(wildcard built_in_cmd/*.c) \
 		$(wildcard get_next_line/*.c) \
+		$(wildcard free/*.c) \
 		minishell.c
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address -g
 LFLAGS = -L/Users/nakebli/.brew/opt/readline/lib 
 IFLAGS = -I/Users/nakebli/.brew/opt/readline/include
 

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 20:03:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/30 21:41:06 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 21:55:20 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ int	ft_cd(char *path, t_env **env)
 			ft_printf("access parent directories: No such file or directory\n");
 		}
 		i = 2;
+		return (0);
 	}
+	free(str);
 	return (0);
 }

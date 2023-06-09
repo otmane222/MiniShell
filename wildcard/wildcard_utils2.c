@@ -6,23 +6,11 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:29:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 19:08:08 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:13:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "wildcard.h"
-
-// int	there_is(char *to_find, char *str, t_var *var)
-// {
-// 	int		i;
-
-// 	i = 0;
-// 	if (ft_strlen(str) < var->i)
-// 		return (0);
-// 	else if (ft_strfind(str, to_find, ft_strlen(str), var->end - var->start))
-// 		return (1);
-// 	return (0);
-// }
 
 void	inti_var_to_0(t_var *var)
 {
@@ -32,89 +20,82 @@ void	inti_var_to_0(t_var *var)
 	var->flag = 0;
 }
 
-void	skip_q(char *line, int *i, char c)
+static void	compare(int *counter, t_filename *files, t_var *var, char **to_find)
 {
-	*i = *i + 1;
-	while (line[*i] && line[*i] != c)
-		*i = *i + 1;
-	*i = *i + 1;
-	if (line[*i] && line[*i] == '\'')
-		skip_q(line, i, '\'');
-	if (line[*i] && line[*i] == '\"')
-		skip_q(line, i, '\"');
+	*counter = found_it(&files->name[files->counter], \
+	to_find[var->counter], ft_strlen(files->name));
+	if (!*counter)
+		files->usable = 0;
+	else if (var->counter == 0 && var->check && ft_strncmp(files->name, \
+		to_find[0], ft_strlen(to_find[0])))
+		files->usable = 0;
+	else if (!to_find[var->counter + 1] && var->end && \
+		ft_strncmp(&files->name[ft_strlen(files->name) - \
+		ft_strlen(to_find[var->counter])], to_find[var->counter], \
+			ft_strlen(to_find[var->counter])))
+		files->usable = 0;
+	else
+		files->counter = *counter;
 }
 
 void	search_for_same_files(char **to_find, t_filename *files, t_var *var)
 {
-	int			i;
 	int			counter;
 	t_filename	*tmp;
 
-	i = 0;
 	tmp = files;
+	var->counter = 0;
 	counter = 0;
-	while (to_find[i])
+	while (to_find[var->counter])
 	{
 		files = tmp;
 		while (files)
 		{
-			if (ft_strlen(files->name) >= ft_strlen(to_find[i]) \
+			if (ft_strlen(files->name) >= ft_strlen(to_find[var->counter]) \
 				&& (int)ft_strlen(files->name) >= files->counter)
-			{
-				counter = found_it(&files->name[files->counter], \
-					to_find[i], ft_strlen(files->name));
-				if (!counter)
-					files->usable = 0;
-				else if (i == 0 && var->check && ft_strncmp(files->name, \
-					to_find[0], ft_strlen(to_find[0])))
-					files->usable = 0;
-				else if (!to_find[i + 1] && var->end && ft_strncmp(&files-> name[ft_strlen(files->name) - ft_strlen(to_find[i])], to_find[i], ft_strlen(to_find[i])))
-					files->usable = 0;
-				else
-					files->counter = counter;
-			}
+				compare(&counter, files, var, to_find);
 			else
 				files->usable = 0;
 			files = files->next;
 		}
-		i++;
+		var->counter++;
 	}
 }
 
-char	*store_datas(char *str, char *line, int *i, int *j, t_var *var)
+char	*store_datas(char *str, char *line, t_var *va, t_var *var)
 {
 	var->start += 2;
-	*i = *i + 1;
-	while (line[*i] && line[*i] != '\'')
+	va->i = va->i + 1;
+	while (line[va->i] && line[va->i] != '\'')
 	{
-		str[*j] = line[*i];
-		*i = *i + 1;
-		*j = *j + 1;
+		str[va->j] = line[va->i];
+		va->i = va->i + 1;
+		va->j = va->j + 1;
 	}
-	str[*j] = '\0';
-	*i = *i + 1;
-	if (line[*i] == '\"')
-		str = store_datad(str, line, i, j, var);
-	if (line[*i] == '\'')
-		str = store_datas(str, line, i, j, var);
+	str[va->j] = '\0';
+	va->i = va->i + 1;
+	if (line[va->i] == '\"')
+		str = store_datad(str, line, va, var);
+	if (line[va->i] == '\'')
+		str = store_datas(str, line, va, var);
 	return (str);
 }
 
-char	*store_datad(char *str, char *line, int *i, int *j, t_var *var)
+char	*store_datad(char *str, char *line, t_var *va, t_var *var)
 {
 	var->start += 2;
-	*i = *i + 1;
-	while (line[*i] && line[*i] != '\"')
+	va->i = va->i + 1;
+	while (line[va->i] && line[va->i] != '\"')
 	{
-		str[*j] = line[*i];
-		*i = *i + 1;
-		*j = *j + 1;
+		str[va->j] = line[va->i];
+		va->i = va->i + 1;
+		va->j = va->j + 1;
 	}
-	str[*j] = '\0';
-	*i = *i + 1;
-	if (line[*i] == '\'')
-		str = store_datas(str, line, i, j, var);
-	if (line[*i] == '\"')
-		str = store_datad(str, line, i, j, var);
+	str[va->j] = '\0';
+	va->i = va->i + 1;
+	if (line[va->i] == '\'')
+		str = store_datas(str, line, va, var);
+	if (line[va->i] == '\"')
+		str = store_datad(str, line, va, var);
 	return (str);
 }

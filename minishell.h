@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/03 23:53:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 17:35:05 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,7 @@
 # define PIPE_L 16
 # define PIPE_R 17
 # define PIPE_LR 18
+# define PIPE_RL 19
 
 int	g_exit_status;
 
@@ -90,7 +91,8 @@ typedef struct s_rock
 	char			**cmd;
 	int				type;
 	int				flag;
-	int				flag2;
+	int				is_exit;
+	int				red_p;
 	int				*arr;
 	int				expand;
 	int				is_last;
@@ -98,13 +100,22 @@ typedef struct s_rock
 	struct s_rock	*prev;
 }	t_rock;
 
+typedef struct s_heredoc
+{
+	t_rock			*token;
+	char			*name;
+	int				infile_fd;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_heredoc;
+
 typedef struct s_tree
 {
 	t_rock			*token;
+	t_heredoc		*heredoc;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
-
 
 typedef struct s_env
 {
@@ -114,25 +125,27 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-t_env	*put_env_to_new(char **env);
-void	add_to_env(char *var, char *val, t_env **env);
 t_token	*init_token(size_t x);
-
-void	handle_wildcard(t_token **tok);
-
-char	*expand_line(char *line, t_env *our_env);
-int		get_token(t_token **token, char *line);
-void	get_head1(t_rock **head);
-int		ft_printf(const char *format, ...);
-
-t_tree	*tree_head(t_tree *root);
-
 t_rock	*lex_token(t_token **token);
-int		check_errors(t_token *token);
-void	free_tokens(t_token **token);
-void	free_tree(t_tree *tree);
-t_tree	*ast_tokenes(t_rock *rock);
-void	execute(t_tree *root, t_env **env);
+t_tree	*tree_head(t_tree *root);
+t_tree	*ast_tokenes(t_rock *rock, t_env *env);
+t_env	*put_env_to_new(char **env);
+char	**change_env(t_env *env);
 
+void	add_to_env(char *var, char *val, t_env **env);
+void	handle_wildcard(t_token **tok);
+void	execute(t_tree *root, t_env **env);
+void	get_head1(t_rock **head);
+void	free_tokens(t_token **token);
+void	free_env(t_env **our_env);
+void	free_rock(t_rock **rock);
+void	free_tree(t_tree *tree);
+
+char	*handle_wildcard_char(char *line);
+char	*expand_line(char *line, t_env *our_env);
+
+int		get_token(t_token **token, char *line);
+int		ft_printf(const char *format, ...);
+int		check_errors(t_token *token);
 
 #endif

@@ -6,27 +6,27 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:20:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/26 22:03:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/08 17:28:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tree.h"
 
-static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
+static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, t_env *env)
 {
 	rock->flag = 0;
 	tree->token = rock;
-	tree->left = ast_and(rock->prev);
-	tree->right = ast_and(rock->next);
+	tree->left = ast_and(rock->prev, env);
+	tree->right = ast_and(rock->next, env);
 	return (tree);
 }
 
-static t_tree	*fill_right_left1(t_tree *tree, t_rock *rock)
+static t_tree	*fill_right_left1(t_tree *tree, t_rock *rock, t_env *env)
 {
 	rock->flag = 0;
 	tree->token = rock;
-	tree->left = ast_or(rock->prev);
-	tree->right = ast_or(rock->next);
+	tree->left = ast_or(rock->prev, env);
+	tree->right = ast_or(rock->next, env);
 	return (tree);
 }
 
@@ -52,7 +52,7 @@ void	skip_parenthese(t_rock **rock)
 	}
 }
 
-t_tree	*ast_and(t_rock *rock)
+t_tree	*ast_and(t_rock *rock, t_env *env)
 {
 	t_rock	*tmp;
 	t_tree	*tree;
@@ -75,13 +75,13 @@ t_tree	*ast_and(t_rock *rock)
 		rock = rock->next;
 	}
 	if (var.i == 0)
-		return (free(tree), ast_or(tmp));
+		return (free(tree), ast_or(tmp, env));
 	else if (var.i == 1)
-		return (fill_right_left(tree, rock));
+		return (fill_right_left(tree, rock, env));
 	return (NULL);
 }
 
-t_tree	*ast_or(t_rock *rock)
+t_tree	*ast_or(t_rock *rock, t_env *env)
 {
 	t_rock	*tmp;
 	t_tree	*tree;
@@ -104,8 +104,8 @@ t_tree	*ast_or(t_rock *rock)
 		rock = rock->next;
 	}
 	if (var.i == 0)
-		return (free(tree), ast_pipe(tmp));
+		return (free(tree), ast_pipe(tmp, env));
 	else if (var.i == 1)
-		return (fill_right_left1(tree, rock));
+		return (fill_right_left1(tree, rock, env));
 	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:37:05 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 20:36:31 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 16:53:48 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,14 @@ void	del_tokenx(t_token **tok)
 		tmp2->next = tmp;
 }
 
-t_token	*init_token_wild(size_t x)
+t_token	*init_token_wild(void)
 {
 	t_token	*token;
 
 	token = malloc (sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->data = malloc(x + 1);
+	token->data = NULL;
 	token->next = NULL;
 	token->flag = -9;
 	token->type = -10;
@@ -72,17 +72,21 @@ t_filename	*get_files_name(void)
 	if (dir == NULL)
 		return (NULL);
 	entity = readdir(dir);
-	files->name = ft_strdup(entity->d_name);
+	while (entity && entity->d_name[0] == '.')
+		entity = readdir(dir);
+	if (entity)
+		files->name = ft_strdup(entity->d_name);
 	while (entity)
 	{
 		entity = readdir(dir);
-		if (entity)
+		if (entity && entity->d_name[0] != '.')
 		{
 			files->next = init_t_file();
 			files->next->name = ft_strdup(entity->d_name);
 			files = files->next;
 		}
 	}
+	closedir(dir);
 	return (head);
 }
 

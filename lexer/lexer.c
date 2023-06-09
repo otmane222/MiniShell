@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/03 22:18:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/09 14:17:17 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,26 +23,13 @@ t_rock	*init_rock(void)
 	rock->next = NULL;
 	rock->prev = NULL;
 	rock->flag = 1;
-	rock->flag2 = 0;
+	rock->is_exit = 0;
+	rock->red_p = 0;
 	rock->arr = NULL;
 	rock->expand = 1;
 	rock->is_last = 0;
 	rock->type = -10;
 	return (rock);
-}
-
-void	free_tokens(t_token **token)
-{
-	t_token	*tmp;
-
-	while ((*token))
-	{
-		tmp = (*token);
-		(*token) = (*token)->next;
-		free(tmp->data);
-		free(tmp);
-		tmp = NULL;
-	}
 }
 
 void	get_head1(t_rock **head)
