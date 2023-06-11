@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:35:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:38:50 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 16:31:00 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,6 +83,12 @@ void	handle_wildcard(t_token **tok)
 	while ((*tok)->data[var->i])
 	{
 		check_first_char(*tok, var);
+		if ((*tok)->data[var->i] == '\"')
+			skip_q((*tok)->data, &var->i, '\"');
+		if ((*tok)->data[var->i] == '\'')
+			skip_q((*tok)->data, &var->i, '\'');
+		if (!(*tok)->data[var->i])
+			return ;
 		if ((*tok)->data[var->i] == '*')
 		{
 			wild_card_line(tok, var, files, &head);

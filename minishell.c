@@ -29,12 +29,16 @@ static void	start_job(t_env **our_env)
 	t_rock	*rock;
 	t_tree	*tree;
 	char	*line;
+	char	*input;
 
 	(void) our_env;
-	line = readline("Minishell > ");
+	if (isatty(STDIN_FILENO))
+		input = readline("Minishell > ");
+	else
+		input = get_next_line(STDIN_FILENO);
+	line = ft_strtrim(input, " \t\r\v\f\n");
 	if (line == NULL)
-		exit (0);
-	line = ft_strtrim(line, " \t\r\v\f\n");
+		exit (g_exit_status);
 	if (!line[0])
 		return (free(line));
 	add_history(line);

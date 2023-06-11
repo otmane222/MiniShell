@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/08 19:00:59 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 00:51:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ static char	*helpful_call(char *line, int *start, t_env *our_env)
 	if (str)
 	{
 		line = ft_strreplace_no_q(str, line, s, (*start));
-		(*start) = (*start) + ft_strlen(str) + 1;
+		(*start) = (*start) + ft_strlen(str) - 1;
 	}
 	else
 	{

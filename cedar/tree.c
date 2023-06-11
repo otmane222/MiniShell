@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/08 16:58:47 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 22:14:36 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,6 +94,5 @@ t_tree	*ast_tokenes(t_rock *rock, t_env *env)
 	t_tree	*root;
 
 	root = ast_and(rock, env);
-	// free_parenthese(rock);
 	return (root);
 }

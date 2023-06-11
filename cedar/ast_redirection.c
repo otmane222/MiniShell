@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 23:29:53 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 23:07:12 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,8 @@ static char	*handle_case(char *line)
 			str = store_datadd(str, line, &i, &j);
 		if (!line[i])
 			break ;
-		if (line[i] == '$')
+		if ((line[i] == '$' && line[i + 1] && line[i + 1] == '\'') \
+			|| (line[i] == '$' && line[i + 1] && line[i + 1] == '\"'))
 			continue ;
 		str[j] = line[i];
 		j++;
@@ -123,7 +124,7 @@ t_tree	*call_ninja(t_tree *tree, t_rock *rock, t_env *env)
 			ft_strlen(str) - 1) == 0 && \
 			ft_strlen(str) - 1 == ft_strlen(tree->heredoc->token->next->cmd[0]))
 			break ;
-		if (tree->heredoc->token->expand)
+		if (tree->heredoc->token->next->expand)
 			str = expand_line(str, env);
 		ft_putstr_fd(str, fd);
 		free(str);
@@ -133,8 +134,8 @@ t_tree	*call_ninja(t_tree *tree, t_rock *rock, t_env *env)
 	tree->heredoc->name = str1;
 	tree->heredoc->infile_fd = fd;
 	close(fd);
-	tree->heredoc->left = ast_redirections(rock->prev, RED_OUT, env);
-	tree->heredoc->right = ast_redirections(rock->next, RED_OUT, env);
+	tree->heredoc->left = ast_red_her_doc(rock->prev, env);
+	tree->heredoc->right = ast_red_her_doc(rock->next, env);
 	return (tree);
 }
 
@@ -146,8 +147,8 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, int flag, t_env *env)
 	if (rock->type == D_RED_IN)
 		return (call_ninja(tree, rock, env));
 	tree->token = rock;
-	tree->left = ast_redirections(rock->prev, flag, env);
-	tree->right = ast_redirections(rock->next, flag, env);
+	tree->left = ast_reds(rock->prev, env);
+	tree->right = ast_reds(rock->next, env);
 	return (tree);
 }
 
@@ -228,11 +229,12 @@ void	skip_parenthese1(t_rock **rock)
 	}
 }
 
-t_tree	*ast_redirections(t_rock *rock, int flag, t_env *env)
+t_tree	*ast_red_her_doc(t_rock *rock, t_env *env)
 {
 	t_var	var;
 	t_rock	*tmp;
 	t_tree	*tree;
+	int		flag;
 
 	if (!rock || !rock->flag)
 		return (NULL);
@@ -244,7 +246,7 @@ t_tree	*ast_redirections(t_rock *rock, int flag, t_env *env)
 	while (rock && rock->flag)
 	{
 		skip_parenthese(&rock);
-		if (is_red(rock->type))
+		if (rock->type == D_RED_IN)
 		{
 			if (rock->prev && rock->prev->type == C_PARENTHIS)
 				flag = 1;
@@ -259,3 +261,39 @@ t_tree	*ast_redirections(t_rock *rock, int flag, t_env *env)
 		return (fill_right_left(tree, rock, flag, env));
 	return (NULL);
 }
+
+t_tree	*ast_reds(t_rock *rock, t_env *env)
+{
+	t_var	var;
+	t_rock	*tmp;
+	t_tree	*tree;
+	int		flag;
+
+	if (!rock || !rock->flag)
+		return (NULL);
+	tree = init_tree();
+	get_head(&rock);
+	tmp = rock;
+	get_tail(&rock);
+	var.i = 0;
+	flag = 0;
+	while (rock && rock->flag)
+	{
+		skip_parenthese1(&rock);
+		if (rock->type == RED_OUT || rock->type \
+			== D_RED_OUT || rock->type == RED_IN)
+		{
+			if (rock->prev && rock->prev->type == C_PARENTHIS)
+				flag = 1;
+			var.i = 1;
+			break ;
+		}
+		rock = rock->prev;
+	}
+	if (var.i == 0)
+		return (free(tree), ast_red_her_doc(tmp, env));
+	else if (var.i)
+		return (fill_right_left(tree, rock, flag, env));
+	return (NULL);
+}
+

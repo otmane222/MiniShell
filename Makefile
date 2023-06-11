@@ -3,10 +3,10 @@
 #                                                         :::      ::::::::    #
 #    Makefile                                           :+:      :+:    :+:    #
 #                                                     +:+ +:+         +:+      #
-#    By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+         #
+#    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/05/17 14:33:03 by nakebli           #+#    #+#              #
-#    Updated: 2023/05/22 14:29:15 by nakebli          ###   ########.fr        #
+#    Updated: 2023/06/10 21:59:22 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -29,7 +29,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address -g
+CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
 LFLAGS = -L/Users/nakebli/.brew/opt/readline/lib 
 IFLAGS = -I/Users/nakebli/.brew/opt/readline/include
 

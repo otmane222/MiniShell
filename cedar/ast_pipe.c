@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:13 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/08 17:29:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 00:12:07 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, t_env *env)
 {
 	rock->flag = 0;
 	tree->token = rock;
-	tree->left = ast_redirections(rock->prev, RED_OUT, env);
+	tree->left = ast_reds(rock->prev, env);
 	tree->right = ast_pipe(rock->next, env);
 	return (tree);
 }
@@ -44,7 +44,7 @@ t_tree	*ast_pipe(t_rock *rock, t_env *env)
 		rock = rock->next;
 	}
 	if (var.i == 0)
-		return (free(tree), ast_redirections(tmp, RED_OUT, env));
+		return (free(tree), ast_reds(tmp, env));
 	else if (var.i)
 		return (fill_right_left(tree, rock, env));
 	return (NULL);

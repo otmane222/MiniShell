@@ -99,5 +99,6 @@ int	get_token(t_token **token, char *line)
 	free(var);
 	wild_card_handle(&tmp);
 	*token = tmp;
+	// expand_tokens(&tmp);
 	return (1);
 }

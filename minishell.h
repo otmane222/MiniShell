@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/09 17:35:05 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 22:06:46 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,10 +91,11 @@ typedef struct s_rock
 	char			**cmd;
 	int				type;
 	int				flag;
-	int				is_exit;
-	int				red_p;
+	int				flag2;
 	int				*arr;
 	int				expand;
+	int				red_p;
+	int				is_exit;
 	int				is_last;
 	struct s_rock	*next;
 	struct s_rock	*prev;
@@ -117,6 +118,7 @@ typedef struct s_tree
 	struct s_tree	*right;
 }	t_tree;
 
+
 typedef struct s_env
 {
 	char			*key;
@@ -125,27 +127,27 @@ typedef struct s_env
 	struct s_env	*prev;
 }	t_env;
 
-t_token	*init_token(size_t x);
-t_rock	*lex_token(t_token **token);
-t_tree	*tree_head(t_tree *root);
-t_tree	*ast_tokenes(t_rock *rock, t_env *env);
 t_env	*put_env_to_new(char **env);
-char	**change_env(t_env *env);
-
 void	add_to_env(char *var, char *val, t_env **env);
+t_token	*init_token(size_t x);
+
 void	handle_wildcard(t_token **tok);
-void	execute(t_tree *root, t_env **env);
+
+char	*expand_line(char *line, t_env *our_env);
+int		get_token(t_token **token, char *line);
 void	get_head1(t_rock **head);
+int		ft_printf(const char *format, ...);
+
+t_tree	*tree_head(t_tree *root);
+
+t_rock	*lex_token(t_token **token);
+int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
+void	free_tree(t_tree *tree);
+t_tree	*ast_tokenes(t_rock *rock, t_env *env);
+void	execute(t_tree *root, t_env **env);
+char	*get_next_line(int fd);
 void	free_env(t_env **our_env);
 void	free_rock(t_rock **rock);
-void	free_tree(t_tree *tree);
-
-char	*handle_wildcard_char(char *line);
-char	*expand_line(char *line, t_env *our_env);
-
-int		get_token(t_token **token, char *line);
-int		ft_printf(const char *format, ...);
-int		check_errors(t_token *token);
 
 #endif

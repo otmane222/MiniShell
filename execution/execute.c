@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/08 18:02:39 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 23:28:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ int	check_root(t_tree *root)
 
 int	execute_cmd(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
-	if (!root) // || check_root(root)
+	if (!root)
 		return (0);
 	if (root->token && root->token->type == PIPE && pipe_handle(root, data, env, list))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/06 19:13:18 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/10 22:01:25 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,6 @@ typedef struct s_data
 	int		status;
 }	t_data;
 
-
 int		execute_cmd(t_tree *root, t_data data, t_env **env, t_fds **list);
 int		handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds **list);
 int		red_out_hanlde(t_tree *root, t_data data, t_env **env, t_fds **list);
@@ -57,13 +56,15 @@ void	add_b_list(t_fds **lst, t_fds *neud);
 void	free_fds(t_fds *list);
 
 // built-in //
-void	ft_export(t_rock **rock, t_env **env, int outfile);
+int		ft_export(t_rock **rock, t_env **env, int outfile);
 void	ft_env(t_rock **rock, t_env **env, int outfile);
-void	ft_unset(t_rock **rock, t_env **env);
-void	ft_pwd(int outfile, t_env **env);
+int		ft_unset(t_rock **rock, t_env **env);
+int		ft_pwd(int outfile, t_env **env, int flag);
 void	ft_echo(int outfile, char **arg);
 int		ft_cd(char *path, t_env **env);
 int		ft_exit(t_tree *root);
+char	**change_env(t_env *env);
+char	*handle_wildcard_char(char *line);
 
 char	*expand_line(char *line, t_env *our_env);
 char	*check_path(char **paths, char *path);
