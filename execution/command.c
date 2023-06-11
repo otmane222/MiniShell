@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 17:04:44 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 18:58:49 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,8 +165,8 @@ int	wait_last_cmd(t_data data)
 	waitpid(data.i, &data.status, 0);
 	g_exit_status = WEXITSTATUS(data.status);
 	if (data.status)
-		return (1);
-	return (0);
+		return (runnig_cmd(0), 1);
+	return (runnig_cmd(0), 0);
 }
 
 void	expander_in_execution(t_rock *rock, t_env **env)
@@ -195,9 +195,12 @@ int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 	char	*cmd;
 
 	(void)list;
+	runnig_cmd(1);
+	if (stop_execution(-1) == -2)
+		return (runnig_cmd(0), stop_execution(0), 1);
 	expander_in_execution(root->token, env);
 	if (built_in(root->token->cmd[0]))
-		return (run_built_in(root, data, env));
+		return (runnig_cmd(0), run_built_in(root, data, env));
 	data.i = fork();
 	if (data.i < 0)
 		return (perror("fork"), 1);
@@ -209,7 +212,7 @@ int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 		cmd = check_path(paths, root->token->cmd[0]);
 		execute_execve(cmd, root->token->cmd, *env);
 	}
-	else if (root->token->is_last)
+	if (root->token->is_last)
 		return (wait_last_cmd(data));
 	return (0);
 }

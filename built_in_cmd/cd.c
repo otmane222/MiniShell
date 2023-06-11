@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 20:03:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 01:20:49 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 13:06:16 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ static int	cd_call(int i, char *path, t_env **env)
 	if (i == 0)
 	{
 		ft_printf("minishell: cd1: %s: No such file or directory\n", path);
-		return (i = 1, 1);
+		return (i = 1, g_exit_status = 1, 1);
 	}
 	else
 	{
@@ -25,7 +25,7 @@ static int	cd_call(int i, char *path, t_env **env)
 		ft_printf("access parent directories: No such file or directory\n");
 	}
 	add_to_env("PWD", ft_strjoin(ft_getenv("PWD", *env), "/.."), env);
-	return (1);
+	return (g_exit_status = 1, 1);
 }
 
 int	telde(char *line, t_env *our_env)
@@ -93,14 +93,14 @@ int	ft_cd(char *path, t_env **env)
 	if (!str && i == 0)
 	{
 		ft_printf("minishell: cd1: %s: No such file or directory\n", path);
-		return (i = 1, 1);
+		return (i = 1, g_exit_status = 1, 1);
 	}
 	free(str);
 	edit_env("OLDPWD", getcwd(NULL, 0), env);
 	if (chdir(path) != 0)
 	{
 		perror("cd");
-		return (1);
+		return (g_exit_status = 1, 1);
 	}
 	edit_env("PWD", getcwd(NULL, 0), env);
 	str = getcwd(NULL, 0);
@@ -108,5 +108,5 @@ int	ft_cd(char *path, t_env **env)
 		return (cd_call(i, path, env));
 	if (str)
 		free(str);
-	return (0);
+	return (g_exit_status = 0, 0);
 }

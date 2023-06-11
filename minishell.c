@@ -38,7 +38,10 @@ static void	start_job(t_env **our_env)
 		input = get_next_line(STDIN_FILENO);
 	line = ft_strtrim(input, " \t\r\v\f\n");
 	if (line == NULL)
+	{
+		printf("exit\n");
 		exit (g_exit_status);
+	}
 	if (!line[0])
 		return (free(line));
 	add_history(line);
@@ -53,14 +56,27 @@ static void	start_job(t_env **our_env)
 	free_tree(tree);
 }
 
+void	get_std_in(void)
+{
+	if (!isatty(STDIN_FILENO) && std_in_fd(-1) != -2)
+	{
+		dup2(std_in_fd(-1), STDIN_FILENO);
+		close(std_in_fd(-1));
+		std_in_fd(-2);
+	}
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_env	*our_env;
 
 	g_exit_status = 0;
 	our_env = put_env_to_new(env);
+	signal_handler_call();
+	std_in_fd(-2);
 	while (1)
 	{
+		get_std_in();
 		(void)ac;
 		(void)av;
 		start_job(&our_env);

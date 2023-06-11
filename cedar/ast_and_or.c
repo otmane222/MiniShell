@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:20:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 22:15:51 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 12:31:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ void	skip_parenthese(t_rock **rock)
 	{
 		while ((*rock) && (*rock)->flag)
 		{
+			(*rock)->is_exit = 1;
 			if ((*rock)->type == O_PARENTHIS)
 				i++;
 			else if ((*rock)->type == C_PARENTHIS)

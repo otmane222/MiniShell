@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:54:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/11 01:26:16 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 13:11:42 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,28 +84,13 @@ void	edit_env(char *var, char *val, t_env **env)
 	}
 }
 
-void	print_error2(int i, char *str)
+static void	print_export(char *key, char *value, int outfile)
 {
-	if (i == 1)
-		ft_printf("minishell: unset: ");
-	else if (i == 2)
-		ft_printf("minishell: export: ");
-	ft_printf("`%s': not a valid identifier\n", str);
-}
-
-int	check_arguments(char *key, int j)
-{
-	int	i;
-
-	i = 0;
-	if (key[0] != '_' && !ft_isalpha(key[0]))
-		return (print_error2(j, key), free(key), 1);
-	while (key[++i])
-	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
-			return (print_error2(j, key), free(key), 1);
-	}
-	return (free(key), 0);
+	ft_putstr_fd("declare -x ", outfile);
+	ft_putstr_fd(key, outfile);
+	ft_putstr_fd("=\"", outfile);
+	ft_putstr_fd(value, outfile);
+	ft_putstr_fd("\"\n", outfile);
 }
 
 int	ft_export(t_rock **rock, t_env **env, int outfile)
@@ -119,11 +104,7 @@ int	ft_export(t_rock **rock, t_env **env, int outfile)
 		temp_e = *env;
 		while (temp_e)
 		{
-			ft_putstr_fd("declare -x ", outfile);
-			ft_putstr_fd(temp_e->key, outfile);
-			ft_putstr_fd("=\"", outfile);
-			ft_putstr_fd(temp_e->value, outfile);
-			ft_putstr_fd("\"\n", outfile);
+			print_export(temp_e->key, temp_e->value, outfile);
 			temp_e = temp_e->next;
 		}
 	}
@@ -132,10 +113,10 @@ int	ft_export(t_rock **rock, t_env **env, int outfile)
 		while (*temp)
 		{
 			if (check_arguments(get_key(*temp), 2))
-				return (1);
+				return (g_exit_status = 1, 1);
 			add_to_env(get_key(*temp), get_value(*temp), env);
 			temp++;
 		}
 	}
-	return (0);
+	return (g_exit_status = 0, 0);
 }

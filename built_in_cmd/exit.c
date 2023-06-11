@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:33:50 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/05 23:38:38 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 13:02:27 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 static int	is_valid(t_tree *root)
 {
+	if (root->token->is_exit)
+		return (0);
 	if ((root->token->prev && root->token->prev->type == PIPE) \
 		|| (root->token->next && root->token->next->type == PIPE))
 		return (0);
@@ -30,16 +32,30 @@ static int	is_valid(t_tree *root)
 	return (0);
 }
 
+unsigned char	decimal_to_oct(int num)
+{
+	int	res;
+
+	res = num % 256;
+	if (res < 0)
+		res += 256;
+	return (res);
+}
+
 void	call_help(t_tree *root)
 {
 	int	status;
 
+	status = ft_atoi(root->token->cmd[1]);
 	if (is_valid(root))
 	{
 		write(2, "exit\n", 6);
-		status = ft_atoi(root->token->cmd[1]);
 		exit (status);
 	}
+	if (status > 255 || status < 0)
+		g_exit_status = decimal_to_oct(status);
+	else
+		g_exit_status = status;
 }
 
 int	ft_exit(t_tree *root)

@@ -5,8 +5,8 @@
 #                                                     +:+ +:+         +:+      #
 #    By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2023/05/17 14:33:03 by nakebli           #+#    #+#              #
-#    Updated: 2023/06/10 21:59:22 by oaboulgh         ###   ########.fr        #
+#    Created: 2023/05/17 14:33:03 by oaboulgh           #+#    #+#              #
+#    Updated: 2023/06/11 14:00:29 by oaboulgh         ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -25,13 +25,14 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard built_in_cmd/*.c) \
 		$(wildcard get_next_line/*.c) \
 		$(wildcard free/*.c) \
+		$(wildcard signals/*.c) \
 		minishell.c
 
 OBJS = $(SRCS:.c=.o)
 
 CFLAGS = -Wall -Wextra -Werror -g #-fsanitize=address
-LFLAGS = -L/Users/nakebli/.brew/opt/readline/lib 
-IFLAGS = -I/Users/nakebli/.brew/opt/readline/include
+LFLAGS = -L/Users/oaboulgh/.brew/opt/readline/lib 
+IFLAGS = -I/Users/oaboulgh/.brew/opt/readline/include
 
 HEADERS = minishell.h \
 		envirenment/env.h \
@@ -41,7 +42,7 @@ HEADERS = minishell.h \
 		parser/parser.h \
 		built_in_cmd/builtin.h\
 		get_next_line/get_next_line.h \
-		/Users/nakebli/.brew/opt/readline/include \
+		/Users/oaboulgh/.brew/opt/readline/include \
 		wildcard/wildcard.h \
 		libft/libft.h \
 		ft_printf_error/ft_printf.h
@@ -55,7 +56,7 @@ HEADER_INC =	-Iminishell.h \
 				-Iparser/parser.h \
 				-Ibuilt_in_cmd/builtin.h\
 				-Iget_next_line/get_next_line.h \
-				-I/Users/nakebli/.brew/opt/readline/include
+				-I/Users/oaboulgh/.brew/opt/readline/include
 
 
 RM = rm -rf

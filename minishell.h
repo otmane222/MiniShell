@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/10 22:06:46 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 18:39:23 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@
 # include <errno.h>
 # include <dirent.h>
 # include <termios.h>
+# include <signal.h>
 # include "libft/libft.h"
 
 # define CMD 1
@@ -149,5 +150,12 @@ void	execute(t_tree *root, t_env **env);
 char	*get_next_line(int fd);
 void	free_env(t_env **our_env);
 void	free_rock(t_rock **rock);
+
+void	signal_handler_call(void);
+
+int		is_there_here_doc(int k);
+int		std_in_fd(int k);
+int		stop_execution(int k);
+int		runnig_cmd(int k);
 
 #endif

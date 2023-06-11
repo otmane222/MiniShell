@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 22:14:36 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 12:30:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,23 +69,6 @@ void	get_head(t_rock **head)
 		if ((*head)->prev->flag == 0)
 			break ;
 		(*head) = (*head)->prev;
-	}
-}
-
-void	free_parenthese(t_rock *rock)
-{
-	t_rock	*tmp;
-
-	while (rock)
-	{
-		tmp = rock;
-		rock = rock->next;
-		if (tmp->type == O_PARENTHIS || tmp->type == C_PARENTHIS)
-		{
-			free_2dd(tmp->cmd);
-			free(tmp->arr);
-			free(tmp);
-		}
 	}
 }
 

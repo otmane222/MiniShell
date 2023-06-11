@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 22:02:09 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 13:08:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,8 +36,8 @@ int	ft_pwd(int outfile, __attribute__((unused)) t_env **env, int flag)
 		if (!path)
 		{
 			if (flag == 1)
-				return (print_error(1), 1);
-			return (print_error(2), 1);
+				return (print_error(1), g_exit_status = 1, 1);
+			return (print_error(2), g_exit_status = 1, 1);
 		}
 		str = path;
 	}
@@ -48,5 +48,5 @@ int	ft_pwd(int outfile, __attribute__((unused)) t_env **env, int flag)
 	path = str;
 	ft_putstr_fd(str, outfile);
 	write(outfile, "\n", 1);
-	return (0);
+	return (g_exit_status = 0, 0);
 }

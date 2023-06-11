@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:11:02 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/23 22:28:07 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 13:14:47 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,10 @@ void	ft_env(t_rock **rock, t_env **env, int outfile)
 
 	tmp = *env;
 	if (!(*rock) || (*rock)->cmd[1])
+	{
+		g_exit_status = 1;
 		return ;
+	}
 	while (tmp)
 	{
 		ft_putstr_fd(tmp->key, outfile);
@@ -27,4 +30,5 @@ void	ft_env(t_rock **rock, t_env **env, int outfile)
 		ft_putchar_fd('\n', outfile);
 		tmp = tmp->next;
 	}
+	g_exit_status = 0;
 }

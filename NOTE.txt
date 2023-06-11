@@ -1,0 +1,24 @@
+
+
+	signals in here_doc;
+
+	append && redin && redout and here_doc
+
+
+	// wild cards
+
+	"hello *.h*.c"
+
+	exit should fork fork it
+
+	ls >a && cat < a >> a loop infinie
+
+	echo $''
+
+	here_doc expand_in
+
+	here_doc 16 lim
+
+	((((ls|wc&&cat out)>outfile && echo hello|>out1>out2) && ls|Wc)>out3 &&echo yes)
+
+	ls|(echo yes|Wc|(wc|wc) |wc | (ls|Wc))|Wc 

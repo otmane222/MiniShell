@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 23:07:12 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/11 18:36:23 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -114,9 +114,11 @@ t_tree	*call_ninja(t_tree *tree, t_rock *rock, t_env *env)
 		printf ("Error opening :%s\n", str1);
 	tree->heredoc->token->next->cmd[0] = handle_case(tree->heredoc->token->next->cmd[0]);
 	tree->heredoc->token->next->cmd[0] = deleted_q(tree->heredoc->token->next->cmd[0]);
+	is_there_here_doc(1);
 	while (1)
 	{
-		write(1, "> ", 3);
+		if (stop_execution(-1) != -2)
+			write(1, "> ", 3);
 		str = get_next_line(STDIN_FILENO);
 		if (str == NULL)
 			break ;
@@ -131,6 +133,7 @@ t_tree	*call_ninja(t_tree *tree, t_rock *rock, t_env *env)
 		str = NULL;
 	}
 	free(str);
+	is_there_here_doc(0);
 	tree->heredoc->name = str1;
 	tree->heredoc->infile_fd = fd;
 	close(fd);
