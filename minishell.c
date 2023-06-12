@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_exit_status;
+
 t_tree	*tree_head(t_tree *root)
 {
 	static t_tree	*tree;
@@ -46,9 +48,8 @@ static void	start_job(t_env **our_env)
 		return (free(line));
 	add_history(line);
 	token = init_token(ft_strlen(line));
-	if (!get_token(&token, line))
-		return (free(line));
-	free(line);
+	if (!get_token(&token, line, *our_env))
+		return ;
 	rock = lex_token(&token);
 	get_head1(&rock);
 	tree = ast_tokenes(rock, *our_env);

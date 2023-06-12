@@ -15,7 +15,6 @@
 
 # include "../minishell.h"
 
-int		get_token(t_token **token, char *line);
 int		first_step(t_token **token, char *line, t_var *var);
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i);
@@ -38,6 +37,7 @@ int		is_char(char c);
 int		is_parenthese(char c);
 int		is_white_space(char c);
 
+char	*expand_line2(char *line, t_env *env);
 void	wild_card_handle(t_token **token);
 void	del_q(t_token **token);
 char	*store_dq(char *str, char *line, int *i, int *j);

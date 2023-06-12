@@ -78,27 +78,27 @@ int	first_step(t_token **token, char *line, t_var *var)
 	return (1);
 }
 
-int	get_token(t_token **token, char *line)
+int	get_token(t_token **token, char *line, t_env *env)
 {
 	t_var	*var;
 	t_token	*tmp;
 
 	init_var(&var);
 	tmp = *token;
+	line = expand_line2(line, env);
 	while (line[++var->i])
 	{
 		var->check = first_step(token, line, var);
 		if (!*token)
-			return (free(var), get_head_token(token), 0);
+			return (free(var), free(line), get_head_token(token), 0);
 		if (!line[var->i])
 			break ;
 	}
 	get_head_token(token);
 	if (!check_errors(*token))
-		return (free(var), free_tokens(token), 0);
+		return (free(var), free(line), free_tokens(token), 0);
 	free(var);
 	wild_card_handle(&tmp);
 	*token = tmp;
-	// expand_tokens(&tmp);
-	return (1);
+	return (free(line), 1);
 }

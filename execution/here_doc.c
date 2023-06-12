@@ -37,15 +37,12 @@ int	fd_to_here_doc(t_tree *root, t_env *env)
 
 int	handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
-	int	k;
-
 	if (root->heredoc->infile_fd == -1)
 		return (1);
 	data.j = fd_to_here_doc(root, *env);
 	if (data.j == -1)
 		return (1);
 	add_b_list(list, init_list(data.j));
-	k = data.infile_fd;
 	if (!data.redin)
 		data.infile_fd = data.j;
 	data.redin = D_RED_IN;

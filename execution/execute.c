@@ -83,8 +83,7 @@ void	execute(t_tree *root, t_env **env)
 	data.fd[0] = -2;
 	data.fd[1] = -2;
 	list = NULL;
-	if (execute_cmd(root, data, env, &list) == 1)
-		;
+	execute_cmd(root, data, env, &list);
 	while (wait(NULL) != -1)
 		;
 	free_fds(list);

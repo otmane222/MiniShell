@@ -15,9 +15,7 @@
 char	*change_line(char *line, t_filename *files, t_var *var)
 {
 	int	i;
-	int	j;
 
-	j = 0;
 	i = var->j;
 	while (line[i] && line[i] != ' ')
 		i++;
@@ -86,11 +84,9 @@ static char	*get_wildcard_line(t_var *var, char *line, t_filename *files)
 
 char	*handle_wildcard_char(char *line)
 {
-	char		*head;
 	t_var		*var;
 	t_filename	*files;
 
-	head = NULL;
 	if (!line)
 		return (NULL);
 	files = get_files_name();

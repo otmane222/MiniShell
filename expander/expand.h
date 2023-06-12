@@ -24,6 +24,7 @@ char	*ft_getenv(char *var, t_env *env);
 char	*expand_line(char *line, t_env *our_env);
 
 void	skip_char(char *line, int *start);
+void	skip_in_q(char *line, int *start, char stop);
 
 int		is_white_space(char c);
 int		char_type(char c);

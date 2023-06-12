@@ -169,11 +169,40 @@ int	wait_last_cmd(t_data data)
 	return (runnig_cmd(0), 0);
 }
 
+char	**save_cmd(char **cmd, int j)
+{
+	char	**save;
+	int		k;
+	int		i;
+
+	save = malloc(sizeof(char *) * j + 1);
+	if (!save)
+		return (NULL);
+	k = 0;
+	i = 0;
+	while (i < j)
+	{
+		if (cmd[i])
+		{
+			save[k++] = ft_strdup(cmd[i]);
+			free(cmd[i]);
+		}
+		i++;
+	}
+	save[k] = NULL;
+	free(cmd);
+	return (save);
+}
+
 void	expander_in_execution(t_rock *rock, t_env **env)
 {
-	int	i;
+	int		i;
+	int		j;
 
+	j = 0;
 	i = 0;
+	while (rock->cmd[j])
+		j++;
 	while (rock->cmd[i])
 	{
 		if (rock->arr[i] != -9)
@@ -181,12 +210,14 @@ void	expander_in_execution(t_rock *rock, t_env **env)
 		i++;
 	}
 	i = 0;
-	while (rock->cmd[i])
+	while (i < j)
 	{
 		if (rock->arr[i] != -9)
 			rock->cmd[i] = deleted_q(rock->cmd[i]);
 		i++;
 	}
+	i = 0;
+	rock->cmd = save_cmd(rock->cmd, j);
 }
 
 int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)

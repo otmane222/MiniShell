@@ -72,13 +72,10 @@ static char	*assister_fun(char *line, int *start, t_env *our_env)
 static char	*expand_var_nq(char *line, int *start, t_env *our_env)
 {
 	int		j;
-	int		flag;
 
-	flag = 0;
 	j = 0;
 	while (line[(*start)])
 	{
-		flag = 0;
 		if (line[(*start)] && line[(*start)] == '$')
 		{
 			j++;
@@ -174,6 +171,8 @@ char	*expand_line(char *line, t_env *our_env)
 			line = expand_var_dq(line, &i, our_env);
 		if (line[i] == '$')
 			line = expand_var_nq(line, &i, our_env);
+		if (line[0] == '\0')
+			return (free(line), NULL);
 		if (!line[i] && i != -1)
 			break ;
 		i++;

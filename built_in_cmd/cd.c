@@ -87,6 +87,8 @@ int	ft_cd(char *path, t_env **env)
 	char		*str;
 	static int	i = 0;
 
+	if (!path)
+		return (1);
 	if (!ft_strncmp(path, "-", 2) || !ft_strncmp(path, "~", 2))
 		return (ret_old_pwd(env, path));
 	str = getcwd(NULL, 0);
@@ -96,7 +98,7 @@ int	ft_cd(char *path, t_env **env)
 		return (i = 1, g_exit_status = 1, 1);
 	}
 	free(str);
-	edit_env("OLDPWD", getcwd(NULL, 0), env);
+	edit_env("OLDPWD", getcwd(NULL, 0), env); // add_to_env or edit_env
 	if (chdir(path) != 0)
 	{
 		perror("cd");

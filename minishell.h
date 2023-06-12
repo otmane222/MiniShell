@@ -25,6 +25,8 @@
 # include <dirent.h>
 # include <termios.h>
 # include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 
 # define CMD 1
@@ -47,7 +49,7 @@
 # define PIPE_LR 18
 # define PIPE_RL 19
 
-int	g_exit_status;
+extern int	g_exit_status;
 
 enum	e_token
 {
@@ -135,7 +137,7 @@ t_token	*init_token(size_t x);
 void	handle_wildcard(t_token **tok);
 
 char	*expand_line(char *line, t_env *our_env);
-int		get_token(t_token **token, char *line);
+int		get_token(t_token **token, char *line, t_env *env);
 void	get_head1(t_rock **head);
 int		ft_printf(const char *format, ...);
 

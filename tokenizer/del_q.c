@@ -56,6 +56,8 @@ char	*deleted_q(char *line)
 
 	i = 0;
 	j = 0;
+	if (!line)
+		return (NULL);
 	str = malloc(ft_strlen(line) + 1);
 	if (!str)
 		return (NULL);

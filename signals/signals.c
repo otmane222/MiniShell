@@ -91,7 +91,7 @@ void	handle_signals(int signal)
 		g_exit_status = 1;
 	}
 	if (signal == SIGQUIT)
-		;
+		return ;
 }
 
 void	signal_handler_call(void)

@@ -11,7 +11,6 @@
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include "libc.h"
 
 static void	node_creat(t_l **buffer, char *buff, int red)
 {
