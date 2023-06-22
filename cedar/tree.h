@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 00:12:56 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 03:03:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_tree	*ast_reds(t_rock *tok, t_env *env);
 void	skip_parenthese(t_rock **rock);
 char	*get_next_line(int fd);
 char	*deleted_q(char *line);
+char	*handle_case(char *line);
 
 char	*store_datadd(char *str, char *line, int *i, int *j);
 char	*store_datass(char *str, char *line, int *i, int *j);
@@ -35,5 +36,12 @@ void	get_head(t_rock **head);
 void	init_var_2(t_var **var);
 void	del_token(t_rock *tok);
 int		is_red(int a);
+void	get_tail(t_rock **head);
+void	skip_parenthese1(t_rock **rock);
+t_rock	*get_last(t_rock *rock);
+int		check_red_exist(t_rock *rock, int *flag, int *i);
+int		check_red_exist2(t_rock *rock, int *flag, int *i);
+void	write_in_here_doc(t_tree *tree, t_env *env);
+void	loop_and_stock(t_tree *tree, t_env *env, int fd);
 
 #endif

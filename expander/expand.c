@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 18:19:53 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 00:51:46 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:44:28 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,8 @@ static char	*helpful_call(char *line, int *start, t_env *our_env)
 	char	*s;
 	char	*str;
 
-	str = NULL;
 	if (line[*start] == '?')
-	{
-		str = ft_itoa(g_exit_status);
-		line = ft_strreplace_no_q(str, line, "?", (*start));
-		(*start) += ft_strlen(str) - 1;
-		free(str);
-		return (line);
-	}
+		return (questio_mark(line, start));
 	s = get_env_var(&line[(*start)]);
 	str = ft_getenv(s, our_env);
 	if (str)
@@ -38,6 +31,7 @@ static char	*helpful_call(char *line, int *start, t_env *our_env)
 		line = ft_strreplace_non(line, s, (*start));
 		(*start) = (*start) - 1;
 	}
+	free(str);
 	free(s);
 	while (line[(*start)] && line[(*start)] != '$' && \
 	line[(*start)] != '\'' && line[(*start)] != '\"')
@@ -63,6 +57,7 @@ static char	*assister_fun(char *line, int *start, t_env *our_env)
 		(*start) = (*start) - 1;
 	}
 	free(s);
+	free(str);
 	while (line[(*start)] && line[(*start)] != '$' \
 		&& line[(*start)] != '\"')
 		(*start)++;
@@ -91,42 +86,6 @@ static char	*expand_var_nq(char *line, int *start, t_env *our_env)
 	if (line[(*start)] == '\'' || line[(*start)] == '\"')
 		(*start) = (*start) - 1;
 	return (line);
-}
-
-static void	skip_spaces(char *line, int *start)
-{
-	while (line[*start] && is_white_space(line[*start]))
-		*start = *start + 1;
-}
-
-void	skip_in_q(char *line, int *start, char stop)
-{
-	*start = *start + 1;
-	while (line[*start] && line[*start] != stop)
-		*start = *start + 1;
-	// if (line[*start] == '\"')
-	// 	*start = *start + 1;
-	// if (line[*start] && !is_operator(line[*start]))
-	// 	skip_char(line, start);
-}
-
-void	skip_char(char *line, int *start)
-{
-	while (line[*start] && !is_white_space(line[*start]) \
-		&& line[*start] != '\"' && line[*start] != '\'' && \
-			!is_operator(line[*start]))
-		*start = *start + 1;
-	if (line[*start] && line[*start] == '\"')
-		skip_in_q(line, start, '\"');
-	if (line[*start] && line[*start] == '\'')
-		skip_in_q(line, start, '\'');
-}
-
-static void	skip_until(char *line, int *start)
-{
-	*start = *start + 2;
-	skip_spaces(line, start);
-	skip_char(line, start);
 }
 
 static char	*expand_var_dq(char *line, int *start, t_env *our_env)

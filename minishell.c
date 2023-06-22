@@ -12,8 +12,6 @@
 
 #include "minishell.h"
 
-int	g_exit_status;
-
 t_tree	*tree_head(t_tree *root)
 {
 	static t_tree	*tree;
@@ -23,6 +21,12 @@ t_tree	*tree_head(t_tree *root)
 	else
 		tree = root;
 	return (NULL);
+}
+
+void	call_exit(void)
+{
+	printf("exit\n");
+	exit (g_exit_status);
 }
 
 static void	start_job(t_env **our_env)
@@ -40,10 +44,7 @@ static void	start_job(t_env **our_env)
 		input = get_next_line(STDIN_FILENO);
 	line = ft_strtrim(input, " \t\r\v\f\n");
 	if (line == NULL)
-	{
-		printf("exit\n");
-		exit (g_exit_status);
-	}
+		call_exit();
 	if (!line[0])
 		return (free(line));
 	add_history(line);

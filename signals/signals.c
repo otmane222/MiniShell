@@ -6,22 +6,11 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/02 06:08:02 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/11 21:12:13 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 22:38:57 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../minishell.h"
-
-// void	sig_handl(int sig)
-// {
-// 	if (sig == SIGINT && signal_handler_enabled)
-// 	{
-// 		printf("\n");
-// 		rl_replace_line("", 1);
-// 	}
-// 	rl_on_new_line();
-// 	rl_redisplay();
-// }
 
 int	is_there_here_doc(int k)
 {
@@ -35,28 +24,6 @@ int	is_there_here_doc(int k)
 }
 
 int	std_in_fd(int k)
-{
-	static int	i = 0;
-
-	if (k == -1)
-		return (i);
-	else
-		i = k;
-	return (i);
-}
-
-int	stop_execution(int k)
-{
-	static int	i = 0;
-
-	if (k == -1)
-		return (i);
-	else
-		i = k;
-	return (i);
-}
-
-int	runnig_cmd(int k)
 {
 	static int	i = 0;
 
@@ -97,7 +64,6 @@ void	handle_signals(int signal)
 void	signal_handler_call(void)
 {
 	rl_catch_signals = 0;
-
 	signal(SIGINT, handle_signals);
 	signal(SIGQUIT, handle_signals);
 	signal(SIGTSTP, SIG_IGN);

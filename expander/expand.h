@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:23:23 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/30 14:30:39 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 01:26:04 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,11 +23,21 @@ char	*get_env_var(char *s);
 char	*ft_getenv(char *var, t_env *env);
 char	*expand_line(char *line, t_env *our_env);
 
+char	*check_str(char *line, t_env *our_env, int *start);
+char	*ft_strreplace_no_q2(char *str, char *token, char *s, int index);
+char	*str_full(char *str, char *ret, int *flag, int *j);
+int		num_op(char *str);
+char	*helpful_call2(char *line, int *start, t_env *our_env);
+
 void	skip_char(char *line, int *start);
+void	skip_until(char *line, int *start);
 void	skip_in_q(char *line, int *start, char stop);
 
 int		is_white_space(char c);
 int		char_type(char c);
 int		is_operator(char c);
+void	skip_spaces(char *line, int *start);
+
+char	*questio_mark(char *line, int *start);
 
 #endif

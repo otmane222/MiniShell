@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 23:28:10 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:06:48 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,8 @@
 
 int	check_root(t_tree *root)
 {
-	if (root->token && (root->token->type == FILE || (root->token && root->token->type == LIMITER)) \
+	if (root->token && (root->token->type == FILE \
+	|| (root->token && root->token->type == LIMITER)) \
 		&& (!root->left && !root->right))
 		return (1);
 	return (0);
@@ -22,23 +23,28 @@ int	check_root(t_tree *root)
 
 int	execute_cmd(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
+	int	k;
+
+	k = 0;
+	if (root && root->token)
+		k = root->token->type;
 	if (!root)
 		return (0);
-	if (root->token && root->token->type == PIPE && pipe_handle(root, data, env, list))
+	if (root->token && k == PIPE && pipe_handle(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == CMD && handle_command(root, data, env, list))
+	else if (root->token && k == CMD && handle_command(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == RED_OUT && red_out_hanlde(root, data, env, list))
+	else if (root->token && k == RED_OUT && redouthanlde(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == RED_IN && handle_red_in(root, data, env, list))
+	else if (root->token && k == RED_IN && handle_red_in(root, data, env, list))
 		return (1);
-	if (root->token && root->token->type == D_AND && handle_and(root, data, env, list))
+	if (root->token && k == D_AND && handle_and(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == DPIPE && d_pipe_handle(root, data, env, list))
+	else if (root->token && k == DPIPE && d_pipe_handle(root, data, env, list))
 		return (1);
 	else if (root->heredoc && handle_here_doc(root, data, env, list))
 		return (1);
-	else if (root->token && root->token->type == D_RED_OUT && handle_append(root, data, env, list))
+	else if (root->token && k == D_RED_OUT && append(root, data, env, list))
 		return (1);
 	return (0);
 }

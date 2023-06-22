@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:41:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/10 19:24:47 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:25:56 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,5 +76,6 @@ t_env	*put_env_to_new(char **env)
 		env++;
 	}
 	ft_pwd(0, &our_env, 1);
+	remove_from_env(ft_strdup("OLDPWD"), &our_env);
 	return (our_env);
 }

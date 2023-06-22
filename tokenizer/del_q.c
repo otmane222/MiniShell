@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 20:17:06 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/03 23:15:11 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:49:15 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,5 @@ char	*deleted_q(char *line)
 		i++;
 	}
 	str[j] = '\0';
-	free(line);
-	return (str);
+	return (free(line), str);
 }

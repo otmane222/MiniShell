@@ -71,7 +71,6 @@ static void	check_after(t_token **token, char *line, t_var *var, int *i)
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 {
-	// var->i++;
 	stor_data(token, line, var, "\'");
 	if (!line[var->i])
 		return ;

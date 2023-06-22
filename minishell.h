@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/11 18:39:23 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 03:08:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@
 # define PIPE_LR 18
 # define PIPE_RL 19
 
-extern int	g_exit_status;
+int	g_exit_status;
 
 enum	e_token
 {
@@ -121,7 +121,6 @@ typedef struct s_tree
 	struct s_tree	*right;
 }	t_tree;
 
-
 typedef struct s_env
 {
 	char			*key;
@@ -131,6 +130,7 @@ typedef struct s_env
 }	t_env;
 
 t_env	*put_env_to_new(char **env);
+void	remove_from_env(char *var, t_env **env);
 void	add_to_env(char *var, char *val, t_env **env);
 t_token	*init_token(size_t x);
 

@@ -51,7 +51,6 @@ static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 	(*t)->data[var->counter] = line[var->i];
 	var->counter = var->counter + 1;
 	(*t)->data[var->counter] = '\0';
-	// var->i++;
 	(*t)->flag = 0;
 }
 
@@ -80,7 +79,6 @@ static void	check_after(t_token **token, char *line, t_var *var, int *i)
 
 void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 {
-	// var->i++;
 	stoor_data(token, line, var, "\"");
 	if (!line[var->i])
 		return ;

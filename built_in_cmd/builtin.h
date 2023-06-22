@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:47 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 01:00:49 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:15:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*ft_getenv(char *var, t_env *env);
 int		check_arguments(char *key, int i);
 void	ft_echo(int outfile, char **arg);
 void	print_error2(int i, char *str);
-int		ft_cd(char *path, t_env **env);
+int		ft_cd(char *path, t_env **env, int outfile);
 int		ft_exit(t_tree *root);
 void	print_error(int i);
 

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:37:05 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:53:48 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:03:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,6 +59,13 @@ t_token	*init_token_wild(void)
 	return (token);
 }
 
+static void	full_files(t_filename **files, struct dirent *entity)
+{
+	(*files)->next = init_t_file();
+	(*files)->next->name = ft_strdup(entity->d_name);
+	(*files) = (*files)->next;
+}
+
 t_filename	*get_files_name(void)
 {
 	DIR				*dir;
@@ -80,41 +87,7 @@ t_filename	*get_files_name(void)
 	{
 		entity = readdir(dir);
 		if (entity && entity->d_name[0] != '.')
-		{
-			files->next = init_t_file();
-			files->next->name = ft_strdup(entity->d_name);
-			files = files->next;
-		}
+			full_files(&files, entity);
 	}
-	closedir(dir);
-	return (head);
-}
-
-char	*ft_strfind(const char *big, const char *little, size_t len, int stp)
-{
-	size_t	i;
-	int		j;
-	char	*pt;
-
-	i = 0;
-	pt = 0;
-	if (little[i] == '\0')
-		return ((char *)big);
-	while (len && big[i] != '\0' && i < len)
-	{
-		if (big[i] == little[0])
-		{
-			pt = (char *)big + i;
-			j = 0;
-			while (big[i + j] == little[j] && i + j < len)
-			{
-				if (!little[j + 1] || stp <= j)
-					return (pt);
-				j++;
-			}
-			pt = 0;
-		}
-		i++;
-	}
-	return (NULL);
+	return (closedir(dir), head);
 }

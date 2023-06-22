@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:36:57 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 17:06:10 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:40:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,20 @@ void	skip_q(char *line, int *i, char c)
 		skip_q(line, i, '\'');
 	if (line[*i] && line[*i] == '\"')
 		skip_q(line, i, '\"');
+}
+
+void	free_all3(t_var *var, t_filename *files)
+{
+	t_filename	*tmp;
+
+	free(var);
+	while (files)
+	{
+		tmp = files;
+		files = files->next;
+		free(tmp->name);
+		free(tmp);
+	}
 }
 
 void	make_list(t_token **head, t_token **tmp, t_filename *files, t_var *var)

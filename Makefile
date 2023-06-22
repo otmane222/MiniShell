@@ -30,7 +30,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-g #-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
 LFLAGS = -L/Users/oaboulgh/.brew/opt/readline/lib 
 IFLAGS = -I/Users/oaboulgh/.brew/opt/readline/include
 
@@ -70,7 +70,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make bonus -C libft
 	make -C ft_printf_error
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS) libft/libft.a ft_printf_error/libftprintf.a
+	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS)
 
 %.o: %.c $(HEADERS)
 	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC)

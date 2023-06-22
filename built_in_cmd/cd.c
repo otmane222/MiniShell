@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 20:03:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 13:06:16 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 03:05:10 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,7 @@ int	telde(char *line, t_env *our_env)
 	return (0);
 }
 
-static int	ret_old_pwd(t_env **env, char *path)
+static int	ret_old_pwd(t_env **env, char *path, int outfile)
 {
 	char	*str;
 	char	*tmp;
@@ -66,8 +66,8 @@ static int	ret_old_pwd(t_env **env, char *path)
 	str = ft_getenv("OLDPWD", *env);
 	if (!str)
 		return (ft_printf("minishell: cd: OLDPWD not set\n"), 1);
-	tmp = ft_getenv("PWD", *env);
-	edit_env("OLDPWD", tmp, env);
+	tmp = getcwd(NULL, 0);
+	add_to_env("OLDPWD", tmp, env);
 	if (chdir(str) != 0)
 	{
 		if (str)
@@ -76,13 +76,13 @@ static int	ret_old_pwd(t_env **env, char *path)
 		return (1);
 	}
 	edit_env("PWD", getcwd(NULL, 0), env);
-	ft_pwd(1, env, 0);
+	ft_pwd(outfile, env, 0);
 	if (str)
 		free (str);
 	return (0);
 }
 
-int	ft_cd(char *path, t_env **env)
+int	ft_cd(char *path, t_env **env, int outfile)
 {
 	char		*str;
 	static int	i = 0;
@@ -90,7 +90,7 @@ int	ft_cd(char *path, t_env **env)
 	if (!path)
 		return (1);
 	if (!ft_strncmp(path, "-", 2) || !ft_strncmp(path, "~", 2))
-		return (ret_old_pwd(env, path));
+		return (ret_old_pwd(env, path, outfile));
 	str = getcwd(NULL, 0);
 	if (!str && i == 0)
 	{
@@ -98,12 +98,9 @@ int	ft_cd(char *path, t_env **env)
 		return (i = 1, g_exit_status = 1, 1);
 	}
 	free(str);
-	edit_env("OLDPWD", getcwd(NULL, 0), env); // add_to_env or edit_env
+	add_to_env("OLDPWD", getcwd(NULL, 0), env);
 	if (chdir(path) != 0)
-	{
-		perror("cd");
-		return (g_exit_status = 1, 1);
-	}
+		return (perror("cd"), g_exit_status = 1, 1);
 	edit_env("PWD", getcwd(NULL, 0), env);
 	str = getcwd(NULL, 0);
 	if (!str)

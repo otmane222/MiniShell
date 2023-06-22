@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/09 14:17:17 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 00:30:00 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,21 +54,6 @@ void	swap_token_char(t_rock **a, t_rock **b)
 	tmp = (*a)->cmd[0];
 	(*a)->cmd[0] = (*b)->cmd[0];
 	(*b)->cmd[0] = tmp;
-}
-
-void	flag_cmd(t_rock *rock)
-{
-	if (!rock)
-		return ;
-	while (rock && rock->type != D_AND && rock->type != DPIPE)
-	{
-		if (rock->type == CMD)
-		{
-			rock->is_last = 1;
-			return ;
-		}
-		rock = rock->prev;
-	}
 }
 
 void	flag_last_cmds(t_rock *rock)

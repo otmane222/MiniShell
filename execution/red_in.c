@@ -6,11 +6,30 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:01:55 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 14:49:17 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 20:25:50 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
+
+static int	short_cut3(t_tree *root, char *tmp, char *str, t_env *env)
+{
+	if (!root->token->cmd[0])
+	{
+		root->token->cmd[0] = tmp;
+		return (printf ("Minishell: %s: ambiguous redirect\n", \
+			str), free(str), 1);
+	}
+	root->token->cmd[0] = expand_line(root->token->cmd[0], env);
+	tmp = root->token->cmd[0];
+	if (!root->token->cmd[0] || root->token->cmd[0][0] == '\0')
+	{
+		root->token->cmd[0] = tmp;
+		return (printf ("Minishell: %s: ambiguous redirect\n", \
+			str), free(str), 1);
+	}
+	return (0);
+}
 
 static int	fd_to_in(t_tree *root, t_env **env)
 {
@@ -27,20 +46,8 @@ static int	fd_to_in(t_tree *root, t_env **env)
 		tmp = root->token->cmd[0];
 		str = ft_strdup(root->token->cmd[0]);
 		root->token->cmd[0] = handle_wildcard_char(root->token->cmd[0]);
-		if (!root->token->cmd[0])
-		{
-			root->token->cmd[0] = tmp;
-			return (printf ("Minishell: %s: ambiguous redirect\n", \
-				str), free(str), 1);
-		}
-		root->token->cmd[0] = expand_line(root->token->cmd[0], *env);
-		tmp = root->token->cmd[0];
-		if (root->token->cmd[0][0] == '\0')
-		{
-			root->token->cmd[0] = tmp;
-			return (printf ("Minishell: %s: ambiguous redirect\n", \
-				str), free(str), 1);
-		}
+		if (short_cut3(root, tmp, str, *env))
+			return (1);
 		free(str);
 		root->token->cmd[0] = deleted_q(root->token->cmd[0]);
 		fd = open(root->token->cmd[0], O_RDONLY, 0655);
@@ -59,9 +66,7 @@ int	handle_red_in(t_tree *root, t_data data, t_env **env, t_fds **list)
 	if (data.j == 1)
 		return (1);
 	add_b_list(list, init_list(data.j));
-
 	k = data.infile_fd;
-
 	if (!data.redin)
 		data.infile_fd = data.j;
 	data.redin = RED_IN;

@@ -1,23 +1,35 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser.h                                           :+:      :+:    :+:   */
+/*   signals_utils.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/22 11:31:18 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/21 23:24:08 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/21 22:37:48 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/21 22:39:01 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef PARSER_H
-# define PARSER_H
+#include "../minishell.h"
 
-# include "../minishell.h"
+int	runnig_cmd(int k)
+{
+	static int	i = 0;
 
-void	put_type_of_tokens(t_token *tmp);
-int		func5(t_token *token);
-int		is_op(int a);
-int		is_red(int a);
+	if (k == -1)
+		return (i);
+	else
+		i = k;
+	return (i);
+}
 
-#endif
+int	stop_execution(int k)
+{
+	static int	i = 0;
+
+	if (k == -1)
+		return (i);
+	else
+		i = k;
+	return (i);
+}

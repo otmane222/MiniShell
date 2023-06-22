@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 09:44:29 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/07 14:07:07 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:13:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ int	d_pipe_handle(t_tree *root, t_data data, t_env **env, t_fds **list)
 
 void	add_b_list(t_fds **lst, t_fds *neud)
 {
-	t_fds *temp;
+	t_fds	*temp;
 
 	temp = *lst;
 	if (lst)
@@ -40,6 +40,21 @@ void	add_b_list(t_fds **lst, t_fds *neud)
 			temp->next = neud;
 		}
 	}
+}
+
+void	help_call(t_data *va, t_data *data)
+{
+	close (va->fd[1]);
+	va->type = PIPE_R;
+	if (data->type == PIPE_L || data->type == PIPE_LR)
+	{
+		va->i = data->fd[0];
+		va->type = PIPE_RL;
+	}
+	if (data->type == PIPE_RL)
+		va->type = PIPE_RL;
+	va->outfile_fd = data->outfile_fd;
+	va->infile_fd = va->fd[0];
 }
 
 int	pipe_handle(t_tree *root, t_data data, t_env **env, t_fds **list)
@@ -63,18 +78,7 @@ int	pipe_handle(t_tree *root, t_data data, t_env **env, t_fds **list)
 	va.redin = data.redin;
 	va.redout = data.redout;
 	data.status = execute_cmd(root->left, va, env, list);
-
-	close (va.fd[1]);
-	va.type = PIPE_R;
-	if (data.type == PIPE_L || data.type == PIPE_LR)
-	{
-		va.i = data.fd[0];
-		va.type = PIPE_RL;
-	}
-	if (data.type == PIPE_RL)
-		va.type = PIPE_RL;
-	va.outfile_fd = data.outfile_fd;
-	va.infile_fd = va.fd[0];
+	help_call(&va, &data);
 	data.status = execute_cmd(root->right, va, env, list);
 	if (data.status == 1)
 		return (close (va.fd[0]), 1);

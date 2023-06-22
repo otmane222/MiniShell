@@ -17,6 +17,7 @@
 		"__mutex_base": "c",
 		"wildcard.h": "c",
 		"locale": "c",
-		"bitset": "c"
+		"bitset": "c",
+		"ios": "c"
 	}
 }

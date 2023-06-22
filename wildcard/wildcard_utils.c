@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:56:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:49:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 04:29:31 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,7 @@ int	num_of_char(char *line)
 	int	i;
 	int	j;
 
-	i = 1;
+	i = 0;
 	j = 0;
 	while (line[j] && !is_valid(line[j]))
 	{

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:32:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:59:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:03:43 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,4 +98,33 @@ char	*handle_wildcard_char(char *line)
 	line = get_wildcard_line(var, line, files);
 	free_all3(var, files);
 	return (line);
+}
+
+char	*ft_strfind(const char *big, const char *little, size_t len, int stp)
+{
+	size_t	i;
+	int		j;
+	char	*pt;
+
+	i = 0;
+	pt = 0;
+	if (little[i] == '\0')
+		return ((char *)big);
+	while (len && big[i] != '\0' && i < len)
+	{
+		if (big[i] == little[0])
+		{
+			pt = (char *)big + i;
+			j = 0;
+			while (big[i + j] == little[j] && i + j < len)
+			{
+				if (!little[j + 1] || stp <= j)
+					return (pt);
+				j++;
+			}
+			pt = 0;
+		}
+		i++;
+	}
+	return (NULL);
 }

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 14:39:38 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:48:34 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 19:04:39 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,16 +40,14 @@ void	check_first_char(t_token *tok, t_var *var)
 
 int	short_cut(char *line, t_var *var, t_var *va)
 {
+	va->j = 0;
 	if (!line || line[var->start] == '\0' || is_valid(line[var->start]))
-		return (0);
+		return (va->i = var->start, 0);
 	if (line[var->start] == '*')
 	{
 		skip_najmat(line, &var->start);
 		if (!line[var->start] || is_valid(line[var->start]))
-		{
-			var->i = var->start;
-			return (0);
-		}
+			return (var->i = var->start, 0);
 	}
 	va->i = var->start;
 	while (line[va->i] && line[va->i] != '*')
@@ -62,7 +60,7 @@ int	short_cut(char *line, t_var *var, t_var *va)
 			break ;
 		va->i++;
 	}
-	va->j = 0;
+	va->counter = va->i;
 	va->i = var->start;
 	return (1);
 }
@@ -76,9 +74,10 @@ char	*chars(char *line, t_var *var)
 		;
 	if (!short_cut(line, var, &va))
 		return (NULL);
-	str = malloc(sizeof(char) * va.i - var->start + 1);
+	str = malloc(sizeof(char) * (va.counter + 1));
 	if (!str)
 		return (NULL);
+	va.j = 0;
 	while (line[va.i] && line[va.i] != '*' && !is_valid(line[va.i]))
 	{
 		if (line[va.i] == '\'')
@@ -92,6 +91,5 @@ char	*chars(char *line, t_var *var)
 	if (!line[va.i] || is_valid(line[var->start]))
 		var->end = 1;
 	str[va.j] = '\0';
-	var->start += ft_strlen(str);
-	return (str);
+	return (var->start += ft_strlen(str), str);
 }

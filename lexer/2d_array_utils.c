@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 17:17:17 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/05 19:39:56 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 23:57:19 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,7 +69,7 @@ static void	helpful_call2(t_rock *tmp, t_rock *rock, int *num, t_var var)
 	}
 	free(tmp->arr);
 	tmp->arr = num;
-	// num[var.i] = 0;
+	num[var.i] = 0;
 }
 
 void	join_2d_arrs(t_rock *rock, t_rock *tmp)

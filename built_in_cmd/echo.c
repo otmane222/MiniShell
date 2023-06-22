@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:34:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 12:49:39 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/20 13:20:13 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,7 @@ void	ft_echo(int outfile, char **arg)
 			write (outfile, "\n", 1);
 		i++;
 	}
-	if (flag == 2)
+	if (flag == 2 || !arg[1])
 		write (outfile, "\n", 1);
 	g_exit_status = 0;
 }

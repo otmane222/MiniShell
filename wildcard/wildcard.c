@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:35:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 16:31:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/21 18:40:26 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ char	**to_find_str(char *line, t_var *var)
 
 	i = 0;
 	num_to_search = num_of_char(&line[var->start]);
-	find = malloc(sizeof(char *) * num_to_search);
+	find = malloc(sizeof(char *) * (num_to_search + 1));
 	if (!find)
 		return (NULL);
 	while (i < num_to_search)
@@ -28,7 +28,7 @@ char	**to_find_str(char *line, t_var *var)
 		find[i] = chars(line, var);
 		i++;
 	}
-	find[num_to_search - 1] = NULL;
+	find[i] = NULL;
 	return (find);
 }
 
@@ -51,18 +51,22 @@ void	wild_card_line(t_token **tok, t_var *var, \
 	add_wildcard_to_list(tok, head, tmp, var);
 }
 
-void	free_all3(t_var *var, t_filename *files)
+static int	helpful_call3(t_token **tok, t_token *head, \
+	t_var *var, t_filename *files)
 {
-	t_filename	*tmp;
-
-	free(var);
-	while (files)
+	check_first_char(*tok, var);
+	if ((*tok)->data[var->i] == '\"')
+		skip_q((*tok)->data, &var->i, '\"');
+	if ((*tok)->data[var->i] == '\'')
+		skip_q((*tok)->data, &var->i, '\'');
+	if (!(*tok)->data[var->i])
+		return (0);
+	if ((*tok)->data[var->i] == '*')
 	{
-		tmp = files;
-		files = files->next;
-		free(tmp->name);
-		free(tmp);
+		wild_card_line(tok, var, files, &head);
+		return (0);
 	}
+	return (1);
 }
 
 void	handle_wildcard(t_token **tok)
@@ -82,18 +86,8 @@ void	handle_wildcard(t_token **tok)
 		var->check = 0;
 	while ((*tok)->data[var->i])
 	{
-		check_first_char(*tok, var);
-		if ((*tok)->data[var->i] == '\"')
-			skip_q((*tok)->data, &var->i, '\"');
-		if ((*tok)->data[var->i] == '\'')
-			skip_q((*tok)->data, &var->i, '\'');
-		if (!(*tok)->data[var->i])
-			return ;
-		if ((*tok)->data[var->i] == '*')
-		{
-			wild_card_line(tok, var, files, &head);
+		if (!helpful_call3(tok, head, var, files))
 			break ;
-		}
 		var->i++;
 	}
 	free_all3(var, files);

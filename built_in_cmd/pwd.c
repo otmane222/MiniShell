@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/11 13:08:10 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/20 15:58:56 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,7 @@ int	ft_pwd(int outfile, __attribute__((unused)) t_env **env, int flag)
 	static char	*path;
 	char		*str;
 
-	str = ft_getenv("PWD", *env);
+	str = getcwd(NULL, 0);
 	if (!str)
 	{
 		if (!path)
