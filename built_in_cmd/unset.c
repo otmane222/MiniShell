@@ -5,38 +5,35 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/16 17:55:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/16 18:40:48 by nakebli          ###   ########.fr       */
+/*   Created: 2023/06/23 12:03:37 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:09:15 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "builtin.h"
 
-void	ft_lstdelone_env1(t_env **env, t_env **head)
+void	print_error2(int i, char *str)
 {
-	t_env	*tmp1;
-	t_env	*tmp2;
-	t_env	*tmp3;
+	if (i == 1)
+		ft_printf("minishell: unset: ");
+	else if (i == 2)
+		ft_printf("minishell: export: ");
+	ft_printf("`%s': not a valid identifier\n", str);
+}
 
-	if (!env || !(*env))
-		return ;
-	tmp3 = *env;
-	tmp1 = (*env)->prev;
-	tmp2 = (*env)->next;
-	if (tmp1)
-		tmp1->next = tmp2;
-	if (tmp2)
-		tmp2->prev = tmp1;
-	if (!tmp1 && tmp2)
-		*head = tmp2;
-	if (!tmp2 && tmp1)
-		*head = tmp1;
-	free(tmp3->key);
-	tmp3->key = NULL;
-	free(tmp3->value);
-	tmp3->value = NULL;
-	free(tmp3);
-	tmp3 = NULL;
+int	check_arguments(char *key, int j)
+{
+	int	i;
+
+	i = 0;
+	if (key[0] != '_' && !ft_isalpha(key[0]))
+		return (print_error2(j, key), free(key), 1);
+	while (key[++i])
+	{
+		if (!ft_isalnum(key[i]) && key[i] != '_')
+			return (print_error2(j, key), free(key), 1);
+	}
+	return (free(key), 0);
 }
 
 void	remove_from_env(char *var, t_env **env)
@@ -52,26 +49,27 @@ void	remove_from_env(char *var, t_env **env)
 			ft_strlen(tmp->key) == ft_strlen(var))
 		{
 			ft_lstdelone_env1(&tmp, env);
+			free (var);
 			return ;
 		}
 		tmp = tmp->next;
 	}
+	free (var);
 }
 
-void	ft_unset(t_rock **rock, t_env **env)
+int	ft_unset(t_rock **rock, t_env **env)
 {
 	char	**temp;
-	t_env	*temp_e;
 
 	temp = &(*rock)->cmd[1];
 	if (!temp)
-	{
-		printf("unset: not enough arguments\n");
-		return ;
-	}
+		return (1);
 	while (*temp)
 	{
+		if (check_arguments(get_key(*temp), 1))
+			return (g_exit_status = 1, 1);
 		remove_from_env(get_key(*temp), env);
 		temp++;
 	}
+	return (g_exit_status = 0, 0);
 }

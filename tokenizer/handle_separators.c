@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_separators.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 11:28:40 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 15:04:25 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:07:05 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:07:05 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,7 @@ static void	store_data(char *line, t_var *var, t_token **token, int *i)
 		var->i++;
 		j++;
 	}
+	(*token)->data[*i] = '\0';
 }
 
 void	handle_seperators(char *line, t_var *var, t_token **token, int *i)

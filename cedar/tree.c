@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/04/06 10:52:08 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/05/21 19:09:10 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/22 17:21:30 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/23 05:56:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ void	del_token(t_rock *tok)
 	tmp = tok->next;
 	tmp2 = tok->prev;
 	free_2dd(tok->cmd);
+	free(tok->arr);
 	free(tok);
 	tok = NULL;
 	if (tmp)
@@ -40,12 +41,15 @@ t_tree	*init_tree(void)
 	tree->left = NULL;
 	tree->right = NULL;
 	tree->token = NULL;
+	tree->heredoc = NULL;
 	return (tree);
 }
 
 void	init_var_2(t_var **var)
 {
 	(*var) = malloc(sizeof(t_var));
+	if (!(*var))
+		return ;
 	(*var)->i = 0;
 	(*var)->j = 0;
 	(*var)->check = 1;
@@ -58,9 +62,9 @@ void	init_var_2(t_var **var)
 
 void	get_head(t_rock **head)
 {
-	if (!(*head))
+	if (!(*head) || !(*head)->flag)
 		return ;
-	if (!(*head)->prev)
+	if (!(*head)->prev || !(*head)->prev->flag)
 		return ;
 	while ((*head)->prev)
 	{
@@ -70,10 +74,12 @@ void	get_head(t_rock **head)
 	}
 }
 
-t_tree	*ast_tokenes(t_rock *rock)
+t_tree	*ast_tokenes(t_rock *rock, t_env *env)
 {
 	t_tree	*root;
 
-	root = ast_parenthese(rock);
+	if (!rock)
+		return (NULL);
+	root = ast_and(rock, env);
 	return (root);
 }

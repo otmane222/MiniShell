@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_dquotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 16:34:45 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 15:03:55 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:06:48 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:06:48 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,6 +29,10 @@ int	is_operator(char c)
 
 static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 {
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
+	var->i++;
 	while (line[var->i] && !ft_strchr(stop, line[var->i]))
 	{
 		(*t)->data[var->counter] = line[var->i];
@@ -36,6 +40,7 @@ static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 		(*t)->data[var->counter] = '\0';
 		var->i++;
 	}
+	(*t)->data[var->counter] = '\0';
 	if (!line[var->i])
 	{
 		get_head_token(t);
@@ -43,6 +48,9 @@ static void	stoor_data(t_token **t, char *line, t_var *var, char *stop)
 		printf("syntax error\n");
 		return ;
 	}
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
 	(*t)->flag = 0;
 }
 
@@ -71,7 +79,6 @@ static void	check_after(t_token **token, char *line, t_var *var, int *i)
 
 void	handle_dquotes(char *line, t_var *var, t_token **token, int *i)
 {
-	var->i++;
 	stoor_data(token, line, var, "\"");
 	if (!line[var->i])
 		return ;

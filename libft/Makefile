@@ -62,7 +62,7 @@ OBJS = $(SRCS:.c=.o)
 
 B_OBJS = $(B_SRCS:.c=.o)
 
-CFLAGS = -Wall -Werror -Wextra #-fsanitize=address
+CFLAGS = -Wall -Werror -Wextra #-g #-fsanitize=address -g
 
 HEADER = libft.h
 

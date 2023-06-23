@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   bring_cmd_first.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:52:14 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 12:18:26 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/03 22:15:24 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,12 +71,15 @@ void	case_of_arg_after_file(t_rock *rock)
 	{
 		if (rock->type == CMD)
 			tmp = rock;
-		if (tmp && (rock->type == FILE || rock->type == LIMITER))
+		else if (tmp && (rock->type == FILE || rock->type == LIMITER))
 		{
 			get_cmd(rock, tmp);
 			if (!rock)
 				break ;
 		}
+		else if (rock->type == PIPE || rock->type == DPIPE || \
+			rock->type == D_AND || rock->type == O_PARENTHIS)
+			tmp = NULL;
 		rock = rock->next;
 	}
 }

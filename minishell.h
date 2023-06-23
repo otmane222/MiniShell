@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 16:15:03 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/23 01:29:01 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,12 @@
 # include <string.h>
 # include <fcntl.h>
 # include <sys/stat.h>
+# include <errno.h>
+# include <dirent.h>
+# include <termios.h>
+# include <signal.h>
+# include <sys/types.h>
+# include <sys/wait.h>
 # include "libft/libft.h"
 
 # define CMD 1
@@ -37,6 +43,12 @@
 # define FILE 13
 # define LIMITER 14
 # define EXPAND 15
+# define PIPE_L 16
+# define PIPE_R 17
+# define PIPE_LR 18
+# define PIPE_RL 19
+
+int	g_exit_status;
 
 enum	e_token
 {
@@ -81,13 +93,29 @@ typedef struct s_rock
 	char			**cmd;
 	int				type;
 	int				flag;
+	int				flag2;
+	int				*arr;
+	int				expand;
+	int				red_p;
+	int				is_exit;
+	int				is_last;
 	struct s_rock	*next;
 	struct s_rock	*prev;
 }	t_rock;
 
+typedef struct s_heredoc
+{
+	t_rock			*token;
+	char			*name;
+	int				infile_fd;
+	struct s_tree	*left;
+	struct s_tree	*right;
+}	t_heredoc;
+
 typedef struct s_tree
 {
 	t_rock			*token;
+	t_heredoc		*heredoc;
 	struct s_tree	*left;
 	struct s_tree	*right;
 }	t_tree;
@@ -101,13 +129,38 @@ typedef struct s_env
 }	t_env;
 
 t_env	*put_env_to_new(char **env);
+void	remove_from_env(char *var, t_env **env);
+void	add_to_env(char *var, char *val, t_env **env);
 t_token	*init_token(size_t x);
+
+void	handle_wildcard(t_token **tok);
+
 char	*expand_line(char *line, t_env *our_env);
-int		get_token(t_token **token, char *line);
+int		get_token(t_token **token, char *line, t_env *env);
+void	get_head1(t_rock **head);
+int		ft_printf(const char *format, ...);
+
+t_tree	*tree_head(t_tree *root);
 
 t_rock	*lex_token(t_token **token);
 int		check_errors(t_token *token);
 void	free_tokens(t_token **token);
-t_tree	*ast_tokenes(t_rock *rock);
+void	free_tree(t_tree *tree);
+t_tree	*ast_tokenes(t_rock *rock, t_env *env);
+void	execute(t_tree *root, t_env **env);
+char	*get_next_line(int fd);
+void	free_env(t_env **our_env);
+void	free_rock(t_rock **rock);
+
+void	ft_init(void);
+
+void	signal_handler_call(void);
+
+int		is_there_here_doc(int k);
+int		std_in_fd(int k);
+int		stop_execution(int k);
+int		runnig_cmd(int k);
+char	*get_value(char *line);
+void	handle_shell_lvl(t_env **env);
 
 #endif

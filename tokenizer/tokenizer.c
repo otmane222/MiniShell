@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 12:28:07 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/11 14:03:08 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:07:29 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:07:29 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void	next_node(t_token **t, char *line, int *i)
 {
 	t_token	*temp;
 
-	temp = init_token(ft_strlen(line) + 1);
+	temp = init_token(ft_strlen(line));
 	(*t)->next = temp;
 	temp->prev = (*t);
 	*t = temp;
@@ -78,22 +78,30 @@ int	first_step(t_token **token, char *line, t_var *var)
 	return (1);
 }
 
-int	get_token(t_token **token, char *line)
+int	get_token(t_token **token, char *line, t_env *env)
 {
 	t_var	*var;
+	t_token	*tmp;
 
 	init_var(&var);
+	line = expand_line2(line, env);
+	*token = init_token(ft_strlen(line));
+	tmp = *token;
+	if (!(*token)->data)
+		return (0);
 	while (line[++var->i])
 	{
 		var->check = first_step(token, line, var);
 		if (!*token)
-			return (free(var), get_head_token(token), 0);
+			return (free(var), free(line), get_head_token(token), 0);
 		if (!line[var->i])
 			break ;
 	}
-	get_head_token(token);
+	*token = tmp;
 	if (!check_errors(*token))
-		return (free(var), free_tokens(token), 0);
+		return (free(var), free(line), free_tokens(token), 0);
 	free(var);
-	return (1);
+	wild_card_handle(&tmp);
+	*token = tmp;
+	return (free(line), 1);
 }

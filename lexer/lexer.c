@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   lexer.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:00:28 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 14:58:14 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/23 11:54:16 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,22 +23,13 @@ t_rock	*init_rock(void)
 	rock->next = NULL;
 	rock->prev = NULL;
 	rock->flag = 1;
+	rock->is_exit = 0;
+	rock->red_p = 0;
+	rock->arr = NULL;
+	rock->expand = 1;
+	rock->is_last = 0;
 	rock->type = -10;
 	return (rock);
-}
-
-void	free_tokens(t_token **token)
-{
-	t_token	*tmp;
-
-	while ((*token))
-	{
-		tmp = (*token);
-		(*token) = (*token)->next;
-		free(tmp->data);
-		free(tmp);
-		tmp = NULL;
-	}
 }
 
 void	get_head1(t_rock **head)
@@ -51,6 +42,33 @@ void	get_head1(t_rock **head)
 		(*head) = (*head)->prev;
 }
 
+void	swap_token_char(t_rock **a, t_rock **b)
+{
+	char	*tmp;
+
+	if (!(*b) || !(*a))
+		return ;
+	if ((*a)->next)
+		if ((*a)->next->type == C_PARENTHIS)
+			return ;
+	tmp = (*a)->cmd[0];
+	(*a)->cmd[0] = (*b)->cmd[0];
+	(*b)->cmd[0] = tmp;
+}
+
+void	flag_last_cmds(t_rock *rock)
+{
+	get_head1(&rock);
+	while (rock)
+	{
+		if (!rock->next)
+			flag_cmd(rock);
+		if (rock->type == D_AND || rock->type == DPIPE)
+			flag_cmd(rock->prev);
+		rock = rock->next;
+	}
+}
+
 t_rock	*lex_token(t_token **token)
 {
 	t_rock	*rock;
@@ -61,5 +79,6 @@ t_rock	*lex_token(t_token **token)
 	join_arg_with_cmd(rock, *token);
 	free_tokens(token);
 	case_cmd_after_file(rock);
+	flag_last_cmds(rock);
 	return (rock);
 }

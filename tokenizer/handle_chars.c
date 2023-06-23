@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_chars.c                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 06:08:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 14:36:51 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:06:39 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:06:39 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,20 @@ static void	store_data(char *line, t_var *var, t_token **token, int *i)
 	}
 }
 
+int	is_not_end(char *line, t_var *var)
+{
+	int	k;
+
+	k = var->i;
+	while (line[var->i] && is_white_space(line[var->i]))
+		var->i++;
+	if (!line[var->i])
+		return (0);
+	else
+		var->i = k;
+	return (1);
+}
+
 void	handle_chars(char *line, t_var *var, t_token **token, int *i)
 {
 	store_data(line, var, token, i);
@@ -41,7 +55,7 @@ void	handle_chars(char *line, t_var *var, t_token **token, int *i)
 		next_node(token, line, i);
 		handle_seperators(line, var, token, i);
 	}
-	else if (is_white_space(line[var->i]))
+	else if (is_white_space(line[var->i]) && is_not_end(line, var))
 	{
 		next_node(token, line, i);
 		handle_spaces(line, var, token, i);

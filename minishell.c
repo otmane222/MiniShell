@@ -12,79 +12,59 @@
 
 #include "minishell.h"
 
-void	print_tree(t_tree *tree)
+t_tree	*tree_head(t_tree *root)
 {
-	int			i;
-	static int	j = 0;
+	static t_tree	*tree;
 
-	i = 0;
 	if (!tree)
-		return ;
-	while (tree->token->cmd[i])
-	{
-		printf("%s	", tree->token->cmd[i]);
-		i++;
-	}
-	printf("\n-----%d------\n", j++);
-	print_tree(tree->left);
-	print_tree(tree->right);
+		return (tree);
+	else
+		tree = root;
+	return (NULL);
 }
 
-void	free_rock(t_rock **rock)
+void	call_exit(void)
 {
-	t_rock	*tmp;
-
-	while ((*rock))
-	{
-		tmp = (*rock);
-		(*rock) = (*rock)->next;
-		free_2dd(tmp->cmd);
-		free(tmp);
-		tmp = NULL;
-	}
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
+	exit (g_exit_status);
 }
 
 static void	start_job(t_env **our_env)
 {
 	t_token	*token;
 	t_rock	*rock;
-	// t_tree	*tree;
+	t_tree	*tree;
 	char	*line;
+	char	*input;
 
-	line = readline("\x1B[34mMinishell >  \x1B[0m");
+	token = NULL;
+	if (isatty(STDIN_FILENO))
+		input = readline("Minishell > ");
+	else
+		input = get_next_line(STDIN_FILENO);
+	line = ft_strtrim(input, " \t\r\v\f\n");
 	if (line == NULL)
-		exit (0);
-	line = ft_strtrim(line, " \t\r\v\f");
-	add_history(line);
-	line = expand_line(line, *our_env);
-	token = init_token(ft_strlen(line) + 1);
-	if (!get_token(&token, line))
+		call_exit();
+	if (!line[0])
 		return (free(line));
-	free(line);
+	add_history(line);
+	if (!get_token(&token, line, *our_env))
+		return (free_tokens(&token));
 	rock = lex_token(&token);
-	free_rock(&rock);
-	
-	// tree = ast_tokenes(rock);
-	// print_tree(tree);
+	get_head1(&rock);
+	tree = ast_tokenes(rock, *our_env);
+	execute(tree, our_env);
+	free_tree(tree);
 }
 
-void	lk(void)
+void	get_std_in(void)
 {
-	system("leaks minishell");
-}
-
-void	free_env(t_env **our_env)
-{
-	t_env	*tmp;
-
-	while ((*our_env))
+	if (!isatty(STDIN_FILENO) && std_in_fd(-1) != -2)
 	{
-		tmp = (*our_env);
-		(*our_env) = (*our_env)->next;
-		free(tmp->value);
-		free(tmp->key);
-		free(tmp);
-		tmp = NULL;
+		dup2(std_in_fd(-1), STDIN_FILENO);
+		close(std_in_fd(-1));
+		std_in_fd(-2);
 	}
 }
 
@@ -92,10 +72,14 @@ int	main(int ac, char **av, char **env)
 {
 	t_env	*our_env;
 
-	atexit(lk);
+	g_exit_status = 0;
 	our_env = put_env_to_new(env);
+	handle_shell_lvl(&our_env);
+	signal_handler_call();
+	std_in_fd(-2);
 	while (1)
 	{
+		get_std_in();
 		(void)ac;
 		(void)av;
 		start_job(&our_env);

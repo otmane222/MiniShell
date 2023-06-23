@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:41:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 14:34:51 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/23 12:04:24 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,5 +75,7 @@ t_env	*put_env_to_new(char **env)
 				get_key(*env)));
 		env++;
 	}
+	ft_init();
+	remove_from_env(ft_strdup("OLDPWD"), &our_env);
 	return (our_env);
 }

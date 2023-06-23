@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tree.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/18 20:43:02 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/21 19:07:49 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/22 03:03:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,20 +16,32 @@
 # include "../minishell.h"
 
 //ASTs
-t_tree	*ast_pipe(t_rock *tok);
-t_tree	*ast_and_or(t_rock *tok);
-t_tree	*ast_parenthese(t_rock *rock);
-t_tree	*ast_redirections(t_rock *tok);
+t_tree	*ast_pipe(t_rock *tok, t_env *env);
+t_tree	*ast_and(t_rock *tok, t_env *env);
+t_tree	*ast_or(t_rock *tok, t_env *env);
+t_tree	*ast_parenthese(t_rock *rock, t_env *env);
+t_tree	*ast_red_her_doc(t_rock *rock, t_env *env);
+t_tree	*ast_reds(t_rock *tok, t_env *env);
+
+void	skip_parenthese(t_rock **rock);
+char	*get_next_line(int fd);
+char	*deleted_q(char *line);
+char	*handle_case(char *line);
+
+char	*store_datadd(char *str, char *line, int *i, int *j);
+char	*store_datass(char *str, char *line, int *i, int *j);
 
 t_tree	*init_tree(void);
 void	get_head(t_rock **head);
 void	init_var_2(t_var **var);
 void	del_token(t_rock *tok);
 int		is_red(int a);
-// cases AST_utils
-t_tree	*case_no_next(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree);
-t_tree	*case_no_perv(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree);
-t_tree	*case_nothing(t_rock *begin, t_rock *tok, t_tree *tree);
-t_tree	*case_both_exit(t_rock *begin, t_rock *tok, t_rock *b, t_tree *tree);
+void	get_tail(t_rock **head);
+void	skip_parenthese1(t_rock **rock);
+t_rock	*get_last(t_rock *rock);
+int		check_red_exist(t_rock *rock, int *flag, int *i);
+int		check_red_exist2(t_rock *rock, int *flag, int *i);
+void	write_in_here_doc(t_tree *tree, t_env *env);
+void	loop_and_stock(t_tree *tree, t_env *env, int fd);
 
 #endif

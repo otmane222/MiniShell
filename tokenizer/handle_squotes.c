@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_squotes.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 07:12:23 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 15:07:49 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:07:22 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:07:22 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,10 @@ int	is_qoutes(char c)
 
 static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 {
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
+	var->i++;
 	while (line[var->i] && !ft_strchr(stop, line[var->i]))
 	{
 		(*t)->data[var->counter] = line[var->i];
@@ -28,12 +32,17 @@ static void	stor_data(t_token **t, char *line, t_var *var, char *stop)
 		(*t)->data[var->counter] = '\0';
 		var->i++;
 	}
+	(*t)->data[var->counter] = '\0';
 	if (!line[var->i])
 	{
+		get_head_token(t);
 		free_tokens(t);
 		printf("syntax error\n");
 		return ;
 	}
+	(*t)->data[var->counter] = line[var->i];
+	var->counter = var->counter + 1;
+	(*t)->data[var->counter] = '\0';
 	(*t)->flag = 0;
 }
 
@@ -62,7 +71,6 @@ static void	check_after(t_token **token, char *line, t_var *var, int *i)
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i)
 {
-	var->i++;
 	stor_data(token, line, var, "\'");
 	if (!line[var->i])
 		return ;

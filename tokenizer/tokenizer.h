@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   tokenizer.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/29 12:22:23 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/12 15:07:40 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:07:37 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:07:37 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,6 @@
 
 # include "../minishell.h"
 
-int		get_token(t_token **token, char *line);
 int		first_step(t_token **token, char *line, t_var *var);
 
 void	handle_squotes(char *line, t_var *var, t_token **token, int *i);
@@ -37,5 +36,11 @@ int		is_qoutes(char c);
 int		is_char(char c);
 int		is_parenthese(char c);
 int		is_white_space(char c);
+
+char	*expand_line2(char *line, t_env *env);
+void	wild_card_handle(t_token **token);
+void	del_q(t_token **token);
+char	*store_dq(char *str, char *line, int *i, int *j);
+char	*store_sq(char *str, char *line, int *i, int *j);
 
 #endif

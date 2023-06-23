@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   handle_spaces.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/03/30 06:50:27 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/04/08 16:08:34 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 12:07:14 by nakebli           #+#    #+#             */
+/*   Updated: 2023/06/23 12:07:14 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_token	*init_token(size_t x)
 	token = malloc (sizeof(t_token));
 	if (!token)
 		return (NULL);
-	token->data = malloc(x + 1);
+	token->data = malloc(sizeof(char) * (x + 1));
 	token->next = NULL;
 	token->flag = 1;
 	token->type = -10;
@@ -55,6 +55,8 @@ void	handle_spaces(char *line, t_var *var, t_token **token, int *i)
 {
 	while (is_white_space(line[var->i]))
 		var->i++;
+	if (!line[var->i])
+		return ;
 	if (is_qoutes(line[var->i]))
 	{
 		if (line[var->i] == '\'')

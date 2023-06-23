@@ -12,10 +12,11 @@
 
 #include "libft.h"
 
-static int	ft_isoverflow(long long int prev, long long curr)
+static int	ft_isoverflow(long long int prev, long long curr, const char *str)
 {
 	if (curr / 10 == prev)
 		return (0);
+	ft_printf("minishell exit: %s: numeric argument required\n", str);
 	return (1);
 }
 
@@ -37,6 +38,13 @@ static int	skip_spaces_get_signe(const char *str, int *signe)
 	return (i);
 }
 
+static void	call_help(char *str)
+{
+	write(2, "exit: ", 7);
+	write(2, str, ft_strlen(str));
+	write(2, ": numeric argument required\n", 29);
+}
+
 int	ft_atoi(const char *str)
 {
 	int			i;
@@ -53,7 +61,7 @@ int	ft_atoi(const char *str)
 	{
 		prev = value;
 		value = value * 10 + (str[i] - 48);
-		if (ft_isoverflow(prev, value) == 1)
+		if (ft_isoverflow(prev, value, str) == 1)
 		{
 			if (*signe == 1)
 				return (-1);
@@ -61,5 +69,7 @@ int	ft_atoi(const char *str)
 		}
 		i++;
 	}
+	if (str[i] && !(str[i] <= '9' && str[i] >= '0'))
+		call_help((char *)str);
 	return (*signe * value);
 }

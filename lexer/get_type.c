@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_type.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 14:40:46 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/22 14:17:21 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/05/25 20:43:27 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,5 +73,29 @@ void	put_type_of_tokens(t_token *tmp)
 	{
 		get_type(tmp);
 		tmp = tmp->next;
+	}
+}
+
+void	handle_followed_red(t_rock *rock)
+{
+	t_rock	*tmp;
+
+	while (rock)
+	{
+		if (rock->type == FILE)
+		{
+			tmp = rock;
+			rock = rock->next;
+			if (!rock)
+				return ;
+			while (rock->next && (rock->next->type == FILE \
+				|| rock->next->type == LIMITER || is_red2(rock->next->type)))
+				rock = rock->next;
+			if (rock->type == FILE)
+				swap_token_char(&tmp, &rock);
+		}
+		if (!rock)
+			return ;
+		rock = rock->next;
 	}
 }

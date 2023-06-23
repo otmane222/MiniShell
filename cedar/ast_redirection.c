@@ -3,73 +3,120 @@
 /*                                                        :::      ::::::::   */
 /*   ast_redirection.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
+/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/21 18:31:05 by nakebli           #+#    #+#             */
-/*   Updated: 2023/05/21 19:05:59 by nakebli          ###   ########.fr       */
+/*   Created: 2023/05/22 17:21:19 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/22 03:02:42 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "tree.h"
 
-static t_tree	*fill_right_left(t_tree *tree, t_rock *rock)
+t_tree	*call_ninja(t_tree *tree, t_rock *rock, t_env *env)
 {
-	rock->flag = 0;
-	tree->token = rock;
-	tree->left = ast_redirections(rock->prev);
-	tree->right = ast_redirections(rock->next);
-	return (tree);
-}
-
-static t_tree	*case_file(t_rock *tmp, t_tree *tree)
-{
-	if (!tmp)
+	tree->heredoc = malloc(sizeof(t_heredoc));
+	if (!tree->heredoc)
 		return (NULL);
-	if (tmp->next)
-	{
-		if (tmp->next->flag && tmp->type == FILE)
-		{
-			tree->left = init_tree();
-			tree->left->token = tmp;
-			tree->token = tmp->next;
-			return (tree);
-		}
-	}
-	tree->token = tmp;
+	tree->heredoc->token = rock;
+	tree->heredoc->left = NULL;
+	tree->heredoc->right = NULL;
+	write_in_here_doc(tree, env);
+	is_there_here_doc(0);
+	tree->heredoc->left = ast_red_her_doc(rock->prev, env);
+	tree->heredoc->right = ast_red_her_doc(rock->next, env);
 	return (tree);
 }
 
-int	is_red(int a)
+static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, \
+			int flag, t_env *env)
 {
-	if (a == D_RED_OUT || a == RED_IN || a == RED_OUT || a == D_RED_IN)
-		return (1);
-	return (0);
+	if (flag == 1)
+		rock->red_p = 1;
+	rock->flag = 0;
+	if (rock->type == D_RED_IN)
+		return (call_ninja(tree, rock, env));
+	tree->token = rock;
+	tree->left = ast_reds(rock->prev, env);
+	tree->right = ast_reds(rock->next, env);
+	return (tree);
 }
 
-t_tree	*ast_redirections(t_rock *tok)
+static t_tree	*case_file(t_rock *tmp, t_tree *tree, t_env *env)
+{
+	t_rock	*tmp2;
+	t_rock	*tmp3;
+
+	tmp3 = get_last(tmp);
+	if (tmp->type == O_PARENTHIS)
+	{
+		tmp2 = tmp->next;
+		tmp2->is_exit = 1;
+		del_token(tmp);
+		del_token(tmp3);
+		free(tree);
+		return (ast_and(tmp2, env));
+	}
+	else
+	{
+		tree->token = tmp;
+		tree->token->flag = 0;
+		return (tree);
+	}
+}
+
+t_tree	*ast_red_her_doc(t_rock *rock, t_env *env)
 {
 	t_var	var;
 	t_rock	*tmp;
 	t_tree	*tree;
+	int		flag;
 
-	tree = init_tree();
-	get_head(&tok);
-	if (!tok)
+	if (!rock || !rock->flag)
 		return (NULL);
-	tmp = tok;
+	tree = init_tree();
+	get_head(&rock);
+	tmp = rock;
 	var.i = 0;
-	while (tok && tok->flag)
+	flag = 0;
+	while (rock && rock->flag)
 	{
-		if (is_red(tok->type))
-		{
-			var.i = 1;
+		skip_parenthese(&rock);
+		if (check_red_exist(rock, &flag, &var.i))
 			break ;
-		}
-		tok = tok->next;
+		rock = rock->next;
 	}
 	if (var.i == 0)
-		return (case_file(tmp, tree));
+		return (case_file(tmp, tree, env));
 	else if (var.i)
-		return (fill_right_left(tree, tok));
+		return (fill_right_left(tree, rock, flag, env));
+	return (NULL);
+}
+
+t_tree	*ast_reds(t_rock *rock, t_env *env)
+{
+	t_var	var;
+	t_rock	*tmp;
+	t_tree	*tree;
+	int		flag;
+
+	if (!rock || !rock->flag)
+		return (NULL);
+	tree = init_tree();
+	get_head(&rock);
+	tmp = rock;
+	get_tail(&rock);
+	var.i = 0;
+	flag = 0;
+	while (rock && rock->flag)
+	{
+		skip_parenthese1(&rock);
+		if (check_red_exist2(rock, &flag, &var.i))
+			break ;
+		rock = rock->prev;
+	}
+	if (var.i == 0)
+		return (free(tree), ast_red_her_doc(tmp, env));
+	else if (var.i)
+		return (fill_right_left(tree, rock, flag, env));
 	return (NULL);
 }
