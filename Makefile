@@ -30,22 +30,25 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
-LFLAGS = -L/Users/oaboulgh/.brew/opt/readline/lib 
-IFLAGS = -I/Users/oaboulgh/.brew/opt/readline/include
+CFLAGS = -Wall -Wextra -Werror
+LFLAGS = "-L$(shell brew --prefix readline)/lib"
+IFLAGS = "-I$(shell brew --prefix readline)/include"
 
 HEADERS = minishell.h \
 		envirenment/env.h \
 		tokenizer/tokenizer.h \
 		expander/expand.h \
+		lexer/lexer.h \
 		execution/execute.h \
 		parser/parser.h \
 		built_in_cmd/builtin.h\
 		get_next_line/get_next_line.h \
-		/Users/oaboulgh/.brew/opt/readline/include \
+		$(shell brew --prefix readline)/include \
 		wildcard/wildcard.h \
 		libft/libft.h \
-		ft_printf_error/ft_printf.h
+		ft_printf_error/ft_printf.h \
+		free/free.h \
+		cedar/tree.h \
 
 HEADER_INC =	-Iminishell.h \
 				-Ienvirenment/env.h \
@@ -56,7 +59,7 @@ HEADER_INC =	-Iminishell.h \
 				-Iparser/parser.h \
 				-Ibuilt_in_cmd/builtin.h\
 				-Iget_next_line/get_next_line.h \
-				-I/Users/oaboulgh/.brew/opt/readline/include
+				-I$(shell brew --prefix readline)/include
 
 
 RM = rm -rf

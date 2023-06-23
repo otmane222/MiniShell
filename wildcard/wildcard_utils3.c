@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:37:05 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 19:03:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 11:44:50 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,14 +79,12 @@ t_filename	*get_files_name(void)
 	if (dir == NULL)
 		return (NULL);
 	entity = readdir(dir);
-	while (entity && entity->d_name[0] == '.')
-		entity = readdir(dir);
 	if (entity)
 		files->name = ft_strdup(entity->d_name);
 	while (entity)
 	{
 		entity = readdir(dir);
-		if (entity && entity->d_name[0] != '.')
+		if (entity)
 			full_files(&files, entity);
 	}
 	return (closedir(dir), head);
