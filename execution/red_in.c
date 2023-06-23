@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:01:55 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 20:25:50 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:33:36 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,10 +38,9 @@ static int	fd_to_in(t_tree *root, t_env **env)
 	char	*tmp;
 
 	root = root->right;
-	while (root->left)
-		root = root->left;
+	update_root(&root);
 	fd = 1;
-	if (root && root->token->type == FILE)
+	if (root && root->token && root->token->type == FILE)
 	{
 		tmp = root->token->cmd[0];
 		str = ft_strdup(root->token->cmd[0]);

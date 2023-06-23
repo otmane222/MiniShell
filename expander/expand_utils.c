@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:26:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/10 19:30:26 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 20:58:38 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,7 +70,7 @@ char	*ft_strreplace_non(char *token, char *s, int index)
 	int		j;
 	char	*ret;
 
-	ret = malloc (sizeof(char) * ((ft_strlen(token) - (ft_strlen(s)) + 1)));
+	ret = malloc (sizeof(char) * (((ft_strlen(token) + 1) - ft_strlen(s))));
 	i = 0;
 	j = 0;
 	while (token[i] && i < index - 1)

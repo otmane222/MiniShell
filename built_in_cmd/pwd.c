@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/20 15:58:56 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:14:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,24 +25,52 @@ void	print_error(int i)
 	ft_printf("directory\n");
 }
 
-int	ft_pwd(int outfile, __attribute__((unused)) t_env **env, int flag)
+void	ft_init(void)
 {
-	static char	*path;
-	char		*str;
+	char	*str;
 
 	str = getcwd(NULL, 0);
 	if (!str)
 	{
-		if (!path)
-		{
-			if (flag == 1)
-				return (print_error(1), g_exit_status = 1, 1);
-			return (print_error(2), g_exit_status = 1, 1);
-		}
-		str = path;
+		print_error(1);
+		g_exit_status = 1;
+		return ;
 	}
-	if (flag == 1)
-		return (free(str), 0);
+	free(str);
+}
+
+char	*get_save(char *save, char *path)
+{
+	char		*tmp;
+
+	if (ft_strncmp(save, "/..", 4) == 0)
+	{
+		tmp = path;
+		path = ft_strjoin (tmp, "/..");
+		return (free(tmp), path);
+	}
+	if (path)
+		free(path);
+	return (path = save, path);
+}
+
+int	ft_pwd(int outfile, __attribute__((unused)) t_env **env, char *save)
+{
+	static char	*path;
+	char		*str;
+
+	if (save)
+		return (path = get_save(save, path), 0);
+	str = getcwd(NULL, 0);
+	if (!str)
+	{
+		if (!path)
+			return (print_error(2), g_exit_status = 1, 1);
+		str = path;
+		ft_putstr_fd(str, outfile);
+		write(outfile, "\n", 1);
+		return (0);
+	}
 	if (path)
 		free(path);
 	path = str;

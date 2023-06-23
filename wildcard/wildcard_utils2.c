@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/03 12:29:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 17:13:03 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 21:10:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,6 +73,8 @@ char	*store_datas(char *str, char *line, t_var *va, t_var *var)
 		va->j = va->j + 1;
 	}
 	str[va->j] = '\0';
+	if (!line[va->i])
+		return (str);
 	va->i = va->i + 1;
 	if (line[va->i] == '\"')
 		str = store_datad(str, line, va, var);
@@ -92,6 +94,8 @@ char	*store_datad(char *str, char *line, t_var *va, t_var *var)
 		va->j = va->j + 1;
 	}
 	str[va->j] = '\0';
+	if (!line[va->i])
+		return (str);
 	va->i = va->i + 1;
 	if (line[va->i] == '\'')
 		str = store_datas(str, line, va, var);

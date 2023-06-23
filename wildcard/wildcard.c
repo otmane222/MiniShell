@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:35:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 18:40:26 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 05:59:36 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -97,6 +97,8 @@ void	wild_card_handle(t_token **token)
 {
 	t_token	*tmp;
 
+	if (!(*token))
+		return ;
 	while ((*token))
 	{
 		if ((*token)->type != FILE && (*token)->type != LIMITER)

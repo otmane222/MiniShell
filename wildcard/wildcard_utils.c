@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 12:56:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 04:29:31 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 04:19:58 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,11 @@ void	skip_chars(char *line, int *j, int *i)
 	*i = *i + 1;
 	while (line[*j] && line[*j] != '*' && !is_valid(line[*j]))
 	{
-		if (line[*j] == '\'')
+		if (line[*j] && line[*j] == '\'')
 			skip_q(line, j, '\'');
-		if (line[*j] == '\"')
+		if (line[*j] && line[*j] == '\"')
 			skip_q(line, j, '\"');
-		if (line[*j] == '*')
+		if (!line[*j] || line[*j] == '*')
 			break ;
 		*j = *j + 1;
 	}

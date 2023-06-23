@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 04:13:56 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:11:40 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	handle_files(t_data *data);
 int		ft_export(t_rock **rock, t_env **env, int outfile);
 void	ft_env(t_rock **rock, t_env **env, int outfile);
 int		ft_unset(t_rock **rock, t_env **env);
-int		ft_pwd(int outfile, t_env **env, int flag);
+int		ft_pwd(int outfile, t_env **env, char *save);
 void	ft_echo(int outfile, char **arg);
 int		ft_cd(char *path, t_env **env, int outfile);
 int		ft_exit(t_tree *root);
@@ -72,10 +72,13 @@ char	*last_arg(char	**cmds);
 char	*handle_wildcard_char(char *line);
 void	edit_env(char *var, char *val, t_env **env);
 void	execute_execve(char *cmd, char **cmds, t_env *env, t_fds *list);
+void	child_execute(t_tree *root, t_data data, t_env **env, t_fds **list);
 
 char	*expand_line(char *line, t_env *our_env);
 char	*check_path(char **paths, char *path);
 char	*deleted_q(char *line);
 void	case_directory(char *str);
+void	update_root(t_tree **root);
+void	handle_shell_lvl(t_env **env);
 
 #endif

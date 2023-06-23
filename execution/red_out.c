@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 20:47:28 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:55:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,6 +31,22 @@ static int	short_cut4(t_tree *root, char *tmp, char *str, t_env *env)
 	return (0);
 }
 
+void	update_root(t_tree **root)
+{
+	while ((*root))
+	{
+		if ((*root)->left)
+			(*root) = (*root)->left;
+		else if ((*root)->heredoc)
+		{
+			if ((*root)->heredoc->left)
+				(*root) = (*root)->heredoc->left;
+		}
+		else
+			break ;
+	}
+}
+
 static int	fd_to_out(t_tree *root, t_env **env)
 {
 	int		fd;
@@ -38,10 +54,8 @@ static int	fd_to_out(t_tree *root, t_env **env)
 	char	*tmp;
 
 	root = root->right;
-	while (root->left)
-		root = root->left;
-	fd = 1;
-	if (root && root->token->type == FILE)
+	update_root(&root);
+	if (root && root->token && root->token->type == FILE)
 	{
 		tmp = root->token->cmd[0];
 		str = ft_strdup(root->token->cmd[0]);

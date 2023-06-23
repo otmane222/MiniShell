@@ -1,28 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   env.h                                              :+:      :+:    :+:   */
+/*   cmd_utils3.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/05/17 14:42:12 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/22 19:42:27 by oaboulgh         ###   ########.fr       */
+/*   Created: 2023/06/23 00:11:32 by oaboulgh          #+#    #+#             */
+/*   Updated: 2023/06/23 01:31:26 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef ENV_H
-# define ENV_H
+#include "execute.h"
 
-# include "../minishell.h"
+void	child_execute(t_tree *root, t_data data, t_env **env, t_fds **list)
+{
+	char	**paths;
+	char	*cmd;
 
-// env.c functions
-t_env	*put_env_to_new(char **env);
-char	*get_key(char *line);
-char	*get_value(char *line);
-// env_utils.c functions
-t_env	*ft_lstlast_env(t_env *lst);
-t_env	*ft_lstnew_env(char *value, char *key);
-void	ft_lstadd_back_env(t_env **lst, t_env *new);
-void	ft_lstdelone_env1(t_env **env, t_env **head);
-
-#endif
+	handle_files(&data);
+	paths = ft_split(ft_getenv("PATH", *env), ':');
+	case_directory(root->token->cmd[0]);
+	cmd = check_path(paths, root->token->cmd[0]);
+	execute_execve(cmd, root->token->cmd, *env, *list);
+}

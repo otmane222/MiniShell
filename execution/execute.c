@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 19:06:48 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 05:56:20 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -80,6 +80,8 @@ void	execute(t_tree *root, t_env **env)
 	t_fds	*list;
 	t_data	data;
 
+	if (!root)
+		return ;
 	list = NULL;
 	data.infile_fd = 0;
 	data.outfile_fd = 1;

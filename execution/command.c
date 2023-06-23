@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 03:47:41 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 04:11:12 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,9 +93,6 @@ char	**expander_in_execution(t_rock *rock, t_env **env)
 
 int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
-	char	**paths;
-	char	*cmd;
-
 	runnig_cmd(1);
 	if (stop_execution(-1) == -2)
 		return (runnig_cmd(0), stop_execution(0), 1);
@@ -108,13 +105,7 @@ int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 	if (data.i < 0)
 		return (perror("fork"), 1);
 	if (data.i == 0)
-	{
-		handle_files(&data);
-		paths = ft_split(ft_getenv("PATH", *env), ':');
-		case_directory(root->token->cmd[0]);
-		cmd = check_path(paths, root->token->cmd[0]);
-		execute_execve(cmd, root->token->cmd, *env, *list);
-	}
+		child_execute(root, data, env, list);
 	if (root->token->is_last)
 		return (wait_last_cmd(data));
 	return (0);

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 09:44:29 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 04:13:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 04:19:41 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,8 +42,10 @@ void	add_b_list(t_fds **lst, t_fds *neud)
 	}
 }
 
-void	help_call(t_data *va, t_data *data)
+int	help_call(t_data *va, t_data *data)
 {
+	if (data->status == 1)
+		return (close (va->fd[0]), close (va->fd[1]), 1);
 	close (va->fd[1]);
 	va->type = PIPE_R;
 	if (data->type == PIPE_L || data->type == PIPE_LR)
@@ -55,6 +57,7 @@ void	help_call(t_data *va, t_data *data)
 		va->type = PIPE_RL;
 	va->outfile_fd = data->outfile_fd;
 	va->infile_fd = va->fd[0];
+	return (0);
 }
 
 int	pipe_handle(t_tree *root, t_data data, t_env **env, t_fds **list)
@@ -78,10 +81,10 @@ int	pipe_handle(t_tree *root, t_data data, t_env **env, t_fds **list)
 	va.redin = data.redin;
 	va.redout = data.redout;
 	data.status = execute_cmd(root->left, va, env, list);
-	help_call(&va, &data);
+	if (help_call(&va, &data))
+		return (1);
 	data.status = execute_cmd(root->right, va, env, list);
 	if (data.status == 1)
 		return (close (va.fd[0]), 1);
-	close (va.fd[0]);
-	return (0);
+	return (close (va.fd[0]), 0);
 }

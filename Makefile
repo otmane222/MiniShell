@@ -30,7 +30,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror -g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 LFLAGS = -L/Users/oaboulgh/.brew/opt/readline/lib 
 IFLAGS = -I/Users/oaboulgh/.brew/opt/readline/include
 

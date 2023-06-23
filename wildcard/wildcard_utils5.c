@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/09 16:36:57 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 18:40:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 04:17:41 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	skip_najmat(char *line, int *j)
 {
-	while (line[*j] && line[*j] == '*')
+	while (line[(*j)] && line[(*j)] == '*')
 		*j = *j + 1;
 }
 
@@ -23,6 +23,8 @@ void	skip_q(char *line, int *i, char c)
 	*i = *i + 1;
 	while (line[*i] && line[*i] != c)
 		*i = *i + 1;
+	if (!line[*i])
+		return ;
 	*i = *i + 1;
 	if (line[*i] && line[*i] == '\'')
 		skip_q(line, i, '\'');

@@ -25,7 +25,8 @@ t_tree	*tree_head(t_tree *root)
 
 void	call_exit(void)
 {
-	printf("exit\n");
+	if (isatty(STDIN_FILENO))
+		printf("exit\n");
 	exit (g_exit_status);
 }
 
@@ -37,7 +38,7 @@ static void	start_job(t_env **our_env)
 	char	*line;
 	char	*input;
 
-	(void) our_env;
+	token = NULL;
 	if (isatty(STDIN_FILENO))
 		input = readline("Minishell > ");
 	else
@@ -48,9 +49,8 @@ static void	start_job(t_env **our_env)
 	if (!line[0])
 		return (free(line));
 	add_history(line);
-	token = init_token(ft_strlen(line));
 	if (!get_token(&token, line, *our_env))
-		return ;
+		return (free_tokens(&token));
 	rock = lex_token(&token);
 	get_head1(&rock);
 	tree = ast_tokenes(rock, *our_env);
@@ -74,6 +74,7 @@ int	main(int ac, char **av, char **env)
 
 	g_exit_status = 0;
 	our_env = put_env_to_new(env);
+	handle_shell_lvl(&our_env);
 	signal_handler_call();
 	std_in_fd(-2);
 	while (1)

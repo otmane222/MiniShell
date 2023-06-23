@@ -84,10 +84,9 @@ int	get_token(t_token **token, char *line, t_env *env)
 	t_token	*tmp;
 
 	init_var(&var);
-	tmp = *token;
 	line = expand_line2(line, env);
-	free((*token)->data);
-	(*token)->data = malloc(ft_strlen(line) + 1);
+	*token = init_token(ft_strlen(line));
+	tmp = *token;
 	if (!(*token)->data)
 		return (0);
 	while (line[++var->i])
@@ -98,7 +97,7 @@ int	get_token(t_token **token, char *line, t_env *env)
 		if (!line[var->i])
 			break ;
 	}
-	get_head_token(token);
+	*token = tmp;
 	if (!check_errors(*token))
 		return (free(var), free(line), free_tokens(token), 0);
 	free(var);

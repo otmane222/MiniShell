@@ -80,7 +80,7 @@ static void	skip_until2(char *line, int *start)
 	}
 	else if ((line[(*start)] == '>' && line[(*start) + 1] != '>'))
 	{
-		*start = *start + 2;
+		*start = *start + 1;
 		skip_spaces(line, start);
 		skip_char(line, start);
 	}

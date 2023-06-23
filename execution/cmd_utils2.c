@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:47:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 03:49:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 23:09:25 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,8 @@ void	case_directory(char *str)
 {
 	DIR		*k;
 
+	signal(SIGINT, SIG_DFL);
+	signal(SIGQUIT, SIG_DFL);
 	k = opendir(str);
 	if (k)
 	{

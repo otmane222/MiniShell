@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:32:51 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/22 00:55:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/22 04:12:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ void	skip_in_q(char *line, int *start, char stop)
 
 void	skip_spaces(char *line, int *start)
 {
-	while (line[*start] && is_white_space(line[*start]))
+	while (line[(*start)] && is_white_space(line[(*start)]))
 		*start = *start + 1;
 }
 

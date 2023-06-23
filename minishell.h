@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/22 03:08:10 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 01:29:01 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@
 # define FILE 13
 # define LIMITER 14
 # define EXPAND 15
-
 # define PIPE_L 16
 # define PIPE_R 17
 # define PIPE_LR 18
@@ -153,11 +152,15 @@ char	*get_next_line(int fd);
 void	free_env(t_env **our_env);
 void	free_rock(t_rock **rock);
 
+void	ft_init(void);
+
 void	signal_handler_call(void);
 
 int		is_there_here_doc(int k);
 int		std_in_fd(int k);
 int		stop_execution(int k);
 int		runnig_cmd(int k);
+char	*get_value(char *line);
+void	handle_shell_lvl(t_env **env);
 
 #endif

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:54:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/11 13:11:42 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/23 08:29:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,13 +50,12 @@ void	add_to_env(char *var, char *val, t_env **env)
 	tmp = *env;
 	while (tmp)
 	{
-		if (ft_strncmp(tmp->key, var, ft_strlen(var)) == 0 && \
-			ft_strlen(tmp->key) == ft_strlen(var))
+		if (ft_strncmp(tmp->key, var, ft_strlen(var) + 1) == 0)
 		{
 			if (tmp->value)
 				free(tmp->value);
 			tmp->value = val;
-			return ;
+			return (free(var));
 		}
 		tmp = tmp->next;
 	}
