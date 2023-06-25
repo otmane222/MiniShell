@@ -20,8 +20,10 @@ char	*ft_strjoin(char const *s1, char const *s2)
 	int		j;
 
 	tlen = 0;
-	if (!s1 || !s2)
+	if (!s1 && !s2)
 		return (NULL);
+	if (!s1 && !s2)
+		return (ft_strdup(s2));
 	tlen = ft_strlen((char *)s1) + ft_strlen((char *)s2) + 1;
 	js = malloc((int)tlen);
 	if (!js)

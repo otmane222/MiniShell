@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:47:33 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/23 12:04:15 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/25 08:55:41 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ t_env	*ft_lstnew_env(char *value, char *key)
 {
 	t_env	*new;
 
+	if (key[ft_strlen(key) - 1] == '+')
+		key[ft_strlen(key) - 1] = '\0';
 	new = (t_env *)malloc(sizeof(t_env));
 	if (!new)
 		return (0);
@@ -54,29 +56,22 @@ t_env	*ft_lstnew_env(char *value, char *key)
 	return (new);
 }
 
-void	ft_lstdelone_env1(t_env **env, t_env **head)
+void ft_lstdelone_env1(t_env **env, t_env **head)
 {
-	t_env	*tmp1;
-	t_env	*tmp2;
-	t_env	*tmp3;
+    if (!env || !(*env))
+        return;
 
-	if (!env || !(*env))
-		return ;
-	tmp3 = *env;
-	tmp1 = (*env)->prev;
-	tmp2 = (*env)->next;
-	if (tmp1)
-		tmp1->next = tmp2;
-	if (tmp2)
-		tmp2->prev = tmp1;
-	if (!tmp1 && tmp2)
-		*head = tmp2;
-	if (!tmp2 && tmp1)
-		*head = tmp1;
-	free(tmp3->key);
-	tmp3->key = NULL;
-	free(tmp3->value);
-	tmp3->value = NULL;
-	free(tmp3);
-	tmp3 = NULL;
+    t_env *tmp = *env;
+    t_env *prev = tmp->prev;
+    t_env *next = tmp->next;
+    if (prev)
+        prev->next = next;
+    else
+        *head = next;
+    if (next)
+        next->prev = prev;
+    free(tmp->key);
+    free(tmp->value);
+    free(tmp);
+    *env = NULL;
 }

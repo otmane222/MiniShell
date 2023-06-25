@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/23 01:29:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 16:39:17 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -154,7 +154,7 @@ void	free_rock(t_rock **rock);
 
 void	ft_init(void);
 
-void	signal_handler_call(void);
+// void	signal_handler_call(void);
 
 int		is_there_here_doc(int k);
 int		std_in_fd(int k);

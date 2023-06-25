@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   cmd_utils.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
+/*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:42:52 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 11:08:37 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 16:38:45 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@ int	built_in(char *str, char **cmds, t_env *env)
 {
 	char	*arr;
 
+	(void)env;
 	arr = last_arg(cmds);
 	add_to_env(ft_strdup("_"), ft_strdup(arr), &env);
 	if (ft_strncmp(str, "pwd", 4) == 0)

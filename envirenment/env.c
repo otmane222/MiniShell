@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:41:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/23 12:04:24 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/25 08:26:07 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,8 @@ char	*get_value(char *line)
 
 	i = 0;
 	j = 0;
+	if (!line)
+		return (NULL);
 	while (line[i] && line[i] != '=')
 		i++;
 	if (i == 0)
@@ -44,6 +46,8 @@ char	*get_key(char *line)
 	char	*key;
 
 	i = 0;
+	if (!line)
+		return (NULL);
 	while (line[i] && line[i] != ' ' && line[i] != '=')
 		i++;
 	if (line[i] == ' ')
@@ -65,6 +69,7 @@ t_env	*put_env_to_new(char **env)
 {
 	t_env		*our_env;
 
+	our_env = NULL;
 	if (!env || !*env)
 		return (NULL);
 	our_env = ft_lstnew_env(get_value(*env), get_key(*env));

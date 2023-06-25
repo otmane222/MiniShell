@@ -25,7 +25,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 		$(wildcard built_in_cmd/*.c) \
 		$(wildcard get_next_line/*.c) \
 		$(wildcard free/*.c) \
-		$(wildcard signals/*.c) \
+		$(wildcard signals/*.c)\
 		minishell.c
 
 OBJS = $(SRCS:.c=.o)

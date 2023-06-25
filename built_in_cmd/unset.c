@@ -6,7 +6,7 @@
 /*   By: nakebli <nakebli@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 12:03:37 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/23 12:09:15 by nakebli          ###   ########.fr       */
+/*   Updated: 2023/06/25 08:24:00 by nakebli          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,12 +26,18 @@ int	check_arguments(char *key, int j)
 	int	i;
 
 	i = 0;
+	if (!key)
+		return (0);
 	if (key[0] != '_' && !ft_isalpha(key[0]))
 		return (print_error2(j, key), free(key), 1);
 	while (key[++i])
 	{
-		if (!ft_isalnum(key[i]) && key[i] != '_')
+		if ((!ft_isalnum(key[i]) && key[i] != '_'))
+		{
+			if (key[i] == '+' && key[i + 1] == '\0')
+				return (free(key), 0);
 			return (print_error2(j, key), free(key), 1);
+		}
 	}
 	return (free(key), 0);
 }

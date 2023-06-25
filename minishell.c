@@ -73,10 +73,11 @@ int	main(int ac, char **av, char **env)
 	t_env	*our_env;
 
 	g_exit_status = 0;
+	// getenv(NULL);
 	our_env = put_env_to_new(env);
 	handle_shell_lvl(&our_env);
-	signal_handler_call();
-	std_in_fd(-2);
+	// signal_handler_call();
+	// std_in_fd(-2);
 	while (1)
 	{
 		get_std_in();
