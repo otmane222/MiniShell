@@ -31,7 +31,8 @@ static t_tree	*fill_right_left(t_tree *tree, t_rock *rock, \
 	if (rock->type == D_RED_IN)
 		return (call_ninja(tree, rock, env));
 	tree->token = rock;
-	tree->left = ast_reds(rock->prev, env);
+	if (rock->prev)
+		tree->left = ast_reds(rock->prev, env);
 	tree->right = ast_reds(rock->next, env);
 	return (tree);
 }

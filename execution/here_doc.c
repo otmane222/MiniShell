@@ -25,9 +25,7 @@ int	openfiles(t_tree *root, t_data *data, t_env *env, t_fds **list)
 {
 	t_tree	*tmp;
 	t_tree	*tmp2;
-	int		fd;
 
-	fd = 0;
 	tmp = root;
 	while (root->right && is_red(root->token->type))
 	{

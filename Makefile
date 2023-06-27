@@ -70,14 +70,14 @@ LIBS = libft/libft.a \
 all: $(NAME)
 	@printf " \033[1;32m                          MINISHELL is built successfully!\033               \033[1;38m 		       \033[0m         \033[0m\n"
 
-$(NAME): $(OBJS)
+$(NAME): $(OBJS) $(LIBS)
 	make bonus -C libft
 	make -C ft_printf_error
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS) libft/libft.a
+	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS) libft/libft.a ft_printf_error/libftprintf.a
 
 %.o: %.c $(HEADERS)
-	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC)
-	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m \r" ${notdir $@}
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC) $(LIBS) libft/libft.a
+	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m \r" ${notdir $@} 
 
 clean:
 	$(RM) $(OBJS)

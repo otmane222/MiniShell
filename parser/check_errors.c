@@ -107,11 +107,19 @@ int	func4(t_token *token)
 	return (1);
 }
 
+int	func6(t_token *token)
+{
+	if (!token->next && is_red(token->type))
+		return (ft_printf("Minishell: syntax error near "), \
+			ft_printf("unexpected token `newline'\n"), 0);
+	return (1);
+}
+
 int	check_errors(t_token *token)
 {
 	put_type_of_tokens(token);
 	if (!func(token) || !func2(token) || \
-		!func3(token) || !func4(token) || !func5(token))
+		!func3(token) || !func4(token) || !func5(token) || !func6(token))
 		return (g_exit_status = 1, 0);
 	return (1);
 }

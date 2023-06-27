@@ -12,6 +12,8 @@
 
 #include "minishell.h"
 
+int	g_exit_status;
+
 t_tree	*tree_head(t_tree *root)
 {
 	static t_tree	*tree;
@@ -30,6 +32,16 @@ void	call_exit(void)
 	exit (g_exit_status);
 }
 
+void	get_std_in(void)
+{
+	if (!isatty(STDIN_FILENO) && std_in_fd(-1) != -2)
+	{
+		dup2(std_in_fd(-1), STDIN_FILENO);
+		close(std_in_fd(-1));
+		std_in_fd(-2);
+	}
+}
+
 static void	start_job(t_env **our_env)
 {
 	t_token	*token;
@@ -39,6 +51,7 @@ static void	start_job(t_env **our_env)
 	char	*input;
 
 	token = NULL;
+	get_std_in();
 	if (isatty(STDIN_FILENO))
 		input = readline("Minishell > ");
 	else
@@ -46,6 +59,8 @@ static void	start_job(t_env **our_env)
 	line = ft_strtrim(input, " \t\r\v\f\n");
 	if (line == NULL)
 		call_exit();
+	if (line == NULL)
+		return ;
 	if (!line[0])
 		return (free(line));
 	add_history(line);
@@ -54,18 +69,10 @@ static void	start_job(t_env **our_env)
 	rock = lex_token(&token);
 	get_head1(&rock);
 	tree = ast_tokenes(rock, *our_env);
+	if (stop_execution(-1) == -2)
+		return (stop_execution(0), free_rock(&rock));
 	execute(tree, our_env);
 	free_tree(tree);
-}
-
-void	get_std_in(void)
-{
-	if (!isatty(STDIN_FILENO) && std_in_fd(-1) != -2)
-	{
-		dup2(std_in_fd(-1), STDIN_FILENO);
-		close(std_in_fd(-1));
-		std_in_fd(-2);
-	}
 }
 
 int	main(int ac, char **av, char **env)
@@ -79,7 +86,6 @@ int	main(int ac, char **av, char **env)
 	std_in_fd(-2);
 	while (1)
 	{
-		get_std_in();
 		(void)ac;
 		(void)av;
 		start_job(&our_env);

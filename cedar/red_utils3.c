@@ -83,7 +83,6 @@ void	loop_and_stock(t_tree *tree, t_env *env, int fd)
 {
 	char	*str;
 
-	ft_printf(":%s:\n", tree->token->next->cmd[0]);
 	while (1)
 	{
 		if (stop_execution(-1) != -2)

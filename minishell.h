@@ -48,7 +48,7 @@
 # define PIPE_LR 18
 # define PIPE_RL 19
 
-int	g_exit_status;
+extern int	g_exit_status;
 
 enum	e_token
 {
