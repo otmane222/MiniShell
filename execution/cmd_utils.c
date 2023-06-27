@@ -6,18 +6,18 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:42:52 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 11:08:37 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:01:55 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	built_in(char *str, char **cmds, t_env *env)
+int	built_in(char *str, char **cmds, t_env **env)
 {
 	char	*arr;
 
 	arr = last_arg(cmds);
-	add_to_env(ft_strdup("_"), ft_strdup(arr), &env);
+	add_to_env(ft_strdup("_"), ft_strdup(arr), env);
 	if (ft_strncmp(str, "pwd", 4) == 0)
 		return (1);
 	else if (ft_strncmp(str, "echo", 5) == 0)

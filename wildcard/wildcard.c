@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/16 12:35:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 05:59:36 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 17:11:28 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,11 +74,15 @@ void	handle_wildcard(t_token **tok)
 	t_token		*head;
 	t_var		*var;
 	t_filename	*files;
+	int			flag;
 
+	flag = 1;
 	head = NULL;
 	if (!tok || !(*tok) || !(*tok)->data)
 		return ;
-	files = get_files_name();
+	files = get_files_name((*tok)->data, &flag);
+	if (!files)
+		return ;
 	init_var_2(&var);
 	while (!is_not_q((*tok)->data, &var->i))
 		;

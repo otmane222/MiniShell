@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/22 03:03:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 23:35:18 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,4 +44,15 @@ int		check_red_exist2(t_rock *rock, int *flag, int *i);
 void	write_in_here_doc(t_tree *tree, t_env *env);
 void	loop_and_stock(t_tree *tree, t_env *env, int fd);
 
+char	*questio_mark(char *line, int *start);
+char	*get_env_var(char *s);
+char	*ft_getenv(char *var, t_env *env);
+char	*ft_strreplace(char *str, char *token, char *s, int index);
+char	*ft_strreplace_non(char *token, char *s, int index);
+
+void	skip_char(char *line, int *start);
+void	skip_until(char *line, int *start);
+void	skip_in_q(char *line, int *start, char stop);
+
+char	*ft_strreplace_no_q(char *str, char *token, char *s, int index);
 #endif

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/26 13:41:58 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 05:56:20 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:11:53 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,8 @@ int	execute_cmd(t_tree *root, t_data data, t_env **env, t_fds **list)
 		return (1);
 	else if (root->token && k == DPIPE && d_pipe_handle(root, data, env, list))
 		return (1);
-	else if (root->heredoc && handle_here_doc(root, data, env, list))
+	else if (root->token && k == D_RED_IN && \
+		handle_here_doc(root, data, env, list))
 		return (1);
 	else if (root->token && k == D_RED_OUT && append(root, data, env, list))
 		return (1);

@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 11:31:00 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/21 23:23:45 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 21:13:42 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -112,6 +112,6 @@ int	check_errors(t_token *token)
 	put_type_of_tokens(token);
 	if (!func(token) || !func2(token) || \
 		!func3(token) || !func4(token) || !func5(token))
-		return (0);
+		return (g_exit_status = 1, 0);
 	return (1);
 }

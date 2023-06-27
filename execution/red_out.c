@@ -6,13 +6,13 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 01:55:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 19:44:52 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-static int	short_cut4(t_tree *root, char *tmp, char *str, t_env *env)
+int	short_cut4(t_tree *root, char *tmp, char *str, t_env *env)
 {
 	if (!root->token->cmd[0])
 	{
@@ -31,63 +31,54 @@ static int	short_cut4(t_tree *root, char *tmp, char *str, t_env *env)
 	return (0);
 }
 
-void	update_root(t_tree **root)
+int	continue_open(t_tree *tmp2, t_tree *tmp, t_data *data, t_env *env)
 {
-	while ((*root))
+	if (tmp2->token->type == D_RED_IN)
 	{
-		if ((*root)->left)
-			(*root) = (*root)->left;
-		else if ((*root)->heredoc)
-		{
-			if ((*root)->heredoc->left)
-				(*root) = (*root)->heredoc->left;
-		}
-		else
-			break ;
+		data->infile_fd = open_red(tmp, env, D_RED_IN);
+		if (data->infile_fd == -1)
+			return (1);
+		data->redin = 1;
 	}
+	else if (tmp2->token->type == D_RED_OUT)
+	{
+		data->outfile_fd = open_red(tmp, env, D_RED_OUT);
+		if (data->infile_fd == -1)
+			return (1);
+		data->redout = 1;
+	}
+	else if (tmp2->token->type == RED_OUT)
+	{
+		data->outfile_fd = open_red(tmp, env, RED_OUT);
+		if (data->outfile_fd == -1)
+			return (1);
+		data->redout = 1;
+	}
+	return (0);
 }
 
-static int	fd_to_out(t_tree *root, t_env **env)
+void	full_list(t_fds **list, t_data *data)
 {
-	int		fd;
-	char	*str;
-	char	*tmp;
+	if (data->infile_fd != 0)
+		add_b_list(list, init_list(data->infile_fd));
+	if (data->outfile_fd != 0)
+		add_b_list(list, init_list(data->outfile_fd));
+}
 
-	root = root->right;
-	update_root(&root);
-	if (root && root->token && root->token->type == FILE)
-	{
-		tmp = root->token->cmd[0];
-		str = ft_strdup(root->token->cmd[0]);
-		root->token->cmd[0] = handle_wildcard_char(root->token->cmd[0]);
-		if (short_cut4(root, tmp, str, *env))
-			return (1);
-		free(str);
-		root->token->cmd[0] = deleted_q(root->token->cmd[0]);
-		fd = open(root->token->cmd[0], O_RDWR | O_CREAT | O_TRUNC, 0655);
-		if (fd == -1)
-			return (ft_printf ("Minishell: %s: No such file or directory\n", \
-				root->token->cmd[0]), 1);
-		return (fd);
-	}
-	return (1);
+static int	fd_to_out(t_tree *root, t_env **env, t_data *data, t_fds **list)
+{
+	if (openfiles(root, data, *env, list))
+		return (1);
+	return (0);
 }
 
 int	redouthanlde(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
-	data.j = fd_to_out(root, env);
+	data.j = fd_to_out(root, env, &data, list);
 	if (data.j == 1)
 		return (1);
-	add_b_list(list, init_list(data.j));
-	if (!data.redout || data.redout == -19)
-		data.outfile_fd = data.j;
-	if (!root->token->red_p)
-		data.redout = RED_OUT;
-	else
-		data.redout = -19;
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
-		return (close(data.j), 1);
-	close(data.j);
+		return (1);
 	return (0);
 }

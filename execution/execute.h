@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 01:11:40 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:49:16 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int		ft_pwd(int outfile, t_env **env, char *save);
 void	ft_echo(int outfile, char **arg);
 int		ft_cd(char *path, t_env **env, int outfile);
 int		ft_exit(t_tree *root);
-int		built_in(char *str, char **cmds, t_env *env);
+int		built_in(char *str, char **cmds, t_env **env);
 int		run_built_in(t_tree *root, t_data data, t_env **env);
 
 char	**change_env(t_env *env);
@@ -79,6 +79,12 @@ char	*check_path(char **paths, char *path);
 char	*deleted_q(char *line);
 void	case_directory(char *str);
 void	update_root(t_tree **root);
-void	handle_shell_lvl(t_env **env);
+int		is_red(int a);
+int		openfiles(t_tree *root, t_data *data, t_env *env, t_fds **list);
+int		open_red(t_tree *root, t_env *env, int type);
+void	full_list(t_fds **list, t_data *data);
+int		short_cut4(t_tree *root, char *tmp, char *str, t_env *env);
+int		open_rest(t_tree *root, int type);
+int		continue_open(t_tree *tmp2, t_tree *tmp, t_data *data, t_env *env);
 
 #endif

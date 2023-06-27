@@ -17,6 +17,8 @@ static char	*assister_fun(char *line, int *start, t_env *our_env)
 	char	*s;
 	char	*str;
 
+	if (line[*start] == '?')
+		return (questio_mark(line, start));
 	s = get_env_var(&line[(*start)]);
 	str = ft_getenv(s, our_env);
 	if (str)

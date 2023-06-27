@@ -30,7 +30,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
 LFLAGS = "-L$(shell brew --prefix readline)/lib"
 IFLAGS = "-I$(shell brew --prefix readline)/include"
 
@@ -73,7 +73,7 @@ all: $(NAME)
 $(NAME): $(OBJS)
 	make bonus -C libft
 	make -C ft_printf_error
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS)
+	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS) libft/libft.a
 
 %.o: %.c $(HEADERS)
 	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC)

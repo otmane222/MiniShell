@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/03 15:31:39 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 11:54:01 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/27 04:04:18 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ t_rock	*init_rock(void);
 void	new_rock(t_rock **rock);
 void	flag_cmd(t_rock *rock);
 void	get_head1(t_rock **head);
+int		check_parsing(t_rock *rock);
 void	free_tokens(t_token **token);
 void	put_type_of_tokens(t_token *tmp);
 void	handle_followed_red(t_rock *rock);

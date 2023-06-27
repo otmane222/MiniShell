@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/15 14:54:04 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/23 08:29:30 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:28:30 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,48 +41,6 @@ char	**change_env(t_env *env)
 	return (str[i] = NULL, str);
 }
 
-void	add_to_env(char *var, char *val, t_env **env)
-{
-	t_env	*tmp;
-
-	if (!var || !val)
-		return ;
-	tmp = *env;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->key, var, ft_strlen(var) + 1) == 0)
-		{
-			if (tmp->value)
-				free(tmp->value);
-			tmp->value = val;
-			return (free(var));
-		}
-		tmp = tmp->next;
-	}
-	ft_lstadd_back_env(env, ft_lstnew_env(val, var));
-}
-
-void	edit_env(char *var, char *val, t_env **env)
-{
-	t_env	*tmp;
-
-	if (!var || !val)
-		return ;
-	tmp = *env;
-	while (tmp)
-	{
-		if (ft_strncmp(tmp->key, var, ft_strlen(var)) == 0 && \
-			ft_strlen(tmp->key) == ft_strlen(var))
-		{
-			if (tmp->value)
-				free(tmp->value);
-			tmp->value = val;
-			return ;
-		}
-		tmp = tmp->next;
-	}
-}
-
 static void	print_export(char *key, char *value, int outfile)
 {
 	ft_putstr_fd("declare -x ", outfile);
@@ -92,11 +50,29 @@ static void	print_export(char *key, char *value, int outfile)
 	ft_putstr_fd("\"\n", outfile);
 }
 
+void	change_var(char **temp, int *i, t_env **env)
+{
+	while (*temp)
+	{
+		while ((*temp) && check_arguments(get_key(*temp), *temp, 2))
+		{
+			*i = 1;
+			temp++;
+		}
+		if (!(*temp))
+			break ;
+		add_to_env(get_key(*temp), get_value(*temp), env);
+		temp++;
+	}
+}
+
 int	ft_export(t_rock **rock, t_env **env, int outfile)
 {
+	int		i;
 	char	**temp;
 	t_env	*temp_e;
 
+	i = 0;
 	temp = &(*rock)->cmd[1];
 	if (!(*temp))
 	{
@@ -108,14 +84,8 @@ int	ft_export(t_rock **rock, t_env **env, int outfile)
 		}
 	}
 	else
-	{
-		while (*temp)
-		{
-			if (check_arguments(get_key(*temp), 2))
-				return (g_exit_status = 1, 1);
-			add_to_env(get_key(*temp), get_value(*temp), env);
-			temp++;
-		}
-	}
+		change_var(temp, &i, env);
+	if (i == 1)
+		return (g_exit_status = 1, 0);
 	return (g_exit_status = 0, 0);
 }

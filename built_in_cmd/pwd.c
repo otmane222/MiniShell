@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/07 14:33:24 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/22 23:14:32 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:46:20 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@ void	print_error(int i)
 	ft_printf("error retrieving current directory: getcwd:");
 	ft_printf(" cannot access parent directories: No such file or");
 	ft_printf("directory\n");
+	g_exit_status = 1;
 }
 
-void	ft_init(void)
+void	ft_init(t_env **env)
 {
 	char	*str;
 
@@ -36,7 +37,7 @@ void	ft_init(void)
 		g_exit_status = 1;
 		return ;
 	}
-	free(str);
+	add_to_env(ft_strdup("PWD"), str, env);
 }
 
 char	*get_save(char *save, char *path)

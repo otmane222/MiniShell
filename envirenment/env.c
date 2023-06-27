@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:41:41 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/22 18:43:02 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/27 02:51:15 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,9 +20,11 @@ char	*get_value(char *line)
 
 	i = 0;
 	j = 0;
+	if (!line)
+		return (NULL);
 	while (line[i] && line[i] != '=')
 		i++;
-	if (i == 0)
+	if (i == 0 || line[i] != '=')
 		return (NULL);
 	i++;
 	j = i;
@@ -44,10 +46,12 @@ char	*get_key(char *line)
 	char	*key;
 
 	i = 0;
+	if (!line)
+		return (NULL);
 	while (line[i] && line[i] != ' ' && line[i] != '=')
 		i++;
 	if (line[i] == ' ')
-		return (printf("Error : syntax error !\n"), NULL);
+		return (NULL);
 	key = malloc(i + 1);
 	if (!key)
 		return (NULL);
@@ -58,6 +62,8 @@ char	*get_key(char *line)
 		i++;
 	}
 	key[i] = '\0';
+	if (i > 0 && line[i - 1] == '+' && line[i] != '=')
+		return (free(key), NULL);
 	return (key);
 }
 
@@ -65,6 +71,7 @@ t_env	*put_env_to_new(char **env)
 {
 	t_env		*our_env;
 
+	our_env = NULL;
 	if (!env || !*env)
 		return (NULL);
 	our_env = ft_lstnew_env(get_value(*env), get_key(*env));
@@ -75,7 +82,6 @@ t_env	*put_env_to_new(char **env)
 				get_key(*env)));
 		env++;
 	}
-	ft_init();
 	remove_from_env(ft_strdup("OLDPWD"), &our_env);
 	return (our_env);
 }

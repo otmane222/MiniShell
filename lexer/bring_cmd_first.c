@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/18 16:52:14 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/03 22:15:24 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/27 00:03:09 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,8 @@ void	case_of_arg_after_file(t_rock *rock)
 				break ;
 		}
 		else if (rock->type == PIPE || rock->type == DPIPE || \
-			rock->type == D_AND || rock->type == O_PARENTHIS)
+			rock->type == D_AND || rock->type == O_PARENTHIS \
+				|| rock->type == C_PARENTHIS)
 			tmp = NULL;
 		rock = rock->next;
 	}
@@ -102,5 +103,4 @@ void	case_cmd_after_file(t_rock *rock)
 		rock = rock->next;
 	}
 	rock = tmp;
-	get_head1(&rock);
 }

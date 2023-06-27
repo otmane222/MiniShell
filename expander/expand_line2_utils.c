@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 01:17:28 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/22 01:22:08 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 16:50:43 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,8 @@ char	*check_str(char *line, t_env *our_env, int *start)
 	}
 	else if (!is_white_space(line[*start + ft_strlen(s)]) \
 		&& line[*start + ft_strlen(s)] \
-		&& !is_operator(line[*start + ft_strlen(s)]))
+		&& !is_operator(line[*start + ft_strlen(s)]) \
+			&& !is_qoutes(line[*start + ft_strlen(s)]))
 	{
 		line = ft_strreplace_non(line, s, (*start));
 		(*start) = (*start) - 1;
@@ -107,16 +108,8 @@ char	*check_str(char *line, t_env *our_env, int *start)
 
 char	*helpful_call2(char *line, int *start, t_env *our_env)
 {
-	char	*str;
-
 	if (line[*start] == '?')
-	{
-		str = ft_itoa(g_exit_status);
-		line = ft_strreplace_no_q2(str, line, "?", (*start));
-		(*start) += ft_strlen(str) - 1;
-		free(str);
-		return (line);
-	}
+		return (questio_mark(line, start));
 	line = check_str(line, our_env, start);
 	while (line[(*start)] && line[(*start)] != '$' && \
 	line[(*start)] != '\'' && line[(*start)] != '\"')

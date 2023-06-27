@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/05 16:32:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/21 19:03:43 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 17:19:16 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,10 +86,12 @@ char	*handle_wildcard_char(char *line)
 {
 	t_var		*var;
 	t_filename	*files;
+	int			flag;
 
+	flag = 1;
 	if (!line)
 		return (NULL);
-	files = get_files_name();
+	files = get_files_name(line, &flag);
 	init_var_2(&var);
 	while (!is_not_q(line, &var->i))
 		;

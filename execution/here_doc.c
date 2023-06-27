@@ -6,49 +6,61 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:22:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/10 00:32:58 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 18:39:58 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "execute.h"
 
-int	fd_to_here_doc(t_tree *root, t_env *env)
+static void	small_call(t_tree **tmp, t_tree **tmp2, t_tree **root)
 {
-	int			fd;
-	t_heredoc	*tr;
+	*tmp2 = (*root);
+	(*root) = (*root)->right;
+	(*tmp) = (*root);
+	if ((*tmp)->left)
+		(*tmp) = (*tmp)->left;
+}
 
-	(void)env;
-	tr = root->heredoc;
-	root = root->heredoc->right;
-	while (root && root->heredoc && root->heredoc->right)
+int	openfiles(t_tree *root, t_data *data, t_env *env, t_fds **list)
+{
+	t_tree	*tmp;
+	t_tree	*tmp2;
+	int		fd;
+
+	fd = 0;
+	tmp = root;
+	while (root->right && is_red(root->token->type))
 	{
-		tr = root->heredoc;
-		root = root->heredoc->right;
+		small_call(&tmp, &tmp2, &root);
+		if (tmp2->token->type == RED_IN)
+		{
+			data->infile_fd = open_red(tmp, env, RED_IN);
+			if (data->infile_fd == -1)
+				return (1);
+			data->redin = 1;
+		}
+		else
+			if (continue_open(tmp2, tmp, data, env))
+				return (1);
+		full_list(list, data);
 	}
-	if (root->token->type == LIMITER)
-	{
-		fd = open(tr->name, O_RDONLY | O_EXCL, 0655);
-		if (fd == -1)
-			return (1);
-		return (fd);
-	}
-	return (1);
+	return (0);
+}
+
+int	fd_to_here_doc(t_tree *root, t_data *data, t_env *env, t_fds **list)
+{
+	if (openfiles(root, data, env, list))
+		return (1);
+	return (0);
 }
 
 int	handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
-	if (root->heredoc->infile_fd == -1)
-		return (1);
-	data.j = fd_to_here_doc(root, *env);
+	data.j = fd_to_here_doc(root, &data, *env, list);
 	if (data.j == -1)
 		return (1);
-	add_b_list(list, init_list(data.j));
-	if (!data.redin)
-		data.infile_fd = data.j;
-	data.redin = D_RED_IN;
-	if (execute_cmd(root->heredoc->left, data, env, list))
-		return (close(data.j), 1);
-	close(data.j);
-	unlink(root->heredoc->name);
+	if (execute_cmd(root->left, data, env, list))
+		return (1);
+	unlink(root->token->cmd[0]);
 	return (0);
 }

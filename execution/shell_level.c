@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/23 00:21:40 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 01:43:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 02:47:08 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,9 +43,10 @@ void	handle_shell_lvl(t_env **env)
 	int			num;
 	int			i;
 
+	ft_init(env);
 	str = ft_getenv("SHLVL", *env);
 	if (!str)
-		return ;
+		return (add_to_env(ft_strdup("SHLVL"), ft_strdup("1"), env));
 	str = ft_strtrim(str, " \t\r\v\f");
 	if (!check_valid(str))
 		return (edit_env("SHLVL", ft_strdup("1"), env));

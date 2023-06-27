@@ -11,12 +11,15 @@
 /* ************************************************************************** */
 
 #include "libft.h"
+#include "../minishell.h"
 
 static int	ft_isoverflow(long long int prev, long long curr, const char *str)
 {
 	if (curr / 10 == prev)
 		return (0);
 	ft_printf("minishell exit: %s: numeric argument required\n", str);
+	g_exit_status = 255;
+	exit (255);
 	return (1);
 }
 
@@ -43,6 +46,9 @@ static void	call_help(char *str)
 	write(2, "exit: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, ": numeric argument required\n", 29);
+	write(2, "exit\n", 6);
+	g_exit_status = 255;
+	exit (255);
 }
 
 int	ft_atoi(const char *str)

@@ -1,0 +1,14 @@
+
+
+
+
+
+
+
+fixed but need to be tested
+
+unset var=js // unset b not valed
+export when it's null should add $_
+env -i ./minishell should add pwd and SHLVL
+( > out) isn't error
+echo -n -njshkdhh // shouldnt print new line

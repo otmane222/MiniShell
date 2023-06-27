@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:29:25 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/22 00:30:08 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/27 04:04:08 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,4 +35,16 @@ void	flag_cmd(t_rock *rock)
 		}
 		rock = rock->prev;
 	}
+}
+
+int	check_parsing(t_rock *rock)
+{
+	while (rock)
+	{
+		if (rock->type == C_PARENTHIS && rock->next && rock->next->type == CMD)
+			return (ft_printf("minishell: syntax error near unexpected token"), \
+				ft_printf(" `%s'\n", rock->next->cmd[0]), 1);
+		rock = rock->next;
+	}
+	return (0);
 }

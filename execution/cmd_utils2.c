@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:47:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 11:08:44 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:12:06 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,8 +73,8 @@ char	*check_path(char **paths, char *path)
 	char	*tmp;
 
 	i = 0;
-	if (!paths)
-		ft_printf("minishell: %s: No such file or directory\n", path);
+	if (!paths || !path || path[0] == '\0')
+		return (path);
 	if (access(path, X_OK) == 0)
 		return (path);
 	save = path;

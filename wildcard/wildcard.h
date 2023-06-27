@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/31 11:40:11 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/09 16:47:25 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 17:11:21 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ typedef struct s_filename
 }	t_filename;
 
 t_filename	*init_t_file(void);
-t_filename	*get_files_name(void);
+t_filename	*get_files_name(char *line, int *flag);
 t_token		*init_token_wild(void);
 
 void		check_first_char(t_token *tok, t_var *var);

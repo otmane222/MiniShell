@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 22:38:27 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/23 01:58:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 16:43:19 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,6 +44,8 @@ static char	*assister_fun(char *line, int *start, t_env *our_env)
 	char	*s;
 	char	*str;
 
+	if (line[*start] == '?')
+		return (questio_mark(line, start));
 	s = get_env_var(&line[(*start)]);
 	str = ft_getenv(s, our_env);
 	if (str)
@@ -132,7 +134,7 @@ char	*continue_expand(char *line, t_env *our_env)
 			line = expand_var_nq(line, &i, our_env);
 		if (line[0] == '\0')
 			return (free(line), NULL);
-		if (!line[i] && i != -1)
+		if (i != -1 && !line[i])
 			break ;
 		i++;
 	}

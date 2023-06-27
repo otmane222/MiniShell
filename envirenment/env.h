@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:42:12 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/22 19:42:27 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/26 17:12:12 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,7 @@ char	*get_key(char *line);
 char	*get_value(char *line);
 // env_utils.c functions
 t_env	*ft_lstlast_env(t_env *lst);
+void	print_error2(int i, char *str);
 t_env	*ft_lstnew_env(char *value, char *key);
 void	ft_lstadd_back_env(t_env **lst, t_env *new);
 void	ft_lstdelone_env1(t_env **env, t_env **head);

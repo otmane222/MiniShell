@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:23:23 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/22 22:39:02 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/25 16:29:15 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,7 @@ int		is_white_space(char c);
 int		char_type(char c);
 int		is_operator(char c);
 void	skip_spaces(char *line, int *start);
+int		is_qoutes(char c);
 
 char	*questio_mark(char *line, int *start);
 
