@@ -30,7 +30,7 @@ SRCS =	$(wildcard envirenment/*.c) \
 
 OBJS = $(SRCS:.c=.o)
 
-CFLAGS = -Wall -Wextra -Werror #-g -fsanitize=address
+CFLAGS = -Wall -Wextra -Werror
 LFLAGS = "-L$(shell brew --prefix readline)/lib"
 IFLAGS = "-I$(shell brew --prefix readline)/include"
 
@@ -50,16 +50,7 @@ HEADERS = minishell.h \
 		free/free.h \
 		cedar/tree.h \
 
-HEADER_INC =	-Iminishell.h \
-				-Ienvirenment/env.h \
-				-Itokenizer/tokenizer.h \
-				-Iexpander/expand.h \
-				-Iwildcard/wildcard.h \
-				-Iexecution/execute.h \
-				-Iparser/parser.h \
-				-Ibuilt_in_cmd/builtin.h\
-				-Iget_next_line/get_next_line.h \
-				-I$(shell brew --prefix readline)/include
+HEADER_INC = -I$(shell brew --prefix readline)/include
 
 
 RM = rm -rf
@@ -70,14 +61,18 @@ LIBS = libft/libft.a \
 all: $(NAME)
 	@printf " \033[1;32m                          MINISHELL is built successfully!\033               \033[1;38m 		       \033[0m         \033[0m\n"
 
-$(NAME): $(OBJS) $(LIBS)
-	make bonus -C libft
-	make -C ft_printf_error
-	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS) libft/libft.a ft_printf_error/libftprintf.a
+$(NAME): libft_rule printf_rule $(OBJS)
+	@$(CC) $(CFLAGS) $(LIBS) $(OBJS) -o $@ -lreadline $(LFLAGS)
+
+printf_rule:
+	@make -C ft_printf_error
+
+libft_rule:
+	@make bonus -C libft
 
 %.o: %.c $(HEADERS)
-	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC) $(LIBS) libft/libft.a
-	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m \r" ${notdir $@} 
+	@$(CC) $(CFLAGS) -c $< -o $@ $(HEADER_INC)
+	@printf "\033[0;32m[compiling : %-30s .....] \033[0;0m \r" ${notdir $@}
 
 clean:
 	$(RM) $(OBJS)

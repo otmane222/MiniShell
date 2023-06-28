@@ -70,7 +70,7 @@ static void	start_job(t_env **our_env)
 	get_head1(&rock);
 	tree = ast_tokenes(rock, *our_env);
 	if (stop_execution(-1) == -2)
-		return (stop_execution(0), free_rock(&rock));
+		return (stop_execution(0), free_tree(tree));
 	execute(tree, our_env);
 	free_tree(tree);
 }

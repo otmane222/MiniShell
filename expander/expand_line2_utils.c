@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 01:17:28 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 16:50:43 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:48:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -106,10 +106,10 @@ char	*check_str(char *line, t_env *our_env, int *start)
 	return (line);
 }
 
-char	*helpful_call2(char *line, int *start, t_env *our_env)
+char	*helpful_call2(char *line, int *start, t_env *our_env, int *j)
 {
 	if (line[*start] == '?')
-		return (questio_mark(line, start));
+		return (*j = 0, questio_mark(line, start));
 	line = check_str(line, our_env, start);
 	while (line[(*start)] && line[(*start)] != '$' && \
 	line[(*start)] != '\'' && line[(*start)] != '\"')

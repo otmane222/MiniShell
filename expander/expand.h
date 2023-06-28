@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 17:23:23 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/25 16:29:15 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:48:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ char	*check_str(char *line, t_env *our_env, int *start);
 char	*ft_strreplace_no_q2(char *str, char *token, char *s, int index);
 char	*str_full(char *str, char *ret, int *flag, int *j);
 int		num_op(char *str);
-char	*helpful_call2(char *line, int *start, t_env *our_env);
+char	*helpful_call2(char *line, int *start, t_env *our_env, int *j);
 
 void	skip_char(char *line, int *start);
 void	skip_until(char *line, int *start);

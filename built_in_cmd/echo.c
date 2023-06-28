@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:34:33 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 01:04:13 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:50:59 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ static int	call_help(char *str)
 		i++;
 	if (!str[i] && i != 1)
 		return (1);
+	if (str[i] != 'n')
+		return (0);
 	return (0);
 }
 
@@ -35,10 +37,8 @@ static void	help_cal(char *arg, int *flag)
 		*flag = 1;
 		k = 1;
 	}
-	else if (k == 0)
-		*flag = 2;
 	else
-		*flag = 3;
+		*flag = 2;
 }
 
 void	ft_echo(int outfile, char **arg)
@@ -51,7 +51,7 @@ void	ft_echo(int outfile, char **arg)
 	while (arg[i] && arg[i][0] == '-')
 	{
 		help_cal(arg[i], &flag);
-		if (flag == 2 || flag == 3)
+		if (flag == 2)
 			break ;
 		i++;
 	}

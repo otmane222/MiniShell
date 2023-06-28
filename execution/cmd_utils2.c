@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:47:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 17:12:06 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 15:46:18 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,9 +58,12 @@ void	execute_execve(char *cmd, char **cmds, t_env *env, t_fds *list)
 
 	our_env = change_env(env);
 	execve(cmd, cmds, our_env);
+	if (ft_strchr(cmd, '/'))
+		perror(cmd);
+	else
+		ft_printf("Minishell: %s: command not found\n", cmd);
 	free_2dd(our_env);
 	close_files(list);
-	ft_printf("Minishell: %s: command not found\n", cmd);
 	if (errno == ENOENT)
 		exit (127);
 	exit (1);
@@ -73,7 +76,7 @@ char	*check_path(char **paths, char *path)
 	char	*tmp;
 
 	i = 0;
-	if (!paths || !path || path[0] == '\0')
+	if (!paths || !path || path[0] == '\0' || ft_strchr(path, '/'))
 		return (path);
 	if (access(path, X_OK) == 0)
 		return (path);

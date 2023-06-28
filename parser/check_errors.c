@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 11:31:00 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/26 21:13:42 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 16:47:35 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ static int	func(t_token *token)
 	{
 		if (token->type == PIPE || token->type == DPIPE || token->type == D_AND)
 		{
-			printf("syntax error near unexpected token `|'\n");
+			printf("syntax error near unexpected token `%s'\n", token->data);
 			return (0);
 		}
 	}

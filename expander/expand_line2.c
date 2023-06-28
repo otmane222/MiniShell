@@ -55,7 +55,7 @@ static char	*expand_var_nq2(char *line, int *start, t_env *our_env)
 				j = 0;
 		}
 		if (line[(*start)] && line[(*start)] != '$' && j == 1)
-			line = helpful_call2(line, start, our_env);
+			line = helpful_call2(line, start, our_env, &j);
 		if (!line[(*start)] || line[(*start)] == '\'' || line[(*start)] == '\"')
 			break ;
 		(*start)++;
