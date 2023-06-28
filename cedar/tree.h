@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 17:21:35 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/25 23:35:18 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:43:03 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,4 +55,6 @@ void	skip_until(char *line, int *start);
 void	skip_in_q(char *line, int *start, char stop);
 
 char	*ft_strreplace_no_q(char *str, char *token, char *s, int index);
+int		is_qoutes(char c);
+
 #endif

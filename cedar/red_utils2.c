@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 01:33:20 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/27 04:03:40 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 18:42:32 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,13 @@ char	*handle_case(char *line)
 		}
 		if (!var.flag && line[var.i] == '$' && line[var.i + 1] == '$')
 			str = save_dollar (line, str, &var.i, &var.j);
+		else if (!var.flag && line[var.i] == '$' && is_qoutes(line[var.i + 1]))
+			var.i++;
 		else
-			str = store_a_char(line, str, &var.i, &var.j);
+			str = store_a_char (line, str, &var.i, &var.j);
 	}
 	str[var.j] = '\0';
 	free(line);
+	ft_printf(":%s:\n", str);
 	return (str);
 }

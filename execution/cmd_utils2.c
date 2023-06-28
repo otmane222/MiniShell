@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/21 03:47:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/28 15:46:18 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:42:05 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ void	execute_execve(char *cmd, char **cmds, t_env *env, t_fds *list)
 	close_files(list);
 	if (errno == ENOENT)
 		exit (127);
-	exit (1);
+	exit (126);
 }
 
 char	*check_path(char **paths, char *path)

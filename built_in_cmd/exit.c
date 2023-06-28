@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/14 13:33:50 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/20 23:55:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/06/28 17:51:53 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ int	ft_exit(t_tree *root)
 			i++;
 		if (!root->token->cmd[1][i])
 			return (write(2, "exit\nminishell: exit: too many arguments\n", \
-				42), 1);
+				42), g_exit_status = 1, 1);
 	}
 	if (root && root->token->cmd && root->token->cmd[1])
 		call_help(root);
