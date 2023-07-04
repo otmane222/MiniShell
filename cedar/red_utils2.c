@@ -61,6 +61,27 @@ char	*store_a_char(char *line, char *str, int *i, int *j)
 	return (str);
 }
 
+void	skip_in_q2(char *line, char *str, t_var *var, char stop)
+{
+	var->i = var->i + 1;
+	str[var->j] = line[var->i];
+	var->i = var->i + 1;
+	var->j = var->j + 1;
+	while (line[var->i] && line[var->i] != stop)
+	{
+		str[var->j] = line[var->i];
+		var->i = var->i + 1;
+		var->j = var->j + 1;
+	}
+	if (line[var->i])
+	{
+		str[var->j] = line[var->i];
+		var->j = var->j + 1;
+		(var->i) = (var->i) + 1;
+	}
+}
+
+
 char	*handle_case(char *line)
 {
 	char	*str;
@@ -83,7 +104,7 @@ char	*handle_case(char *line)
 		if (!var.flag && line[var.i] == '$' && line[var.i + 1] == '$')
 			str = save_dollar (line, str, &var.i, &var.j);
 		else if (!var.flag && line[var.i] == '$' && is_qoutes(line[var.i + 1]))
-			var.i++;
+			skip_in_q2(line, str, &var, line[var.i + 1]);
 		else
 			str = store_a_char (line, str, &var.i, &var.j);
 	}
