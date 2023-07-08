@@ -32,14 +32,17 @@ void	call_exit(void)
 	exit (g_exit_status);
 }
 
-void	get_std_in(void)
+char	*read_line(void)
 {
-	if (!isatty(STDIN_FILENO) && std_in_fd(-1) != -2)
-	{
-		dup2(std_in_fd(-1), STDIN_FILENO);
-		close(std_in_fd(-1));
-		std_in_fd(-2);
-	}
+	char	*input;
+	char	*line;
+
+	if (isatty(STDIN_FILENO))
+		input = readline("Minishell > ");
+	else
+		input = get_next_line(STDIN_FILENO);
+	line = ft_strtrim(input, " \t\r\v\f\n");
+	return (line);
 }
 
 static void	start_job(t_env **our_env)
@@ -48,19 +51,11 @@ static void	start_job(t_env **our_env)
 	t_rock	*rock;
 	t_tree	*tree;
 	char	*line;
-	char	*input;
 
 	token = NULL;
-	get_std_in();
-	if (isatty(STDIN_FILENO))
-		input = readline("Minishell > ");
-	else
-		input = get_next_line(STDIN_FILENO);
-	line = ft_strtrim(input, " \t\r\v\f\n");
+	line = read_line();
 	if (line == NULL)
 		call_exit();
-	if (line == NULL)
-		return ;
 	if (!line[0])
 		return (free(line));
 	add_history(line);
@@ -86,6 +81,7 @@ int	main(int ac, char **av, char **env)
 	std_in_fd(-2);
 	while (1)
 	{
+		get_std_in();
 		(void)ac;
 		(void)av;
 		start_job(&our_env);

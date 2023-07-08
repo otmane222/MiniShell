@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/22 11:31:00 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/28 16:47:35 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/05 13:22:06 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,14 +104,6 @@ int	func4(t_token *token)
 	}
 	if (i != 0 && i != -1)
 		return (printf("syntax error unclosed parenthese\n"), 0);
-	return (1);
-}
-
-int	func6(t_token *token)
-{
-	if (!token->next && is_red(token->type))
-		return (ft_printf("Minishell: syntax error near "), \
-			ft_printf("unexpected token `newline'\n"), 0);
 	return (1);
 }
 

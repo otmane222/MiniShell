@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:01:55 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 16:53:00 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:49:58 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	handle_red_in(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
 	data.j = fd_to_in(root, env, &data, list);
 	if (data.j == 1)
-		return (1);
+		return (g_exit_status = 1, 1);
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);

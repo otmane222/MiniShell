@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:22:21 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 18:39:58 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:50:45 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ int	openfiles(t_tree *root, t_data *data, t_env *env, t_fds **list)
 		{
 			data->infile_fd = open_red(tmp, env, RED_IN);
 			if (data->infile_fd == -1)
-				return (1);
+				return (g_exit_status = 1, 1);
 			data->redin = 1;
 		}
 		else
@@ -56,7 +56,7 @@ int	handle_here_doc(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
 	data.j = fd_to_here_doc(root, &data, *env, list);
 	if (data.j == -1)
-		return (1);
+		return (g_exit_status = 1, 1);
 	if (execute_cmd(root->left, data, env, list))
 		return (1);
 	unlink(root->token->cmd[0]);

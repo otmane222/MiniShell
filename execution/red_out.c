@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 10:16:01 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 19:44:52 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:50:38 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,7 +76,7 @@ int	redouthanlde(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
 	data.j = fd_to_out(root, env, &data, list);
 	if (data.j == 1)
-		return (1);
+		return (g_exit_status = 1, 1);
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);

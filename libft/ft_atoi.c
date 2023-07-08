@@ -46,7 +46,6 @@ static void	call_help(char *str)
 	write(2, "exit: ", 7);
 	write(2, str, ft_strlen(str));
 	write(2, ": numeric argument required\n", 29);
-	write(2, "exit\n", 6);
 	g_exit_status = 255;
 	exit (255);
 }

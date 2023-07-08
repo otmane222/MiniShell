@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/06/22 00:32:51 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/27 04:01:37 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:44:28 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*questio_mark(char *line, int *start)
 
 	str = ft_itoa(g_exit_status);
 	line = ft_strreplace_no_q(str, line, "?", *start);
-	(*start) += ft_strlen(str) - 1;
+	(*start) += ft_strlen(str) - 2;
 	free(str);
 	return (line);
 }

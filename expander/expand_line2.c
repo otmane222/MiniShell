@@ -26,13 +26,11 @@ static char	*assister_fun(char *line, int *start, t_env *our_env)
 		line = ft_strreplace(str, line, s, (*start));
 		(*start) = (*start) + ft_strlen(str) - 1;
 	}
-	else if (!is_white_space(line[*start + ft_strlen(s)]))
+	else
 	{
 		line = ft_strreplace_non(line, s, (*start));
 		(*start) = (*start) - 1;
 	}
-	else
-		(*start) = (*start) + ft_strlen(str) - 1;
 	free(s);
 	free(str);
 	while (line[(*start)] && line[(*start)] != '$' \

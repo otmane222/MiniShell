@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/04/28 15:08:56 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 17:49:16 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:19:25 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,5 +86,6 @@ void	full_list(t_fds **list, t_data *data);
 int		short_cut4(t_tree *root, char *tmp, char *str, t_env *env);
 int		open_rest(t_tree *root, int type);
 int		continue_open(t_tree *tmp2, t_tree *tmp, t_data *data, t_env *env);
+int		valid_in_parent(t_tree *root);
 
 #endif

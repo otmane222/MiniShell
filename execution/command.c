@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 19:30:46 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 15:23:47 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/07 14:19:07 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,7 +99,8 @@ int	handle_command(t_tree *root, t_data data, t_env **env, t_fds **list)
 	root->token->cmd = expander_in_execution(root->token, env);
 	if (!root->token->cmd[0])
 		return (0);
-	if (built_in(root->token->cmd[0], root->token->cmd, env))
+	if (built_in(root->token->cmd[0], root->token->cmd, env) && \
+		!root->token->is_exit && valid_in_parent(root))
 		return (runnig_cmd(0), run_built_in(root, data, env));
 	data.i = fork();
 	if (data.i < 0)

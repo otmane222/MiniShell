@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/23 15:53:48 by oaboulgh          #+#    #+#             */
-/*   Updated: 2023/06/26 19:46:18 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:50:57 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	open_red(t_tree *root, t_env *env, int type)
 	root->token->cmd[0] = deleted_q(root->token->cmd[0]);
 	check = file_opened(root, type);
 	if (check == -1)
-		return (1);
+		return (-1);
 	return (check);
 }
 
@@ -95,7 +95,7 @@ int	append(t_tree *root, t_data data, t_env **env, t_fds **list)
 {
 	data.j = fd_to_out_append(root, *env, &data, list);
 	if (data.j == 1)
-		return (1);
+		return (g_exit_status = 1, 1);
 	data.status = execute_cmd(root->left, data, env, list);
 	if (data.status == 1)
 		return (1);

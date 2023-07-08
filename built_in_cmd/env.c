@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:11:02 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/27 02:49:26 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/05 15:31:16 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,10 @@ void	call_1(char *val, char *var, t_env *tmp)
 	if (var[ft_strlen(var) - 1] == '+')
 	{
 		var[ft_strlen(var) - 1] = '\0';
-		new_val = ft_strjoin(tmp->value, val);
+		if (tmp->value)
+			new_val = ft_strjoin(tmp->value, val);
+		else
+			new_val = ft_strdup(val);
 		if (tmp->value)
 			free(tmp->value);
 		tmp->value = new_val;

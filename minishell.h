@@ -6,7 +6,7 @@
 /*   By: oaboulgh <oaboulgh@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/05/17 14:37:30 by nakebli           #+#    #+#             */
-/*   Updated: 2023/06/26 02:42:45 by oaboulgh         ###   ########.fr       */
+/*   Updated: 2023/07/06 18:10:00 by oaboulgh         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -159,6 +159,7 @@ void	free_rock(t_rock **rock);
 void	ft_init(t_env **env);
 
 void	signal_handler_call(void);
+void	get_std_in(void);
 
 int		is_there_here_doc(int k);
 int		std_in_fd(int k);
@@ -166,5 +167,6 @@ int		stop_execution(int k);
 int		runnig_cmd(int k);
 char	*get_value(char *line);
 void	handle_shell_lvl(t_env **env);
+void	call_exit(void);
 
 #endif
